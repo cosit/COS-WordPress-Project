@@ -190,4 +190,10 @@
 	//Shortcode for adding Custom Post Type
 	add_shortcode('home_contact', 'home_insert_contact');
 
+	/******Home Page News*****/
+	//Function to parse News section RSS feed
+	function parseNewsFeed(){
+
+	}
+
 ?>
