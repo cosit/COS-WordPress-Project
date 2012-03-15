@@ -1,0 +1,122 @@
+/* TYPOGRAPHY */
+/* ----------------------------------------- */
+
+/* Font stack options
+
+	The following represents a list of font stacks, as recommended by Nathan Ford in
+	http://unitinteractive.com/blog/2008/06/26/better-css-font-stacks/
+
+	I've added inverted commas around the relevant family names to ensure compatibility.
+	p = balanced for paragraphs or body copy
+	t = balanced for headlines or titles
+
+	- - - -
+
+Arial, "Helvetica Neue", Helvetica, sans-serif - p, t
+
+Baskerville, "Times New Roman", Times, serif - p
+Baskerville, "Times, Times New Roman", serif - t
+
+Cambria, Georgia, Times, "Times New Roman", serif - p, t
+"Century Gothic", "Apple Gothic", sans-serif - p, t
+
+Consolas, "Lucida Console", Monaco, monospace - p, t
+
+"Copperplate Light", "Copperplate Gothic Light", serif - p, t
+
+"Courier New", Courier, monospace - p, t
+
+"Franklin Gothic Medium", "Arial Narrow Bold", Arial, sans-serif - p, t
+
+Futura, "Century Gothic", "Apple Gothic", sans-serif - p, t
+
+Garamond, "Hoefler Text", "Times New Roman", Times, serif - p
+Garamond, "Hoefler Text", Palatino, "Palatino Linotype", serif - t
+
+Geneva, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif - p
+Geneva, Verdana, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif - t
+
+Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif - p
+Georgia, Times, "Times New Roman", serif - t
+
+GillSans, Calibri, Trebuchet, sans-serif - p
+GillSans, Trebuchet, Calibri, sans-serif - t
+
+"Helvetica Neue", Arial, Helvetica, sans-serif - p
+Helvetica, "Helvetica Neue", Arial, sans-serif - t
+
+Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif - p, t
+
+"Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif - p, t
+
+Palatino, "Palatino Linotype", Georgia, Times, "Times New Roman", serif - p
+Palatino, "Palatino Linotype", "Hoefler Text", Times, "Times New Roman", serif - t
+
+Tahoma, Geneva, Verdana - p
+Tahoma, Verdana, Geneva - t
+
+Times, "Times New Roman", Georgia, serif - p, t
+
+Trebuchet, "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif - p
+Trebuchet, Tahoma, Arial, sans-serif - t
+
+Verdana, Geneva, Tahoma, sans-serif - p
+Verdana, Tahoma, Geneva, sans-serif - t
+
+*/
+
+@font-face {
+    font-family: 'MuseoSlab500';
+    src: url('fonts/Museo_Slab_500-webfont.eot');
+    src: url('fonts/Museo_Slab_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/Museo_Slab_500-webfont.woff') format('woff'),
+         url('fonts/Museo_Slab_500-webfont.ttf') format('truetype'),
+         url('fonts/Museo_Slab_500-webfont.svg#MuseoSlab500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'MuseoSans500';
+    src: url('fonts/MuseoSans_500-webfont.eot');
+    src: url('fonts/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/MuseoSans_500-webfont.woff') format('woff'),
+         url('fonts/MuseoSans_500-webfont.ttf') format('truetype'),
+         url('fonts/MuseoSans_500-webfont.svg#MuseoSans500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'MuseoSlab500Italic';
+    src: url('Museo_Slab_500italic-webfont.eot');
+    src: url('Museo_Slab_500italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Museo_Slab_500italic-webfont.woff') format('woff'),
+         url('Museo_Slab_500italic-webfont.ttf') format('truetype'),
+         url('Museo_Slab_500italic-webfont.svg#MuseoSlab500Italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.hSerif {
+    font-family: 'MuseoSlab500', Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-style: normal !important;
+}
+
+.hSansSerif {
+    font-family: 'MuseoSans500', Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-style: normal !important;
+}
+
+.hSerifIt {
+    font-family: 'MuseoSlab500Italic', Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif;
+    text-decoration: none;
+    font-style: italic;
+}
