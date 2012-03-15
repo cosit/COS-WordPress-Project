@@ -8,11 +8,8 @@
  * @subpackage Starkers
  * @since Starkers HTML5 3.0
  */
-
-// UCF College of Sciences specific global variables
-$thisDept = get_bloginfo('title');
-
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
@@ -20,20 +17,16 @@ $thisDept = get_bloginfo('title');
  
     global $page, $paged;
 
+    $thisDept = get_bloginfo('name');
+
     echo 'UCF '; // eventually add function to recognize whether this is "UCF" or "COS"
 
-    bloginfo( 'name' );
+    echo $thisDept;
  
     wp_title( '', true, 'right' ); 
  
-    // $site_description = get_bloginfo( 'description', 'display' );
-    // if ( $site_description && ( is_home() || is_front_page() ) )
-    //     echo " | $site_description";
- 
-    // if ( $paged >= 2 || $page >= 2 )
-    //     echo ' | ' . sprintf( __( 'Page %s', 'starkers' ), max( $paged, $page ) );
- 
-    ?></title>
+?></title>
+
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
@@ -67,11 +60,12 @@ $thisDept = get_bloginfo('title');
  
 <body <?php body_class(); ?>>
  
-    <header>
+    <header id="main_header">
         <div class="wrap">
-            <div id="socialMedia">
-                
-            </div>
+            <ul id="socialMedia">
+                <li><a href="http://www.facebook.com" title="Facebook" class="facebook"></a></li>
+                <li><a href="http://www.twitter.com" title="Twitter" class="twitter"></a></li>
+            </ul>
 
             <hgroup>
                 <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><span>UCF</span><?php bloginfo( 'name' ); ?></a></h1>
@@ -83,6 +77,9 @@ $thisDept = get_bloginfo('title');
                 'fallback_cb' => 'starkers_menu', 
                 'theme_location' => 'primary' 
             ) ); ?>
+            <span id="pageID" style="display:none;"><?php echo get_query_var('page_id'); ?></span>
         </div>
 
     </header>
+
+<div id="container">

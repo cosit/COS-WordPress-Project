@@ -10,26 +10,42 @@
 	<div id="backToTop">
 		<a href="top"></a>
 	</div>
-
-	<footer><div class="wrap">
-		
+</div> <!-- /container -->
 
 
-<?php
-	get_sidebar( 'footer' );
-?>
 
-		<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-			<?php bloginfo( 'name' ); ?>
-		</a>
+<footer id="main_footer">
+	<!-- Bottom widgets -->
+	<section id="widgets">
+		<div class="wrap clearfix">
+			<?php 
+				//Query widget posts
+				query_posts( array ( 'category_name' => 'Widgets', 'posts_per_page' => -1 ) );
 
-		<?php do_action( 'starkers_credits' ); ?>
-		
-		<a href="<?php echo esc_url( __('http://wordpress.org/', 'starkers') ); ?>" title="<?php esc_attr_e('Semantic Personal Publishing Platform', 'starkers'); ?>" rel="generator"> 
-			<?php printf( __('Proudly powered by %s.', 'starkers'), 'WordPress' ); ?>
-		</a>
+				// Loop widget posts
+				while( have_posts() ) : the_post();
+					echo '<div class="widget"><h1>';
+					the_title();
+					echo '</h1><p>';
+					the_content();
+					echo '</p></div>';
+				endwhile;
+			?>
+		</div>
+	</section>
 
-	</div></footer>
+	<section id="the_footer">
+		<div class="wrap">
+		<?php get_sidebar( 'footer' ); ?>
+
+			<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+				<?php bloginfo( 'name' ); ?>
+			</a>
+
+
+		</div>
+	</section>
+</footer>
 
 <?php
 	/* Always have wp_footer() just before the closing </body>
@@ -49,26 +65,34 @@
 
 
 	// Slider
-	$('.sliderItems').flexslider();
-	$('ul.slides li').each(function(){
-		// Relocates the image to outside the post body so it can be manipulated
-		$(this).append($(this).find("img").remove());
-	});
+	try{
+		$('.sliderItems').flexslider();
+		$('ul.slides li').each(function(){
+			// Relocates the image to outside the post body so it can be manipulated
+			$(this).append($(this).find("img").remove());
+		});
+	} catch(err) {
+		console.log('flexslider.js not loaded.');
+	}
 
 	// Main nav links and dropdown menu
-	$('nav>ul>li').hover(
+	$('#main_header nav>ul>li').hover(
 		function(){
 			$(this).find('ul.children').slideDown('fast').show(); 
 			$(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'medium').addClass('navLinkHover');
 		},
 		function(){ 
-			$(this).find('ul.children').slideUp('fast');
-			$(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'medium').removeClass('navLinkHover');
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).find('ul.children').slideUp('fast');
+				$(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'medium');
+			} else {
+				$(this).find('ul.children').slideUp('fast');
+			}
 		}
 	);
 
 	// Submenu links
-	$('nav ul.children>li').hover(
+	$('#main_header nav ul.children>li').hover(
 		function(){ $(this).animate({ backgroundColor: colorLightBlueGray }, 'medium')},
 		function(){ $(this).animate({ backgroundColor: colorBlueGray }, 'medium')}
 	);
@@ -100,7 +124,9 @@
 						+'<li id="eventYear">'+year+'</li>'
 						+'<li id="eventDate">'+rawDate+'</ul>');
 	});
-	$('.events article').click(function(){
+
+	// Ensure that the entire area of a navigational element is clickable
+	$('.events article, nav li').click(function(){
 		window.location = $(this).find('a').attr('href');
 	});
 
@@ -115,7 +141,19 @@
 		} else {
 			$('#backToTop').fadeOut('slow');
 		}
-	})
+	});
+
+	// Breadcrumb hover 
+	// $(window).resize( function(){
+	// 	var currentWidth = $(window).width();
+	// 	var leftMargin = ($(window).width() - 960) / 2;
+	// 	$('#breadcrumbs a:first-child').css({'margin-left': leftMargin });
+	// });
+	$('#breadcrumbs a').hover(
+		function(){$(this).next().addClass('breadcrumbHover')},
+		function(){$(this).next().removeClass('breadcrumbHover')}
+	);
+
 
 </script>
 

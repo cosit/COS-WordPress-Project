@@ -101,8 +101,6 @@ get_header(); ?>
 
 			<?php if (!empty($items)) : ?>
 
-<!-- <pre><?php //print_r($items); ?> </pre> -->
-
 			<?php foreach ($items as $item) : ?>
 				<article>
 
@@ -141,25 +139,6 @@ get_header(); ?>
 	</div>
 
 
-</section>
-
-<!-- Widgets on bottom of page - e.g. "Did you know?", "Resources", etc. -->
-<section id="widgets">
-	<div class="wrap clearfix">
-		<?php 
-			//Query widget posts
-			query_posts( array ( 'category_name' => 'Widgets', 'posts_per_page' => -1 ) );
-
-			// Loop widget posts
-			while( have_posts() ) : the_post();
-				echo '<div class="widget"><h1>';
-				the_title();
-				echo '</h1><p>';
-				the_content();
-				echo '</p></div>';
-			endwhile;
-		?>
-	</div>
 </section>
  
 <!-- <?php // get_sidebar(); ?>  Sidebar is hidden on main page -->
