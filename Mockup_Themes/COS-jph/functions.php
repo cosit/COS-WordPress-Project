@@ -80,21 +80,24 @@
 
 	 /******End WordPress Auto Paragraph******/
 
-	//Custom Post Type Example
-	function homeContact() {
+
+	 /******Home Featured Area******/
+	//Custom Post Type for Home Featured Areas below the slider
+	//Like Graduate, Undergraduate, Research
+	function homeFeatured() {
 		$args = array(
-		'label' => __('HomeContact'),
-		'singular_label' => __('HomeContacts'),
+		'label' => __('Home_FC'),
+		'singular_label' => __('Home_FCs'),
 		'public' => true,
 		'show_ui' => true,
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
-		'supports' => array('title', 'custom-fields')
+		'supports' => array('title', 'editor', 'thumbnail', 'page-attributes')
 		);
-		register_post_type( 'homeContact' , $args );
+		register_post_type( 'home_FC' , $args );
 	}
-	add_action('init', 'homeContact');
+	add_action('init', 'home_FC');
 
 
 	//Function to insert Home Featured Areas into ShortCode
@@ -134,7 +137,26 @@
 	add_shortcode('home_fa', 'home_insert_fa');
 	/******End of Home Featured Areas*****/
 
+
+
 	/******Contact Us Home Page Info*****/
+	//Custom Post Type for Contact Information that
+	//shows up in a box on the slider
+	function homeContact() {
+		$args = array(
+		'label' => __('HomeContact'),
+		'singular_label' => __('HomeContacts'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('title', 'custom-fields')
+		);
+		register_post_type( 'homeContact' , $args );
+	}
+	add_action('init', 'homeContact');
+	
 	//Function to insert Home Featured Areas into ShortCode
 	function home_contact_area(){
 		
