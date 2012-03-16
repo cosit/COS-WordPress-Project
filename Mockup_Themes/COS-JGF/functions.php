@@ -97,6 +97,25 @@
 	add_action('init', 'homeContact');
 
 
+	/******Home Featured Area******/
+	//Custom Post Type for Home Featured Areas below the slider
+	//Like Graduate, Undergraduate, Research
+	function homeFeatured() {
+		$args = array(
+		'label' => __('Home Featured Content'),
+		'singular_label' => __('Home Featured Contents'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('title', 'editor', 'thumbnail')
+		);
+		register_post_type( 'home_FC' , $args );
+	}
+	add_action('init', 'homeFeatured');
+
+
 	//Function to insert Home Featured Areas into ShortCode
 	function home_featured_areas(){
 		
@@ -112,7 +131,7 @@
 
 			$slider.= '<div class="fc_homepage">';	
 			$slider.= $img;
-			$slider.= '<span class="fc_title">'.$fc_title.'</span>';
+			$slider.= '<span class="fc_title"><p>'.$fc_title.'</p></span>';
 			$slider.= '</div>';			
 
 		endwhile; endif; wp_reset_query();
