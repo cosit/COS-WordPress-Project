@@ -10,22 +10,25 @@
 		<div style="clear-both"></div>
         <!-- End Addition of Footer sidebars in theme -->
         
-        <div id="footer">
-			<h2><span>UCF</span>College of Sciences</h2>&nbsp;&nbsp;&nbsp;
-            <a href="http://biology.cos.ucf.edu">Biology</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://chemistry.cos.ucf.edu">Chemistry</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://communication.cos.ucf.edu">Communication</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://math.cos.ucf.edu">Mathematics</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://physics.cos.ucf.edu">Physics</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://politicalscience.cos.ucf.edu">Political Science</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://psychology.cos.ucf.edu">Psychology</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://sociology.cos.ucf.edu">Sociology</a>&nbsp;&nbsp;&nbsp;
-            <a href="http://statistics.cos.ucf.edu">Statistics</a>&nbsp;&nbsp;&nbsp;
-            <br />
-            <small>&copy;<?php echo date("Y"); echo " "; ?> University of Central Florida, College of Sciences, All Rights Reserved</small>
-		</div>
+
 
 	</div>
+
+    <div id="site-generator">
+                <a href="http://www.cos.ucf.edu" class="link-to-cos"><span class="cos_f">UCF</span> College of Sciences</a>
+                <a href="http://anthropology.cos.ucf.edu" class="dept">Anthropology</a>
+                <a href="http://biology.cos.ucf.edu" class="dept">Biology</a>
+                <a href="http://chemistry.cos.ucf.edu" class="dept">Chemistry</a>
+                <a href="http://communication.cos.ucf.edu" class="dept">Communication</a>
+                <a href="http://math.ucf.edu" class="dept">Mathematics</a>
+                <a href="http://physics.cos.ucf.edu" class="dept">Physics</a>
+                <a href="http://politicalscience.cos.ucf.edu" class="dept">Political Science</a>
+                <a href="http://psychology.cos.ucf.edu" class="dept">Psychology</a>
+                <a href="http://sociology.cos.ucf.edu" class="dept">Sociology</a>
+                <a href="http://statistics.cos.ucf.edu" class="dept">Statistics</a>
+                <p>
+            <small>&copy;<?php echo date("Y"); echo " "; ?> University of Central Florida, College of Sciences, All Rights Reserved</small>
+        </div>
 
 	<?php wp_footer(); ?>
 	
