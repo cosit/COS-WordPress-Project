@@ -352,9 +352,9 @@ ul, ol { margin: 0 0 10px 0; }
 	height:70px;
 	width:100%;	
 }
-#header h1{	color:#FFC904; font-size:28px; text-transform:uppercase; margin:0; padding:0; float:left;  }
+#header h1{	color:#FFC904; font-size:28px; text-transform:uppercase; margin:0; padding:0; float:left;}
 #header h1 a:link{color:#FFFFFF; text-decoration:none;}
-#header h1 a:hover{ color:#FFFFFF; text-decoration:underline;}
+#header h1 a:hover{ color:#FFFFFF; text-decoration:none;}
 #header h1 a:active{ color:#FFFFFF; text-decoration:none;}
 #header h1 a:visited{ color:#FFFFFF; text-decoration:none;}
 
