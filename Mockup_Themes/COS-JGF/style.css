@@ -63,7 +63,7 @@ ul, ol { margin: 0 0 10px 0; }
 #access ul {
 	font-size: 13px;
 	list-style: none;
-	margin: 0 0 0 -0.7125em;
+	margin: 6px 0 0 -0.7125em;
 	padding-left: 0;
 }
 #access li {
@@ -72,10 +72,13 @@ ul, ol { margin: 0 0 10px 0; }
 }
 #access a {
 	color: #eee;
+	height:25px;
 	display: block;
-	line-height: 3.333em;
-	padding: 0 1.0em;
+	line-height: 1.888em;
+	padding: 0 0.5em;
+	margin-right:10px;
 	text-decoration: none;
+	border-radius:5px;
 }
 #access ul ul {
 	-moz-box-shadow: 0 3px 3px rgba(0,0,0,0.2);
@@ -162,6 +165,7 @@ ul, ol { margin: 0 0 10px 0; }
 .fc_title{
 	background: #ffffff;
 	color: #000;
+	font-family: Museo, Arial, Helvetica, sans-serif;
 	font-size:20px;
 	width:283px;
 	height:30px;
@@ -172,6 +176,7 @@ ul, ol { margin: 0 0 10px 0; }
 	opacity: 0.75;
 	filter: alpha(opacity = 75);
 	width: 100%;
+	text-transform:uppercase;
 }
 .fc_title p {
 	width:100%;
@@ -183,6 +188,7 @@ ul, ol { margin: 0 0 10px 0; }
 /******Footer Area******/
 #footer{ 
 	background: #23282e;
+	font-family: Museo, Arial, Helvetica, sans-serif;
 	color: #ffffff;
 	clear:both; 
 	font-size:12px;
@@ -210,6 +216,38 @@ ul, ol { margin: 0 0 10px 0; }
 #footer a:hover{ color:#FFFFFF; text-decoration:underline;}
 #footer a:active{ color:#FFFFFF; text-decoration:none;}
 #footer a:visited{ color:#FFFFFF; text-decoration:none;}
+
+
+/* Site Generator Line */
+#site-generator {
+	background: #333333;
+	border-top: 3px solid #fcc304;
+	color: #ffffff;
+	font-size: 11px;
+	line-height: 2.2em;
+	padding: 2.2em 0.5em;
+	text-align: center;
+	float: left;
+	width:100%;
+}
+.dept {
+	padding-left:15px;
+	text-decoration:none;
+}
+.link-to-cos {
+	font-weight:bold;
+	font-size:20px;
+	text-decoration:none;
+}
+.cos_f {
+	color:#fcc207;
+	font-size:21px;
+	font-weight: bold;
+}
+#site-generator a {
+	color: #ffffff;
+}
+
 /******End Footer Area******/
 
 /*Foot Side Bars*/
@@ -218,7 +256,9 @@ ul, ol { margin: 0 0 10px 0; }
 	background:#6c7379;
 	color:#ffffff;
 	display:block;
-	min-height: 260px;
+	float: left;
+	width:100%;
+	min-height:260px;
 }
 #footer-sidebar ul{	list-style-type:none;	padding: 0px;	margin: 0px;	}
 #footer-sidebar li{ 
@@ -362,7 +402,8 @@ code, tt { }
 #searchform { 
 	border: 1px #f5f5f5 solid; 
 	background-color: #f5f5f5;
-	padding: 0; margin:0;
+	padding: 0; 
+	margin:0;
 	height: 24px;
 }
 #s { font-size:12px; color: #999999; font-style: italic; }
