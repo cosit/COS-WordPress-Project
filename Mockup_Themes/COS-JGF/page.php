@@ -1,7 +1,11 @@
 <?php get_header(); ?>
+<div id="body_bg">
+	<div id="body_content">
 	<!-- Custom Search -->
 	<div id="search"><?php include ('searchform.php' ); ?></div>
 	<div class="clear"></div>
+
+	<?php wp_nav_menu( array('container_class' => 'menu-footer','theme_location' => 'side_nav' ) ); ?>
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			
@@ -28,5 +32,6 @@
 		<?php endwhile; endif; ?>
 
 <?php get_sidebar(); ?>
-
+</div>
+</div>
 <?php get_footer(); ?>

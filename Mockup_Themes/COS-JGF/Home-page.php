@@ -19,28 +19,37 @@ Template Name: Home Page
 		background:#f5f5f5;
 	}
 	</style>
-	<?php echo do_shortcode('[ef_slider]');?>
-	<?php echo do_shortcode('[home_contact]');?>
-	<?php echo do_shortcode('[home_fa]');?>
-	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			
-		<div class="post-full" id="post-<?php the_ID(); ?>">
-
-			<div class="entry">
-
-				<?php the_content(); ?>
-
-				<?php wp_link_pages(array('before' => 'Pages: ', 'next_or_number' => 'number')); ?>
-
-			</div>
-
-			<?php edit_post_link('Edit this entry.', '<p>', '</p>'); ?>
-
+	<div id="slider_bg">
+		<div id="slider_container">
+			<?php echo do_shortcode('[ef_slider]');?>
+			<?php echo do_shortcode('[home_contact]');?>
 		</div>
+	</div>
+	<div id="fc_bg">
+		<?php echo do_shortcode('[home_fa]');?>
+	</div>
+	<div id="body_bg">
+		<div id="body_content">
+			<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+			
+				<div class="post-full" id="post-<?php the_ID(); ?>">
+
+					<div class="entry">
+
+						<?php the_content(); ?>
+
+						<?php wp_link_pages(array('before' => 'Pages: ', 'next_or_number' => 'number')); ?>
+
+					</div>
+
+					<?php edit_post_link('Edit this entry.', '<p>', '</p>'); ?>
+
+				</div>
 		
-		<?php comments_template(); ?>
+				<?php comments_template(); ?>
 
-		<?php endwhile; endif; ?>
-
+				<?php endwhile; endif; ?>
+		</div>
+	</div>
 
 <?php get_footer(); ?>

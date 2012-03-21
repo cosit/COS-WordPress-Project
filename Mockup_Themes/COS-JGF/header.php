@@ -48,7 +48,8 @@
 </head>
 
 <body <?php body_class(); ?>>
-	<div id="page-wrap">
+	<!-- <div id="page-wrap"> -->
+	<div id="header_container">
 		<div id="header">
 			<h1>UCF<a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
 			<?php /* <div class="description"><?php bloginfo('description'); ?></div> //Descriptiono not used */?> 
@@ -60,5 +61,5 @@
 			</nav>
 			<!-- End Custom Nav-->
 		</div>
-
+	</div>
 

@@ -1,18 +1,22 @@
-		<!-- Addition of Footer sidebars in theme -->
-        <div id="footer-sidebar" class="secondary">		<div style="clear:both;"></div>
-		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer") ) : ?>
-        <?php endif; ?>        
-		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer2") ) : ?>
-        <?php endif; ?>        
-		<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer3") ) : ?>
-        <?php endif; ?>        
-		</div>        
-		<div style="clear-both"></div>
-        <!-- End Addition of Footer sidebars in theme -->
+	<div id="widget_bg">
+        <div id="widget_container">	
+            <!-- Addition of Footer sidebars in theme -->
+            <div id="footer-sidebar" class="secondary">		<div style="clear:both;"></div>
+		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer") ) : ?>
+                <?php endif; ?>        
+		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer2") ) : ?>
+                <?php endif; ?>        
+		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer3") ) : ?>
+                <?php endif; ?>        
+		    </div>        
+		    <div style="clear-both"></div>
+            <!-- End Addition of Footer sidebars in theme -->
+        </div>
+    </div>
         
 
 
-	</div>
+	<!-- </div> -->
 
     <div id="site-generator">
                 <a href="http://www.cos.ucf.edu" class="link-to-cos"><span class="cos_f">UCF</span> College of Sciences</a>
