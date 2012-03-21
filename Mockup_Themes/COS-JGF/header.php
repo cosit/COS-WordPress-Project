@@ -41,17 +41,14 @@
 	<?php if ( is_singular() ) wp_enqueue_script( 'comment-reply' ); ?>
 
 	<?php wp_head(); ?>
-	
+
+	<!-- ADD UCF HEADER -->
+		<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
+	<!-- END UCF HEADER -->
 </head>
 
 <body <?php body_class(); ?>>
-   
 	<div id="page-wrap">
-
-		<!-- ADD UCF HEADER -->
-		<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
-		<!-- END UCF HEADER -->
-
 		<div id="header">
 			<h1>UCF<a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
 			<?php /* <div class="description"><?php bloginfo('description'); ?></div> //Descriptiono not used */?> 
