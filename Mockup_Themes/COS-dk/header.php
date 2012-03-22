@@ -23,7 +23,7 @@
 
     echo $thisDept;
  
-    wp_title( '', true, 'right' ); 
+    wp_title( '', true, 'left' ); 
  
 ?></title>
 
@@ -68,9 +68,11 @@
             </ul>
 
             <hgroup>
-                <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><span>UCF</span><?php bloginfo( 'name' ); ?></a></h1>
+                <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                    <span class="branding_prefix">UCF</span><span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
+                </a></h1>
             </hgroup>
-             
+
             <?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to the 'starkers_menu' function which can be found in functions.php.  The menu assiged to the primary position is the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
             <?php wp_nav_menu( array( 
                 'container' => 'nav', 

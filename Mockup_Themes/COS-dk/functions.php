@@ -17,8 +17,133 @@ if ( ! function_exists( 'starkers_setup' ) ):
  * @since Starkers HTML5 3.0
  */
 
+// Simple function for getting the excerpt of a body of text
+// Takes in two parameters: $text = body of text, $cutoff = number of characters in excerpt
+function excerpt( $text, $cutoff ){
+	if( is_int($cutoff) && $cutoff > 0 ){
+		return substr( $text, 0, $cutoff ) == $text ? $text : substr( $text, 0, $cutoff ) . '...';
+	} else { return ' '; }
+}
 
-//Custom Post Type
+// Custom Post Type for People
+function people() {
+	$args = array(
+		'label' => __('People'),
+		'singular_label' => __('Person'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('title', 'editor', 'custom-fields'),
+		'taxonomies' => array('category'),
+	);
+
+	register_post_type( 'people', $args );
+}
+add_action('init', 'people');
+
+function show_person( $id ) {
+
+		$person = array(
+			'first_name' => get_field('first_name'),
+			'last_name' => get_field('last_name'),
+			'photo' => get_field('headshot'),
+			'phone' => get_field('phone'),
+			'email' => get_field('email'),
+			'location' => get_field('location'),
+			'position' => get_field('position'),
+			'cat' => strtolower(str_replace(" ","_",
+				ereg_replace("[^A-Za-z0-9\s]", "", get_field('classification') ) )
+			),
+			'biography' => get_field('biography'),
+			'research' => get_field('research_areas'),
+			'misc' => get_field('miscellaneous'),
+			'cv' => get_field('curriculum_vitae'),
+			'link' => get_permalink(),
+		);
+
+		echo <<<PERSON
+			<div class="person_bio">
+				<h2>Biography</h2>
+				{$person['biography']}
+			</div>
+			<div class="person_research">
+				<h2>Research</h2>
+				<p>{$person['research']}</p>
+			</div>
+			<div class="person_misc">
+				<h2>Miscellaneous</h2>
+				{$person['misc']}
+			</div>
+		</article>
+PERSON;
+}
+
+// Displays list of people based on category (default: all)
+function show_people( $atts ) { 
+	// Get the specific classification, or show all
+	extract( shortcode_atts( array(
+			'cat' => 'all',
+			'single' => false,
+		), $atts ) );
+
+	// Search for Post with Custom Post Type "people"
+	$facultyArgs = array( 'post_type' => 'people' );
+	query_posts( $facultyArgs );
+	echo '<div id="people_list">';
+
+
+
+	if(have_posts()) : while (have_posts()) : the_post();			
+		// Grab the Post ID for the Custom Fields Function			
+		$thisId = get_the_ID();
+
+		$person = array(
+			'first_name' => get_field('first_name'),
+			'last_name' => get_field('last_name'),
+			'photo' => get_field('headshot'),
+			'phone' => get_field('phone'),
+			'email' => get_field('email'),
+			'location' => get_field('location'),
+			'position' => get_field('position'),
+			'cat' => strtolower(str_replace(" ","_",
+				ereg_replace("[^A-Za-z0-9\s]", "", get_field('classification') ) )
+			),
+			'biography' => get_field('biography'),
+			'research_ex' => excerpt(get_field('research_areas'), 140),
+			'cv' => get_field('curriculum_vitae'),
+			'link' => get_permalink(),
+		);
+
+		// display person if person is in category, or category is 'all'
+		if( $person['cat'] == $cat || $cat == 'all' ){
+			echo <<<PEOPLE
+			<article class="person {$person['classification']}">
+
+				<ul class="person_basics">
+					<img src="{$person['photo']}" />
+					<h2><a href="{$person['link']}" class="personLink">{$person['first_name']} {$person['last_name']}</a></h2>
+					<li class="person_position">{$person['position']}</h3>
+					<li class="person_location">{$person['location']}</h3>
+					<li class="person_phone">{$person['phone']}</h3>
+					<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></h3>
+					<li class="person_research"><p>{$person['research_ex']}</p></li>
+				</ul>
+				<div class="personDetailsLoading clearfix"></div>
+				<div class="personDetails clearfix"></div>
+			</article>
+PEOPLE;
+		} 
+
+	endwhile; endif; wp_reset_query();
+}
+
+//Shortcode for displaying all people
+add_shortcode('show_people', 'show_people');
+
+
+// Custom Post Type for Contact information
 function homeContact() {
 	$args = array(
 	'label' => __('HomeContact'),
@@ -33,6 +158,8 @@ function homeContact() {
 	register_post_type( 'homeContact' , $args );
 }
 add_action('init', 'homeContact');
+
+
 
 /******Contact Us Home Page Info*****/
 //Function to insert Home Featured Areas into ShortCode
@@ -92,10 +219,13 @@ CONTACT;
 
 //Function to add the shortcode for the Custom Post Type- for use in editor
 function home_insert_contact($atts, $content=null){
-
 	$events = home_contact_area();
 	return $events;
 }
+//Shortcode for adding contact area
+add_shortcode('home_contact', 'home_contact_area');
+
+
 
 // Breadcrumbs
 function breadcrumbs() {
@@ -141,6 +271,7 @@ function breadcrumbs() {
     } elseif ( is_single() && !is_attachment() ) {
       if ( get_post_type() != 'post' ) {
         $post_type = get_post_type_object(get_post_type());
+        print_r( get_post_type() );
         $slug = $post_type->rewrite;
         echo '<a href="' . $homeLink . '/' . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a> ' . $delimiter . ' ';
         if ($showCurrent == 1) echo $before . get_the_title() . $after;
@@ -202,8 +333,7 @@ function breadcrumbs() {
   }
 } 
 
-//Shortcode for adding Custom Post Type
-add_shortcode('home_contact', 'home_insert_contact');
+
 
 function starkers_setup() {
 

@@ -38,7 +38,7 @@
 		<div class="wrap">
 		<?php get_sidebar( 'footer' ); ?>
 
-			<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+			<a href="<?php echo home_url( '/' ) ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home" class="button">
 				<?php bloginfo( 'name' ); ?>
 			</a>
 
@@ -79,14 +79,14 @@
 	$('#main_header nav>ul>li').hover(
 		function(){
 			$(this).find('ul.children').slideDown('fast').show(); 
-			$(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'medium').addClass('navLinkHover');
+			$(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
-				$(this).find('ul.children').slideUp('fast');
-				$(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'medium');
+				$(this).find('ul.children').delay(500).slideUp('fast');
+				$(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
-				$(this).find('ul.children').slideUp('fast');
+				$(this).find('ul.children').delay(500).slideUp('fast');
 			}
 		}
 	);
@@ -100,9 +100,6 @@
 	// Contact Box and Search Form
 	$('#searchform #s').focusin(function(){
 		$(this).addClass('searchFocus').val('');
-	});
-	$('#searchform #s').focusout(function(){
-		$(this).removeClass('searchFocus').val('Search <?php bloginfo( "name" ); ?>...');
 	});
 	$('#contact h2').wrapInner('<span />');
 	$('#contact ul:nth-child(odd)').addClass('contactOdd');
@@ -131,10 +128,12 @@
 	});
 
 	// Back to top button
-	$('#backToTop>a').click(function(){
+	var scrollToTop = function(){
 		$('html, body').animate({scrollTop: 0}, 'medium', 'easeInOutCubic');
 		return false;
-	});
+	};
+
+	$('#backToTop>a').click( scrollToTop );
 	$(window).scroll(function(){
 		if( $(window).scrollTop() > 10 ){
 			$('#backToTop').fadeIn('slow');
@@ -153,6 +152,25 @@
 		function(){$(this).next().addClass('breadcrumbHover')},
 		function(){$(this).next().removeClass('breadcrumbHover')}
 	);
+
+	// AJAX functions for displaying full person info
+	$.ajaxSetup ({  
+        cache: false  
+    });  
+ 
+    $(".person").click(function(){  
+    	scrollToTop();
+    	$this = $(this);
+    	$this.addClass('mainPerson');
+    	$('.person').hide();
+    	$this.find('.person_research').hide();
+        $this.find('.personDetailsLoading').show();
+        $this.find('.personDetails').load( $this.find("h2 a").attr('href') );
+        $this.ajaxStop(function() {
+        	$this.find('.personDetailsLoading').slideUp('fast');
+        	$this.find('.personDetails').slideDown('fast');
+        })  
+    });  
 
 
 </script>

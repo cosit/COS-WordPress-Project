@@ -16,11 +16,7 @@
 		<div class="innerContent">
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header>
-					<?php if ( is_front_page() ) { ?>
-						<h2><?php the_title(); ?></h2>
-					<?php } else { ?>	
-						<h1><?php the_title(); ?></h1>
-					<?php } ?>
+					<h1><?php the_title(); ?></h1>
 				</header>				
 
 					<?php the_content(); ?>
