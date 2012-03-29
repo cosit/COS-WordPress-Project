@@ -164,9 +164,8 @@ section {
 			.drop-shadow(0,0,5px,0.3);
 			li {
 				background: @blueGray;
-				padding: 5px 10px;
 				border-bottom: 1px solid @offWhite;
-				&:first-child{ padding-top: 10px;}
+				border-top: 1px solid @darkBlue;
 				&:last-child{ 
 					border-bottom: none;
 					.border-radius(0, 8px, 8px, 0);
@@ -178,6 +177,14 @@ section {
 					color: white !important;
 					display: block;
 					width: 100%;
+					height: 100%;
+					padding: 7px 0;
+				}
+				&:first-child {
+					border-top: none;
+					a { 
+						padding-top: 7px + 10px;
+					}
 				}
 			}
 		}
@@ -329,7 +336,7 @@ section {
 			margin-left: 50px;
 		}
 	}
-	span.icon {
+	span.contactIcon {
 		display: inline-block;
 		position: absolute;
 		overflow: hidden;
@@ -370,6 +377,8 @@ section {
 			bottom: 0;
 			text-align: center;
 			font-size: 18px;
+			height: 24px;
+			line-height: 24px;
 			color: @offWhite;
 			background: @darkBlue;
 			.opacity(0.7);
@@ -467,6 +476,8 @@ section {
 		}
 		.eventDate {
 			display: inline-block;
+			position: absolute;
+			top: 5px;
 			margin-left: 10px;
 			ul {
 				background: @darkBlue;
@@ -484,13 +495,14 @@ section {
 					font-weight: bold;
 					width: 100%;
 					background: @offWhite;
+					text-transform: uppercase;
 					position: absolute;
 				}
 				#eventDay {
 					.hSerif;
 					font-size: 36px;
 					color: @offWhite;
-					top: 16px + 4px;
+					top: 16px + 3px;
 				}
 				#eventYear {
 					.hSerif;
@@ -505,20 +517,28 @@ section {
 		.eventInfo {
 			display: inline-block;
 			min-height: 65px; 
-			margin-left: 10px;
+			margin-left: 80px;
 			.eventTitle {
 				display: inline-block;
 				.hSansSerif;
+				color: @darkBlue;
 				font-size: 18px;
 			}
 			.eventTime, .eventLocation {
 				font-size: 14px;
+				color: @blueGray;
+				padding: 2px 0;
+				&:before { .icon; }
 			}
+			.eventTime:before {content: '\e079';}
+			.eventLocation:before {content: '\e068'}
+
 		}
 	}
 	.innerContent {
 		.column(9);
 		margin-bottom: 20px;
+		h1>span { color: @UCFGold; }
 		a:hover {
 			text-decoration: underline;
 		}
@@ -542,16 +562,19 @@ section {
 			.hSerif;
 		}
 		>ul>li {
-			padding: 8px 10px 8px 30px;
+			
 			font-size: 14px;
 			a {
 				display: block;
+				padding: 8px 10px 8px 30px;
 				width: 100%;
 			}
 			&:hover {
+				.inner-shadow(0, 0, 4px, 0.1);
 				background: darken(@sideGray, 5%);
 				cursor: pointer;
 			}
+
 		}
 	}
 }
@@ -658,6 +681,9 @@ section {
 			margin-left: 0;
 		}
 	}
+	.bcHome {
+		content: '\2302';
+	}
 	.crumbSep {
 		text-indent: -9999px;
 		display: block;
@@ -673,60 +699,67 @@ section {
 
 #people_list {
 	article.person {
-		padding: 10px 0;
 		border-bottom: 1px dashed #CCC;
+		margin: 10px 0;
+	}
+	figure {
+		float: left;
 	}
 	img { /* Headshot */
-		float:left;
 		max-width: 100px;
-		margin-right: 20px;
+		margin: 0 20px 10px 0;
 	}
 	h2 { /* Person's name */
 		padding: 0;
 		margin-bottom: 5px;
 		font-size: 21px;
 	}
-	ul.person_basics {
-		display: inline-block;
-		width: 100%;
+	ul.personBasics {
+		float: left;
+		.hSansSerif;
+		max-width: 70%;
 		li {
 			font-size: 16px;
 			margin: 5px 0;
+			&:before { .icon; }
+			&.person_position:before { content: '\e062'; }
+			&.person_location:before { content: '\e068'; }
+			&.person_phone:before { content: '\e06e'; }
+			&.person_email:before { content: '\2709'; }
+
+			&.person_research { 
+				font-size: 14px;
+			}
 		}
 		p {
 			text-indent: 0;
 		}
 	}
-	.personDetailsLoading {
-		width: 100%;
-		display: block;
-		display: none;
-		text-align: center;
-		content: 'Loading...';
-	}
-	.personDetails {
-		width: 100%;
-		display: block;
-		display: none;
-	}
-	.mainPerson {
-		display: block !important;
-		visibility: visible !important;
-	}
+
 }
 #single_person {
-	article {
+	article.person {
 		padding-bottom: 10px;
 	}
+	figure {
+		float: left;
+	}
 	img {
-		float:left;
 		max-width: 200px;
 		margin-right: 20px;
 	}
-	ul.person_basics {
+	ul.personBasics {
+		float: left;
+		.hSansSerif;
 		li {
 			font-size: 16px;
 			margin: 5px 0;
+			&:before { .icon; }
+			&.person_position:before { content: '\e062'; }
+			&.person_location:before { content: '\e068'; }
+			&.person_phone:before { content: '\e06e'; }
+			&.person_email:before { content: '\2709'; }
+			&.person_cv:before { content: '\e06a'; }
 		}
 		p {
 			text-indent: 0;
@@ -737,6 +770,52 @@ section {
 	}
 	h2 {
 		clear: both;
+	}
+	ul.personTabs {
+
+		display: block;
+		background: @sideGray;
+		color: @darkBlue;
+		height: 30px;
+		width: 100%;
+				margin-top: 20px;
+		border-bottom: 3px solid darken(@sideGray, 10%);
+		>li {
+			display: inline-block;
+			line-height: 30px;
+			font-size: 16px;
+			padding: 0 10px;
+			.hSansSerif;
+			text-transform: uppercase;
+			border-right: 1px solid @offWhite;
+			border-left: 1px solid darken(@sideGray, 10%);
+			>a {
+				color: @lightBlueGray;
+			}
+			&:hover, &.personTabSelected {
+				background: darken(@sideGray, 10%);
+				border-right: 1px solid darken(@sideGray, 10%);
+				.drop-shadow(0,-2px,7px,0.2);
+				// .border-radius(8px, 0, 0, 8px);
+			}
+			&:first-child {
+				border-left: none;
+			}
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+	ul.personContent {
+		display: block;
+		background: @offWhite;
+		width: 100%;
+		clear: both;
+		.drop-shadow(0,0,8px,0.1);
+		li {
+			display: block;
+			padding: 20px;
+		}
 	}
 }
 
@@ -781,7 +860,10 @@ section {
 	text-align: center;
 	color: @offWhite !important;
 	.gradient( #1A1D20 , darken(#1A1D20, 20%) );
-
+}
+.hide {
+	display: none;
+	visibility: hidden;
 }
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */

@@ -91,14 +91,27 @@ Verdana, Tahoma, Geneva, sans-serif - t
 
 @font-face {
     font-family: 'MuseoSlab500Italic';
-    src: url('Museo_Slab_500italic-webfont.eot');
-    src: url('Museo_Slab_500italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Museo_Slab_500italic-webfont.woff') format('woff'),
-         url('Museo_Slab_500italic-webfont.ttf') format('truetype'),
-         url('Museo_Slab_500italic-webfont.svg#MuseoSlab500Italic') format('svg');
+    src: url('fonts/Museo_Slab_500italic-webfont.eot');
+    src: url('fonts/Museo_Slab_500italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/Museo_Slab_500italic-webfont.woff') format('woff'),
+         url('fonts/Museo_Slab_500italic-webfont.ttf') format('truetype'),
+         url('fonts/Museo_Slab_500italic-webfont.svg#MuseoSlab500Italic') format('svg');
     font-weight: normal;
     font-style: normal;
 
+}
+
+@font-face { 
+    font-family: 'IconicFill'; 
+    src: url('fonts/iconic_fill.eot'); 
+    src: local('IconicFill'), url('fonts/iconic_fill.svg#iconic') format('svg'), url('fonts/iconic_fill.otf') format('opentype'); 
+}
+.icon { 
+    display:inline-block; font-family: 'IconicFill';
+    width: 20px;
+    margin-right: 15px;
+    text-align: center;
+    color: @lightBlueGray;
 }
 
 .hSerif {
@@ -118,3 +131,4 @@ Verdana, Tahoma, Geneva, sans-serif - t
     text-decoration: none;
     font-style: italic;
 }
+
