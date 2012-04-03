@@ -64,3 +64,11 @@ a:hover, a:visited { color: #ccc }
 .alignleft, .alignright, .aligncenter {
 	margin: 0;
 }
+
+strong {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
+}
