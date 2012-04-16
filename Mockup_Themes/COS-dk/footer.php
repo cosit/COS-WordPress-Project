@@ -40,9 +40,24 @@
 			get_sidebar( 'footer' );
 			show_people_cats(); 
 		?>
-
-		<h1><span>UCF</span> College of Sciences</h1>
+			<div id="dept_list">
+				<h1><span>UCF</span> College of Sciences</h1>
+				<ul>
+					<li>Anthropology</li>
+					<li>Biology</li>
+					<li>Chemistry</li>
+					<li>Communication</li>
+					<li>Mathematics</li>
+					<li>Physics</li>
+					<li>Political Science</li>
+					<li>Psychology</li>
+					<li>Sociology</li>
+					<li>Statistics</li>
+				</ul>
+			</div>
 		</div>
+
+		<span id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</span>
 	</section>
 
 </footer>
@@ -85,10 +100,10 @@
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
-				$(this).find('ul.children').delay(500).slideUp('fast');
+				$(this).find('ul.children').slideUp('fast');
 				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
-				$(this).find('ul.children').delay(500).slideUp('fast');
+				$(this).find('ul.children').slideUp('fast');
 			}
 		}
 	);

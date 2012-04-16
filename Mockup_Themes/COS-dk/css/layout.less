@@ -223,6 +223,7 @@ section {
 				width: 20px;
 				.opacity(0.6);
 				.transition(0.5s, ease-out);
+				background: center no-repeat;
 
 				&:hover {
 					.opacity(1);
@@ -230,14 +231,23 @@ section {
 				}
 			}
 
-			a.facebook {
-				background: url('img/social/facebook.png') center no-repeat;
+			a.fb {
+				background: url('img/social/fb.png') center no-repeat;
 			}
-			a.twitter {
-				background: url('img/social/twitter.png') center no-repeat;
+			a.tw {
+				background: url('img/social/tw.png') center no-repeat;
 			}
-			a.youtube {
-				background: url('img/social/youtube.png') center no-repeat;
+			a.yt {
+				background: url('img/social/yt.png') center no-repeat;
+			}
+			a.vi {
+				background: url('img/social/vi.png') center no-repeat;
+			}
+			a.fl {
+				background: url('img/social/fl.png') center no-repeat;
+			}
+			a.rs {
+				background: url('img/social/rs.png') center no-repeat;
 			}
 		}
 	}
@@ -479,11 +489,13 @@ section {
 		.hSansSerif;
 	}
 	p, >ol, >ul {
-		color: @darkBlue;
-		font-size: 12px;
 		line-height: 16px;
 		text-align: justify;
 		margin-bottom: 5px;
+	}
+	p, li {
+		font-size: 12px;
+		color: @darkBlue;
 	}
 	a {
 		color: @lightBlueGray;
@@ -647,10 +659,15 @@ section {
 		ul {
 			margin-left: 20px;
 		}
-		ul>li {
+		li {
+			font-size: 12px;
+		}
+		ul>li, ol>li {
 			margin-bottom: 5px;
-			margin-left: 20px;
-			&:before {
+		}
+		ul>li {
+			margin-left: 20px;	
+			&:before{
 				content: "\00BB \0020";
 				position: absolute;
 				margin-left: -15px;
@@ -751,6 +768,34 @@ section {
 #the_footer {
 	z-index: 2;
 	height: @footerHeight;
+	#dept_list {
+		padding-top: 50px;
+		padding-bottom: 20px;
+		h1 {
+			color: @offWhite;
+			display: inline-block;
+			float: left;
+			.hSansSerif;
+			font-size: 21px;
+			text-transform: uppercase;
+			margin-right: 10px;
+
+			span {
+				color: @UCFGold;
+			}
+		}
+		li {
+			font-size: 10px;
+			display: inline-block;
+			margin: 0 5px;
+			color: @offWhite;
+			line-height: 21px;
+		}
+	}
+	#copyright {
+		font-size: 12;
+		color: @blueGray;
+	}
 }
 
 

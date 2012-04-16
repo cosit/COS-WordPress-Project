@@ -67,12 +67,13 @@
  
     <header id="main_header">
         <div class="wrap">
-            <ul id="socialMedia">
+            <?php show_social(); ?>
+<!--             <ul id="socialMedia">
                 <li><a href="http://www.facebook.com" title="Facebook" class="facebook">
                 </a></li>
                 <li><a href="http://www.twitter.com" title="Twitter" class="twitter">
                 </a></li>
-            </ul>
+            </ul> -->
 
             <hgroup>
                 <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">

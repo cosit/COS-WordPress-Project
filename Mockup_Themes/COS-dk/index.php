@@ -23,11 +23,7 @@ get_header(); ?>
 <div id="contact">
 	<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
 
-	<h2>Contact Us</h2>
-
-	<?php contact_area(); ?>
-
-
+	<?php show_contact_area(); ?>
 </div>
 
 

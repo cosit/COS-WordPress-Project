@@ -148,6 +148,9 @@ function custom_titles() {
 	} elseif( $postType == 'mainlink') {
 		$title = get_field('title', $postID );
 		$_POST['post_title'] = $title;
+	} elseif( $postType == 'social_media') {
+		$title = get_field('label', $postID );
+		$_POST['post_title'] = $title;
 	} else {
 		$title = $title;
 	}
@@ -215,6 +218,68 @@ function show_main_links() {
 			</div>
 MAINLINK;
 	endwhile; endif; wp_reset_query();
+}
+
+// Custom Post Type for Social Media
+function social_media() {
+	$labels = array(
+		'name' => _x('Social Media', 'post type general name'),
+		'singular_name' => _x('Social Media Item', 'post type singular name'),
+		'add_new' => _x('Add New', 'slider'),
+		'add_new_item' => __('Add New Social Media Item'),
+		'edit_item' => __('Edit Social Media Info'),
+		'new_item' => __('New Social Media Item'),
+		'all_items' => __('All Social Media'),
+		'view_item' => __('View Social Media Item'),
+		'search_items' => __('Search All Social Media'),
+		'not_found'  => __('No social media found.'),
+		'not_found_in_trash'  => __('No social media found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('Social Media'),
+	);
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('Social Media Item'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('custom-fields'),
+	);
+
+	register_post_type( 'social_media', $args );
+}
+add_action('init', 'social_media');
+
+function show_social() {
+	$socialMediaArgs = array( 
+			'post_type' => 'social_media',
+	);
+
+	query_posts( $socialMediaArgs );
+
+	echo '<ul id="socialMedia">';
+
+	if(have_posts()) : while (have_posts()) : the_post();			
+		// Grab the Post ID for the Custom Fields Function			
+		$thisID = get_the_ID();
+
+		$social = array(
+			'label' => get_field('label'),
+			'type' => get_field('type'),
+			'link' => get_field('link'),
+			'disabled' => get_field('disabled'),
+		);
+
+		echo <<<SOCIAL
+			<li>
+				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}"></a>
+			</li>
+SOCIAL;
+	endwhile; endif; wp_reset_query();
+
+	echo '</ul>';
 }
 
 // Custom Post Type for People
@@ -286,7 +351,7 @@ function show_people_cats( $displayCats = true ) {
 
 function show_person( $id ) {
 
-
+	// All fields beginning with 'p_' are default fields that don't appear as tabular data
 	$person = array(
 		'p_first_name'  => get_field('first_name'),
 		'p_last_name'   => get_field('last_name'),
@@ -296,7 +361,7 @@ function show_person( $id ) {
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
 		'biography' => get_field('biography'),
-		'research'  => get_field('research_areas'),
+		'research'  => '<p>'.get_field('research_areas').'</p>',
 		'misc'      => get_field('miscellaneous'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
@@ -421,7 +486,7 @@ add_action('init', 'contact');
 
 /******Contact Us Home Page Info*****/
 //Function to insert Home Featured Areas into ShortCode
-function contact_area(){
+function show_contact_area(){
 
 	//Search for Post with Custom Post Type "HomeContact"
 	$contactArgs = array( 'post_type' => 'contact' );
@@ -449,6 +514,8 @@ function contact_area(){
 
 		// Display the list items in this format:
 		echo <<<CONTACT
+			<h2>Contact Us</h2>
+
 			<ul id="contact_department">
 				<span class="contactIcon"></span>
 				{$contact['dept']}
