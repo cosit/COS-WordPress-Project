@@ -32,7 +32,8 @@
 @socialMediaHeight: @headerHeight - 55px;
 @headerLinksHeight: @headerHeight - @socialMediaHeight; 
 @sliderHeight: 400px;
-@titleHeight: 28px; // subject to change based on length of dept. name
+@titleHeight: 24px; // subject to change based on length of dept. name
+@navMenuItemSpacing: 5px; // subject to change
 @widgetsHeight: 300px;
 @footerHeight: 150px;
 @mainFooterHeight: @widgetsHeight + @footerHeight;
@@ -122,9 +123,11 @@ section {
 
 		>ul>li {
 			position: relative;
+			float: left;
 			display: inline-block;
 			text-align: center;
 			height: @headerLinksHeight;
+			margin: 0 @navMenuItemSpacing;
 
 			&.current_page_item {
 				// margin-bottom: -8px;
@@ -576,6 +579,7 @@ section {
 			top: 5px;
 			margin-left: 10px;
 			ul {
+				font-size: 10px;
 				background: @darkBlue;
 				width: 50px;
 				height: 65px;
@@ -661,11 +665,12 @@ section {
 		}
 		li {
 			font-size: 12px;
+			line-height: 16px;
 		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
 		}
-		ul>li {
+		li {
 			margin-left: 20px;	
 			&:before{
 				content: "\00BB \0020";
@@ -674,12 +679,48 @@ section {
 				color: @blueGray;
 			}
 		}
+		/* LINK ICON CLASSES */
+		ul>li.link::before {
+			content: '';
+			margin-left: -25px;
+			height: 16px;
+			width: 16px;
+			background: url(img/link/www.png) left no-repeat;
+		}
+		ul>li.pdf::before {
+			background: url(img/link/pdf.png) left no-repeat;
+		}
 		blockquote {
 			border-left: 2px solid @darkBlue;
 			margin-left: 20px;
 			>p {
 				padding-left: 20px;
 			}
+		}
+		table {
+			width: 100%;
+			font-size: 12px;
+			th {
+				font-size: 16px;
+				.hSansSerif;
+				text-align: center;
+				vertical-align: bottom;
+				border-bottom: 2px solid @darkBlue;
+				padding: 10px 8px;
+			}
+			td {
+				border-bottom: 1px solid @lightBlueGray;
+				padding: 6px 8px;
+				text-align: center;
+				vertical-align: middle;
+				line-height: 100%;
+			}
+			tr:hover td {
+				color: @blueGray;
+			}
+		}
+		footer {
+			margin-top: 20px;
 		}
 	}
 
@@ -771,6 +812,7 @@ section {
 	#dept_list {
 		padding-top: 50px;
 		padding-bottom: 20px;
+		clear: both;
 		h1 {
 			color: @offWhite;
 			display: inline-block;
@@ -786,6 +828,7 @@ section {
 		}
 		li {
 			font-size: 10px;
+			float: left;
 			display: inline-block;
 			margin: 0 5px;
 			color: @offWhite;
@@ -793,8 +836,12 @@ section {
 		}
 	}
 	#copyright {
+		float: left;
 		font-size: 12;
 		color: @blueGray;
+		width: 100%;
+		margin-top: 20px;
+		display: block;
 	}
 }
 
@@ -1049,6 +1096,8 @@ section {
 	}
 }
 
+
+
 /* CLASSES (for jQuery effects, etc.) */
 .navLinkHover {
 		color: @darkBlue;
@@ -1097,5 +1146,4 @@ section {
 }
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
-
 

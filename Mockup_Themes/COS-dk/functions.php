@@ -55,6 +55,77 @@ function people_nav( $pageID = '' ){
 }
 add_shortcode('people_nav', 'people_nav');
 
+// Footer Widget
+function footer_widget() {
+	$labels = array(
+		'name' => _x('Footer Widgets', 'post type general name'),
+		'singular_name' => _x('Footer Widget', 'post type singular name'),
+		'add_new' => _x('Add New', 'slider'),
+		'add_new_item' => __('Add New Footer Widget'),
+		'edit_item' => __('Edit Footer Widget'),
+		'new_item' => __('New Footer Widget'),
+		'all_items' => __('All Footer Widgets'),
+		'view_item' => __('View Footer Widget'),
+		'search_items' => __('Search Footer Widgets'),
+		'not_found'  => __('No footer widgets found.'),
+		'not_found_in_trash'  => __('No footer widgets found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('Footer Widgets'),
+	);
+
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('Footer Widget'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('title','custom-fields'),
+	);
+
+	register_post_type( 'footer_widget', $args );
+}
+add_action('init', 'footer_widget');
+
+function show_footer_widgets() {
+	$fWidgetsArgs = array(
+		'post_type' => 'footer_widget',
+	);
+
+	query_posts( $fWidgetsArgs );
+
+	echo '<section id="widgets">';
+	echo '<div class="wrap clearfix">';
+
+	if(have_posts()) : while (have_posts()) : the_post();	
+		$thisID = get_the_ID();
+
+		$f_widget = array(
+			'title' => get_the_title(),
+			'content' => get_field('content'),
+			'is_disabled' => get_field('disabled') == 'true' ? true : false, // TRUE if disabled
+			'edit' => get_edit_post_link( $thisID ),
+		);
+
+		 // Skip slider item if it's expired
+		if( $f_widget['is_disabled']  ) continue;
+
+		echo '<div class="widget"><h1>';
+		echo $f_widget['title'];
+		echo '</h1><p>';
+		echo $f_widget['content'];
+		edit_post_link( 'Edit This Footer Widget', '', '' );
+		echo '</p></div>';
+
+		echo '</li>';
+
+	endwhile; endif; wp_reset_query();
+
+	echo '</div>';
+	echo '</section>';
+}
+
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
 	$labels = array(
@@ -132,6 +203,7 @@ SLIDE;
 	echo '</ul>';
 	echo '</div>';
 }
+
 add_filter('title_save_pre','custom_titles');
 
 function custom_titles() {
@@ -139,18 +211,26 @@ function custom_titles() {
 	$postType = $_POST['post_type'];
 	$title = $_POST['post_title'];
 
+	// Update post first, but prevent infinite loop (happens when post type = revision)
+	// if( $postType != 'revision' ){
+	// 	wp_update_post( $postID );
+	// }
+
 	if( $postType == 'people' ){
-		$title = get_field('last_name', $postID ) . ', ' . get_field('first_name', $postID );
+		// $title = get_field('last_name', $postID ) . ', ' . get_field('first_name', $postID );
+		$title = $_POST['fields']['field_4f68940783612'].', '.$_POST['fields']['field_4f6893f51db13'];
 	} elseif( $postType == 'slider' ){
-		$title = get_field('title', $postID );
+		// $title = get_field('title', $postID );
+		$title = $_POST['fields']['field_4f7b0930604a6'];
 	} elseif( $postType == 'contact' ) {
-		$title = get_field('dept', $postID );
+		// $title = get_field('dept', $postID );
+		$title = $_POST['fields']['field_4f7b5041b8cc7'];
 	} elseif( $postType == 'mainlink') {
 		$title = get_field('title', $postID );
-		$_POST['post_title'] = $title;
+		$title = $_POST['fields']['field_4f7b4058c25a0'];
 	} elseif( $postType == 'social_media') {
 		$title = get_field('label', $postID );
-		$_POST['post_title'] = $title;
+		$title = $_POST['fields']['field_4f873078a9151'];
 	} else {
 		$title = $title;
 	}

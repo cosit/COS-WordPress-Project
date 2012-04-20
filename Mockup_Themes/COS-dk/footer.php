@@ -16,23 +16,7 @@
 
 <footer id="main_footer">
 	<!-- Bottom widgets -->
-	<section id="widgets">
-		<div class="wrap clearfix">
-			<?php 
-				//Query widget posts
-				query_posts( array ( 'category_name' => 'Widgets', 'posts_per_page' => -1 ) );
-
-				// Loop widget posts
-				while( have_posts() ) : the_post();
-					echo '<div class="widget"><h1>';
-					the_title();
-					echo '</h1><p>';
-					the_content();
-					echo '</p></div>';
-				endwhile;
-			?>
-		</div>
-	</section>
+	<?php show_footer_widgets(); ?>
 
 	<section id="the_footer">
 		<div class="wrap">
@@ -57,7 +41,7 @@
 			</div>
 		</div>
 
-		<span id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</span>
+		<h3 id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</h3>
 	</section>
 
 </footer>
@@ -216,6 +200,12 @@
 		return false;
 	})
 	$('.personTabs li:first-child a').trigger('click');
+
+	// Link Icons 
+	$('.innerContent a').parent('li').addClass('link www');
+	$('a[href$=\\.pdf], a[href$=\\.PDF]').parent('li').removeClass('www').addClass('pdf');
+	$('a[href$=\\.doc], a[href$=\\.DOC]').parent('li').removeClass('www').addClass('doc');
+	$('.personBasics li, .personTabs li').removeClass('link www');
 
 </script>
 
