@@ -10,12 +10,8 @@
 	<?php if (is_search()) { ?>
 	   <meta name="robots" content="noindex, nofollow" /> 
 	<?php } ?>
-<<<<<<< HEAD
-	<!-- Testing SmartGit, it works -->
-=======
-	<!-- Testing SmartGit -->
->>>>>>> origin/master
-	<title>
+
+	<title> 
 		   <?php
 		      if (function_exists('is_tag') && is_tag()) {
 		         single_tag_title("Tag Archive for &quot;"); echo '&quot; - '; }
