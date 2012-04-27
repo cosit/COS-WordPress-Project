@@ -10,7 +10,7 @@
 	<?php if (is_search()) { ?>
 	   <meta name="robots" content="noindex, nofollow" /> 
 	<?php } ?>
-
+	<!-- Testing SmartGit -->
 	<title>
 		   <?php
 		      if (function_exists('is_tag') && is_tag()) {
