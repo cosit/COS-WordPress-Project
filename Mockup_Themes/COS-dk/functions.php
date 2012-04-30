@@ -10,12 +10,100 @@
 /** Tell WordPress to run starkers_setup() when the 'after_setup_theme' hook is run. */
 add_action( 'after_setup_theme', 'starkers_setup' );
 
+// *********************************************
+// COS THEME OPTIONS
+// *********************************************
+
+function COS_themeoptions_admin_menu() {
+	// here's where we add our theme options page link to the dashboard sidebar
+	add_theme_page("COS Theme Options", "COS Theme Options", 'edit_themes', basename(__FILE__), 'COS_themeoptions_page');
+}
+
+function COS_themeoptions_page() {
+	// here is the main function that will generate our options page
+	if ( $_POST['update_themeoptions'] == 'true' ) { COS_themeoptions_update(); } 
+
+    ?>  
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+    <div class="wrap">  
+        <div id="icon-themes" class="icon32"><br /></div>  
+        <h2>COS Theme Options</h2>  
+  
+        <form method="POST" action="">  
+            <input type="hidden" name="update_themeoptions" value="true" />  
+
+            <h3>Title Prefix</h3>
+            <select name="title_prefix" id="">
+            	<option value="UCF">UCF</option>
+            	<option value="COS">COS</option>
+            </select>
+
+            <h4>Title Size</h4>
+            <p><input type="text" name="title_size" id="title_size"></p>
+
+  
+<!--             <h4>Colour Stylesheet To Use</h4>  
+            <select name ="colour">  
+                <option value="red">Red Stylesheet</option>  
+                <option value="green">Green Stylesheet</option>  
+                <option value="blue">Blue Stylesheet</option>  
+            </select>  
+  
+            <h4>Advertising Spot #1</h4>  
+            <p><input type="text" name="ad1image" id="ad1image" size="32" value=""/> Advert Image</p>  
+            <p><input type="text" name="ad1url" id="ad1url" size="32" value=""/> Advert Link</p>  
+  
+            <h4>Advertising Spot #2</h4>  
+            <p><input type="text" name="ad2image" id="ad2image" size="32" value=""/> Advert Image</p>  
+            <p><input type="text" name="ad2url" id="ad2url" size="32" value=""/> Advert Link</p>  
+  
+            <h4><input type="checkbox" name="display_sidebar" id="display_sidebar" /> Display Sidebar</h4>  
+  
+            <h4><input type="checkbox" name="display_search" id="display_search" /> Display Search Box</h4>  
+  
+            <h4><input type="checkbox" name="display_twitter" id="display_twitter" /> Display Twitter Stream</h4>  
+            <p><input type="text" name="twitter_username" id="twitter_username" size="32" value="" /> Twitter Username</p>    -->
+  
+            <p><input type="submit" name="search" value="Update Options" class="button" /></p>  
+        </form>  
+  
+    </div>  
+    <?php  
+}
+
+function COS_themeoptions_update() {
+	// this is where validation would go
+	update_option('mytheme_colour', 	$_POST['colour']);
+
+	update_option('mytheme_ad1image', 	$_POST['ad1image']);
+	update_option('mytheme_ad1url', 	$_POST['ad1url']);
+
+	update_option('mytheme_ad2image', 	$_POST['ad2image']);
+	update_option('mytheme_ad2url', 	$_POST['ad2url']);
+
+	if ($_POST['display_sidebar']=='on') { $display = 'checked'; } else { $display = ''; }
+	update_option('mytheme_display_sidebar', 	$display);
+
+	if ($_POST['display_search']=='on') { $display = 'checked'; } else { $display = ''; }
+	update_option('mytheme_display_search', 	$display);
+
+	if ($_POST['display_twitter']=='on') { $display = 'checked'; } else { $display = ''; }
+	update_option('mytheme_display_twitter', 	$display);
+
+	update_option('mytheme_twitter_username', 	$_POST['twitter_username']);
+}
+
+add_action('admin_menu', 'COS_themeoptions_admin_menu');
+
+
 if ( ! function_exists( 'starkers_setup' ) ):
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
  * @since Starkers HTML5 3.0
  */
+
 
 // Simple function for getting the excerpt of a body of text
 // Takes in two parameters: $text = body of text, $cutoff = number of characters in excerpt
@@ -24,20 +112,25 @@ function excerpt( $text, $cutoff ){
 		return substr( $text, 0, $cutoff ) == $text ? $text : substr( $text, 0, $cutoff ) . '...';
 	} else { return $text; }
 }
+
 function page_nav( $pageID = 0 ){
 	$pageID = ($pageID == 0 ? get_the_ID() : $pageID);
+	$parent = get_permalink( $pageID );
 
 	$currentPage = get_post( $pageID );
 	// Check if post/page is a child or a parent
 	if( $currentPage->post_parent ){
 		$children = wp_list_pages('title_li=&child_of='.$currentPage->post_parent.'&echo=0');
 		$title = get_the_title( $currentPage->post_parent );
+		$parent = get_permalink( $currentPage->post_parent );
+
 	} else {
 		$children = wp_list_pages('title_li=&child_of='.$pageID.'&echo=0');
 		$title = get_the_title();
+		
 	}
 
-	echo '<nav class="pageNav"><h2>'. $title . '</h2><ul>';
+	echo '<nav class="pageNav"><h2><a href="'.$parent.'">'. $title . '</a></h2><ul>';
 	echo $children;
 	echo '</ul></nav>';
 }
@@ -115,7 +208,7 @@ function show_footer_widgets() {
 		echo $f_widget['title'];
 		echo '</h1><p>';
 		echo $f_widget['content'];
-		edit_post_link( 'Edit This Footer Widget', '', '' );
+		edit_post_link( 'Edit Widget', '<span class="edit_footer_widget">', '</span>' );
 		echo '</p></div>';
 
 		echo '</li>';
@@ -273,12 +366,12 @@ add_action('init', 'mainLink');
 
 function show_main_links() {
 	$mainLinkArgs = array( 
-			'post_type' => 'mainlink',
+		'post_type' => 'mainlink',
+		'orderby' => 'modified',
+		'order' => 'ASC',
 	);
 
 	query_posts( $mainLinkArgs );
-
-
 
 	if(have_posts()) : while (have_posts()) : the_post();			
 		// Grab the Post ID for the Custom Fields Function			
@@ -466,7 +559,7 @@ function show_person( $id ) {
 			<li class="person_position">{$person['p_position']}</h3>
 			<li class="person_location">{$person['p_location']}</h3>
 			<li class="person_phone">{$person['p_phone']}</h3>
-			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['email']}</a></h3>
+			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a></h3>
 			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
 
 		</ul>

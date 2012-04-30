@@ -27,16 +27,7 @@ get_header(); ?>
 </div>
 
 
-<!-- List all department links for main site (can be hidden) -->
-<section id="dept_links">
-	<div class="wrap">
-		<ul>		
-			<li>Anthropology</li>
-			<li>Biology</li>
-			<li>Etc.</li>
-		</ul>
-	</div>
-</section>
+
 
 <!-- Main box links for dept websites; e.g. "Undergraduate", "Graduate", "Research" -->
 <section id="main_links">
