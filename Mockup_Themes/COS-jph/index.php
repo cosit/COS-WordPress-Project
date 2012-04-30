@@ -21,7 +21,7 @@
 
 		</div>
 
-	<?php endwhile; ?>
+	<?php endwhile; //Comment?>
 
 	<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
 
