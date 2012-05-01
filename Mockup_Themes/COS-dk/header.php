@@ -45,6 +45,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <?php if (is_home()) : ?> <!-- Only download slider if on home page -->
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
+<script src="<?php bloginfo('template_directory'); ?>/js/jquery.tinyscrollbar.min.js"></script>
+
 <?php endif; ?>
  
 <?php
@@ -66,7 +68,7 @@
 <body <?php body_class(); ?>>
  
     <header id="main_header">
-        <div class="wrap">
+        <div class="wrap clearfix">
             <?php show_social(); ?>
 <!--             <ul id="socialMedia">
                 <li><a href="http://www.facebook.com" title="Facebook" class="facebook">
@@ -76,8 +78,8 @@
             </ul> -->
 
             <hgroup>
-                <h1><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-                    <span class="branding_prefix">UCF</span><span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
+                <h1><span class="branding_prefix">UCF</span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                    <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
             </hgroup>
 
@@ -88,8 +90,26 @@
                 'theme_location' => 'primary' 
             ) ); ?>
             <span id="pageID" style="display:none;"><?php echo get_query_var('page_id'); ?></span>
+
         </div>
 
     </header>
+    <section id="top_dept_links">
+        <div class="dept_list wrap clearfix">
+            <h1><span>UCF</span> College of Sciences</h1>
+            <ul>
+                <li>Anthropology</li>
+                <li>Biology</li>
+                <li>Chemistry</li>
+                <li>Communication</li>
+                <li>Mathematics</li>
+                <li>Physics</li>
+                <li>Political Science</li>
+                <li>Psychology</li>
+                <li>Sociology</li>
+                <li>Statistics</li>
+            </ul>
+        </div>
+    </section>
 
 <div id="container">

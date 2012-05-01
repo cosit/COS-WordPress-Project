@@ -24,7 +24,7 @@
 			get_sidebar( 'footer' );
 			show_people_cats(); 
 		?>
-			<div id="dept_list">
+			<div class="dept_list">
 				<h1><span>UCF</span> College of Sciences</h1>
 				<ul>
 					<li>Anthropology</li>
@@ -205,8 +205,20 @@
 	$('.innerContent a').parent('li').addClass('link www');
 	$('a[href$=\\.pdf], a[href$=\\.PDF]').parent('li').removeClass('www').addClass('pdf');
 	$('a[href$=\\.doc], a[href$=\\.DOC]').parent('li').removeClass('www').addClass('doc');
-	$('.personBasics li, .personTabs li').removeClass('link www');
+	$('.personBasics li, .personTabs li').removeClass('link www pdf doc');
 
+	// Disable same-page clicking
+	$('.current_page_item>a').contents().unwrap().wrap('<span class="unclickable"></span>');
+
+	// Dropdown for top dept links
+	$('#top_dept_links').hide();
+	$('.branding_prefix').click(function(){
+		$('#top_dept_links').toggle();
+		console.log('clocked');
+	});
+
+	// Custom Scrollbar
+	$('.widget').tinyscrollbar();
 </script>
 
 </body>
