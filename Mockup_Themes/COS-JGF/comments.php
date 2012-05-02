@@ -1,104 +1,61 @@
 <?php
+/**
+ * The template for displaying Comments.
+ *
+ * The area of the page that contains both current comments
+ * and the comment form.  The actual display of comments is
+ * handled by a callback to starkers_comment which is
+ * located in the functions.php file.
+ *
+ * @package WordPress
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
+ */
+?>
 
-	if (!empty($_SERVER['SCRIPT_FILENAME']) && 'comments.php' == basename($_SERVER['SCRIPT_FILENAME']))
-		die ('Please do not load this page directly. Thanks!');
-
-	if ( post_password_required() ) { ?>
-		This post is password protected. Enter the password to view comments.
-	<?php
+<?php if ( post_password_required() ) : ?>
+				<p><?php _e( 'This post is password protected. Enter the password to view any comments.', 'starkers' ); ?></p>
+<?php
 		return;
-	}
+	endif;
+?>
+
+<?php
+	// You can start editing here -- including this comment!
 ?>
 
 <?php if ( have_comments() ) : ?>
-	
-	<h2 id="comments"><?php comments_number('No Responses', 'One Response', '% Responses' );?></h2>
+			<?php /* STARKERS NOTE: The following h3 id is left intact so that comments can be referenced on the page */ ?>
+			<h3 id="comments-title"><?php
+			printf( _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'starkers' ),
+			number_format_i18n( get_comments_number() ), '' . get_the_title() . '' );
+			?></h3>
 
-	<div class="navigation">
-		<div class="next-posts"><?php previous_comments_link() ?></div>
-		<div class="prev-posts"><?php next_comments_link() ?></div>
-	</div>
+<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+	<nav>
+		<?php previous_comments_link( __( '&larr; Older Comments', 'starkers' ) ); ?>
+		<?php next_comments_link( __( 'Newer Comments &rarr;', 'starkers' ) ); ?>
+	</nav>
+<?php endif; // check for comment navigation ?>
 
-	<ol class="commentlist">
-		<?php wp_list_comments(); ?>
-	</ol>
+				<?php
+					wp_list_comments( array( 'style' => 'div', 'callback' => 'starkers_comment', 'end-callback' => 'starkers_comment_close' ) );
+				?>
 
-	<div class="navigation">
-		<div class="next-posts"><?php previous_comments_link() ?></div>
-		<div class="prev-posts"><?php next_comments_link() ?></div>
-	</div>
-	
- <?php else : // this is displayed if there are no comments so far ?>
+<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+	<nav>
+		<?php previous_comments_link( __( '&larr; Older Comments', 'starkers' ) ); ?>
+		<?php next_comments_link( __( 'Newer Comments &rarr;', 'starkers' ) ); ?>
+	</nav>
+<?php endif; // check for comment navigation ?>
 
-	<?php if ( comments_open() ) : ?>
-		<!-- If comments are open, but there are no comments. -->
+<?php else : // or, if we don't have comments:
 
-	 <?php else : // comments are closed ?>
-		<?php /*No Comments
-				<p>Comments are closed.</p>
-				*/ 
-		?>
+	if ( ! comments_open() ) :
+?>
+	<p><?php _e( 'Comments are closed.', 'starkers' ); ?></p>
+<?php endif; // end ! comments_open() ?>
 
-	<?php endif; ?>
-	
-<?php endif; ?>
+<?php endif; // end have_comments() ?>
 
-<?php if ( comments_open() ) : ?>
-
-<div id="respond">
-
-	<h2><?php comment_form_title( 'Leave a Reply', 'Leave a Reply to %s' ); ?></h2>
-
-	<div class="cancel-comment-reply">
-		<?php cancel_comment_reply_link(); ?>
-	</div>
-
-	<?php if ( get_option('comment_registration') && !is_user_logged_in() ) : ?>
-		<p>You must be <a href="<?php echo wp_login_url( get_permalink() ); ?>">logged in</a> to post a comment.</p>
-	<?php else : ?>
-
-	<form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
-
-		<?php if ( is_user_logged_in() ) : ?>
-
-			<p>Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></p>
-
-		<?php else : ?>
-
-			<div>
-				<input type="text" name="author" id="author" value="<?php echo esc_attr($comment_author); ?>" size="22" tabindex="1" <?php if ($req) echo "aria-required='true'"; ?> />
-				<label for="author">Name <?php if ($req) echo "(required)"; ?></label>
-			</div>
-
-			<div>
-				<input type="text" name="email" id="email" value="<?php echo esc_attr($comment_author_email); ?>" size="22" tabindex="2" <?php if ($req) echo "aria-required='true'"; ?> />
-				<label for="email">Mail (will not be published) <?php if ($req) echo "(required)"; ?></label>
-			</div>
-
-			<div>
-				<input type="text" name="url" id="url" value="<?php echo esc_attr($comment_author_url); ?>" size="22" tabindex="3" />
-				<label for="url">Website</label>
-			</div>
-
-		<?php endif; ?>
-
-		<!--<p>You can use these tags: <code><?php echo allowed_tags(); ?></code></p>-->
-
-		<div>
-			<textarea name="comment" id="comment" cols="58" rows="10" tabindex="4"></textarea>
-		</div>
-
-		<div>
-			<input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
-			<?php comment_id_fields(); ?>
-		</div>
-		
-		<?php do_action('comment_form', $post->ID); ?>
-
-	</form>
-
-	<?php endif; // If registration required and not logged in ?>
-	
-</div>
-
-<?php endif; ?>
+<?php comment_form(); ?>

@@ -1,43 +1,242 @@
-	<div id="widget_bg">
-        <div id="widget_container">	
-            <!-- Addition of Footer sidebars in theme -->
-            <div id="footer-sidebar" class="secondary">		<div style="clear:both;"></div>
-		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer") ) : ?>
-                <?php endif; ?>        
-		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer2") ) : ?>
-                <?php endif; ?>        
-		      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar("Footer3") ) : ?>
-                <?php endif; ?>        
-		    </div>        
-		    <div style="clear-both"></div>
-            <!-- End Addition of Footer sidebars in theme -->
-        </div>
-    </div>
-        
+<?php
+/**
+ * The template for displaying the footer.
+ *
+ * @package WordPress
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
+ */
+?>
+	<div id="backToTop">
+		<a href="top"></a>
+	</div>
+</div> <!-- /container -->
 
 
-	<!-- </div> -->
 
-    <div id="site-generator">
-                <a href="http://www.cos.ucf.edu" class="link-to-cos"><span class="cos_f">UCF</span> College of Sciences</a>
-                <a href="http://anthropology.cos.ucf.edu" class="dept">Anthropology</a>
-                <a href="http://biology.cos.ucf.edu" class="dept">Biology</a>
-                <a href="http://chemistry.cos.ucf.edu" class="dept">Chemistry</a>
-                <a href="http://communication.cos.ucf.edu" class="dept">Communication</a>
-                <a href="http://math.ucf.edu" class="dept">Mathematics</a>
-                <a href="http://physics.cos.ucf.edu" class="dept">Physics</a>
-                <a href="http://politicalscience.cos.ucf.edu" class="dept">Political Science</a>
-                <a href="http://psychology.cos.ucf.edu" class="dept">Psychology</a>
-                <a href="http://sociology.cos.ucf.edu" class="dept">Sociology</a>
-                <a href="http://statistics.cos.ucf.edu" class="dept">Statistics</a>
-                <p>
-            <small>&copy;<?php echo date("Y"); echo " "; ?> University of Central Florida, College of Sciences, All Rights Reserved</small>
-        </div>
+<footer id="main_footer">
+	<!-- Bottom widgets -->
+	<section id="widgets">
+		<div id="widget_container">
+		<div id="first-footer-widget-area" class="widget">
+			<?php if ( is_active_sidebar( 'first-footer-widget-area' ) ) : ?>
+				<?php dynamic_sidebar( 'first-footer-widget-area' ); ?>
+			<?php endif; ?>
+		</div>
 
-	<?php wp_footer(); ?>
-	
-	<!-- Don't forget analytics -->
-	
+		<div id="second-footer-widget-area" class="widget">
+			<?php if ( is_active_sidebar( 'second-footer-widget-area' ) ) : ?>
+				<?php dynamic_sidebar( 'second-footer-widget-area' ); ?>
+			<?php endif; ?>
+		</div>
+
+		<div id="third-footer-widget-area" class="widget">
+			<?php if ( is_active_sidebar( 'third-footer-widget-area' ) ) : ?>
+				<?php dynamic_sidebar( 'third-footer-widget-area' ); ?>
+			<?php endif; ?>
+		</div>
+	</div>
+	</section>
+<div style="clear-both"></div>
+
+	<section id="the_footer">
+		<div class="wrap">
+			<div class="dept_list">
+				<h1><span>UCF</span> College of Sciences</h1>
+				<ul>
+					<li><a href="http://anthropology.cos.ucf.edu" target="_new">Anthropology</a></li>
+					<li><a href="http://biology.cos.ucf.edu" target="_new">Biology</a></li>
+					<li><a href="http://chemistry.cos.ucf.edu" target="_new">Chemistry</a></li>
+					<li><a href="http://communication.cos.ucf.edu" target="_new">Communication</a></li>
+					<li><a href="http://math.cos.ucf.edu" target="_new">Mathematics</a></li>
+					<li><a href="http://physics.cos.ucf.edu" target="_new">Physics</a></li>
+					<li><a href="http://politicalscience.cos.ucf.edu" target="_new">Political Science</a></li>
+					<li><a href="http://psychology.cos.ucf.edu" target="_new">Psychology</a></li>
+					<li><a href="http://sociology.cos.ucf.edu" target="_new">Sociology</a></li>
+					<li><a href="http://statistics.cos.ucf.edu" target="_new">Statistics</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<h3 id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</h3>
+	</section>
+
+</footer>
+
+<?php
+	/* Always have wp_footer() just before the closing </body>
+	 * tag of your theme, or you will break many plugins, which
+	 * generally use this hook to reference JavaScript files.
+	 */
+
+	wp_footer();
+?>
+
+<!-- All of our jQuery scripts go here -->
+<script type="text/javascript">
+	var colorDarkBlue = "#22282D";
+	var colorOffWhite = "#F2F2F2";
+	var colorBlueGray = "#475159";
+	var colorLightBlueGray = "#6C747A";
+
+
+	// Slider
+	try{
+		$('.sliderItems').flexslider();
+	} catch(err) {
+		console.log('flexslider.js not loaded.');
+	}
+
+	// Indicate people nav link
+	$('#main_header nav>ul>li').has('a:contains("People")').addClass('peopleNav');
+
+    // Display people categories in nav menu
+	$('.peopleNav').append( $('#people_cats').hide() );
+
+	// Main nav links and dropdown menu
+	$('#main_header nav>ul>li').hover(
+		function(){
+			$(this).find('ul.children').slideDown('fast').show(); 
+			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+		},
+		function(){ 
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).find('ul.children').slideUp('fast');
+				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
+			} else {
+				$(this).find('ul.children').slideUp('fast');
+			}
+		}
+	);
+
+	// Submenu links
+	// $('#main_header nav ul.children>li').hover(
+	// 	function(){ $(this).animate({ backgroundColor: colorLightBlueGray }, 'medium')},
+	// 	function(){ $(this).animate({ backgroundColor: colorBlueGray }, 'medium')}
+	// );
+
+	// Contact Box and Search Form
+	$('#searchform #s, #inner_searchform #s').focusin(function(){
+		$(this).addClass('searchFocus').val('');
+	});
+	$('#contact h2').wrapInner('<span />');
+	$('#contact ul:nth-child(odd)').addClass('contactOdd');
+
+	// Events styling for date
+	$('.eventDate').each(function(){
+		var monthNames = monthNames || ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+		var $this = $(this);
+		var rawDate = $this.html();
+		// var date = rawDate.split(/[\/-]/);
+		var date = rawDate.split(' ');
+		var day = date[0].trim();
+		var month = date[1].trim();
+		var year = date[2].trim();
+
+		// formats and outputs the date in a template that can be styled
+		$this.html('<ul><li id="eventMonth">'+month+'</li>'
+						+'<li id="eventDay">'+day+'</li>'
+						+'<li id="eventYear">'+year+'</li>'
+						+'<li id="eventDate">'+rawDate+'</ul>');
+	});
+
+	// Ensure that the entire area of a navigational element is clickable
+	// $('.events article, nav li').click(function(){
+	// 	window.location = $(this).find('a').attr('href');
+	// });
+
+	// Back to top button
+	var scrollToTop = function(){
+		$('html, body').animate({scrollTop: 0}, 'medium', 'easeInOutCubic');
+		return false;
+	};
+
+	$('#backToTop>a').click( scrollToTop );
+	$(window).scroll(function(){
+		if( $(window).scrollTop() > 10 ){
+			$('#backToTop').fadeIn('slow');
+		} else {
+			$('#backToTop').fadeOut('slow');
+		}
+	});
+
+	// Breadcrumb hover 
+	// $(window).resize( function(){
+	// 	var currentWidth = $(window).width();
+	// 	var leftMargin = ($(window).width() - 960) / 2;
+	// 	$('#breadcrumbs a:first-child').css({'margin-left': leftMargin });
+	// });
+	$('#breadcrumbs a').hover(
+		function(){$(this).next().addClass('breadcrumbHover')},
+		function(){$(this).next().removeClass('breadcrumbHover')}
+	);
+
+	// AJAX functions for displaying full person info
+	// $.ajaxSetup ({  
+ //        cache: false  
+ //    });  
+ 
+ //    $(".person").click(function(){  
+ //    	scrollToTop();
+ //    	$this = $(this);
+ //    	$this.addClass('mainPerson');
+ //    	$('.person').hide();
+ //    	$this.find('.person_research').hide();
+ //        $this.find('.personDetailsLoading').show();
+ //        $this.find('.personDetails').load( $this.find("h2 a").attr('href') );
+ //        $this.ajaxStop(function() {
+ //        	$this.find('.personDetailsLoading').slideUp('fast');
+ //        	$this.find('.personDetails').slideDown('fast');
+ //        })  
+ //    });  
+
+    // Hide empty list items in people display
+    $('.personBasics li').filter(function(){
+    	return $.trim($(this).text()) === '';
+    }).hide();
+
+    // Display page/people nav correctly
+    $('#main_content>div.wrap').append( $('.innerContent .pageNav, .innerContent .peopleNav').remove() );
+
+    // Single Person Tabs
+	$('.personTabs>li>a').click(function(){
+		var $this = $(this);
+		console.log($this.parent().hasClass('personTabSelected'));
+		if( ! $this.parent().hasClass('personTabSelected') ){
+			var target = $this.attr('href').substring(1);
+			var newHeight = $('.personContent #' + target).outerHeight();
+			console.log(target);
+			$('.personTabs>li').removeClass('personTabSelected'); // deselect all tabs
+			$this.parent().addClass('personTabSelected');
+			$('.personContent>li').hide();
+			$('.personContent #' + target).fadeIn('fast');
+			$('.personContent').animate({
+				height: newHeight,
+			});
+		};
+		return false;
+	})
+	$('.personTabs li:first-child a').trigger('click');
+
+	// Link Icons 
+	$('.innerContent a').parent('li').addClass('link www');
+	$('a[href$=\\.pdf], a[href$=\\.PDF]').parent('li').removeClass('www').addClass('pdf');
+	$('a[href$=\\.doc], a[href$=\\.DOC]').parent('li').removeClass('www').addClass('doc');
+	$('.personBasics li, .personTabs li').removeClass('link www pdf doc');
+
+	// Disable same-page clicking
+	$('.current_page_item>a').contents().unwrap().wrap('<span class="unclickable"></span>');
+
+	// Dropdown for top dept links
+	$('#top_dept_links').hide();
+	$('.branding_prefix').click(function(){
+		$('#top_dept_links').toggle();
+		console.log('clocked');
+	});
+
+	// Custom Scrollbar
+	// $('.widget').tinyscrollbar();
+</script>
+
 </body>
-
 </html>

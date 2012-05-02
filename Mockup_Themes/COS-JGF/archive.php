@@ -1,62 +1,36 @@
-<?php get_header(); ?>
+<?php
+/**
+ * The template for displaying Archive pages.
+ *
+ * @package WordPress
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
+ */
 
-		<?php //Custom styling for Archive Section ?>
-		<div id="archive">
-			<?php if (have_posts()) : ?>
+get_header(); ?>
 
-	 			<?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
+<?php
+	if ( have_posts() )
+		the_post();
+?>
 
-				<?php /* If this is a category archive */ if (is_category()) { ?>
-					<h2><?php single_cat_title(); ?></h2>
+			<h1>
+<?php if ( is_day() ) : ?>
+				<?php printf( __( 'Daily Archives: %s', 'starkers' ), get_the_date() ); ?>
+<?php elseif ( is_month() ) : ?>
+				<?php printf( __( 'Monthly Archives: %s', 'starkers' ), get_the_date('F Y') ); ?>
+<?php elseif ( is_year() ) : ?>
+				<?php printf( __( 'Yearly Archives: %s', 'starkers' ), get_the_date('Y') ); ?>
+<?php else : ?>
+				<?php _e( 'Blog Archives', 'starkers' ); ?>
+<?php endif; ?>
+			</h1>
 
-				<?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
-					<h2>Posts Tagged &#8216;<?php single_tag_title(); ?>&#8217;</h2>
+<?php
+	rewind_posts();
 
-				<?php /* If this is a daily archive */ } elseif (is_day()) { ?>
-					<h2>Archive for <?php the_time('F jS, Y'); ?></h2>
-
-				<?php /* If this is a monthly archive */ } elseif (is_month()) { ?>
-					<h2>Archive for <?php the_time('F, Y'); ?></h2>
-
-				<?php /* If this is a yearly archive */ } elseif (is_year()) { ?>
-					<h2 class="pagetitle">Archive for <?php the_time('Y'); ?></h2>
-
-				<?php /* If this is an author archive */ } elseif (is_author()) { ?>
-					<h2 class="pagetitle">Author Archive</h2>
-
-				<?php /* If this is a paged archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
-					<h2 class="pagetitle">Blog Archives</h2>
-				
-				<?php } ?>
-
-				<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
-
-				<?php while (have_posts()) : the_post(); ?>
-				
-					<div <?php post_class() ?>>
-					
-							<h2 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></h2>
-						
-							<?php include (TEMPLATEPATH . '/inc/meta.php' ); ?>
-
-							<div class="entry">
-								<?php the_content(); ?>
-							</div>
-
-					</div>
-
-				<?php endwhile; ?>
-
-				<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
-				
-			<?php else : ?>
-
-				<h2>Nothing found</h2>
-
-			<?php endif; ?>
-		</div>
-
+	get_template_part( 'loop', 'archive' );
+?>
 
 <?php get_sidebar(); ?>
-
 <?php get_footer(); ?>

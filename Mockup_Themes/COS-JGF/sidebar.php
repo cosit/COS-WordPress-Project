@@ -1,39 +1,55 @@
-<div id="sidebar">
+<?php
+/**
+ * The Sidebar containing the primary and secondary widget areas.
+ *
+ * @package WordPress
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
+ */
+?>
 
-    <?php if (function_exists('dynamic_sidebar') && dynamic_sidebar('Sidebar Widgets')) : else : ?>
-    
-        <!-- All this stuff in here only shows up if you DON'T have any widgets active in this zone -->
+	<aside>
+		<ul>
 
-    	<?php get_search_form(); ?>
-    
-    	<?php wp_list_pages('title_li=<h2>Pages</h2>' ); ?>
-    
-    	<h2>Archives</h2>
-    	<ul>
-    		<?php wp_get_archives('type=monthly'); ?>
-    	</ul>
-        
-        <h2>Categories</h2>
-        <ul>
-    	   <?php wp_list_categories('show_count=1&title_li='); ?>
-        </ul>
-        
-    	<?php wp_list_bookmarks(); ?>
-    
-    	<h2>Meta</h2>
-    	<ul>
-    		<?php wp_register(); ?>
-    		<li><?php wp_loginout(); ?></li>
-    		<li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress</a></li>
-    		<?php wp_meta(); ?>
-    	</ul>
-    	
-    	<h2>Subscribe</h2>
-    	<ul>
-    		<li><a href="<?php bloginfo('rss2_url'); ?>">Entries (RSS)</a></li>
-    		<li><a href="<?php bloginfo('comments_rss2_url'); ?>">Comments (RSS)</a></li>
-    	</ul>
+<?php
+	/* When we call the dynamic_sidebar() function, it'll spit out
+	 * the widgets for that widget area. If it instead returns false,
+	 * then the sidebar simply doesn't exist, so we'll hard-code in
+	 * some default sidebar stuff just in case.
+	 */
+	if ( ! dynamic_sidebar( 'primary-widget-area' ) ) : ?>
 	
-	<?php endif; ?>
+			<li>
+				<?php get_search_form(); ?>
+			</li>
 
-</div>
+			<li>
+				<h3><?php _e( 'Archives', 'starkers' ); ?></h3>
+				<ul>
+					<?php wp_get_archives( 'type=monthly' ); ?>
+				</ul>
+			</li>
+
+			<li>
+				<h3><?php _e( 'Meta', 'starkers' ); ?></h3>
+				<ul>
+					<?php wp_register(); ?>
+					<li><?php wp_loginout(); ?></li>
+					<?php wp_meta(); ?>
+				</ul>
+			</li>
+
+		<?php endif; // end primary widget area ?>
+		</ul>
+
+<?php
+	// A second sidebar for widgets, just because.
+	if ( is_active_sidebar( 'secondary-widget-area' ) ) : ?>
+
+			<ul>
+				<?php dynamic_sidebar( 'secondary-widget-area' ); ?>
+			</ul>
+
+<?php endif; ?>
+	
+	</aside>
