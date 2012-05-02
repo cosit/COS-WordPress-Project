@@ -447,7 +447,7 @@ function show_social() {
 
 		echo <<<SOCIAL
 			<li>
-				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}"></a>
+				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}" target="_new"></a>
 			</li>
 SOCIAL;
 	endwhile; endif; wp_reset_query();
