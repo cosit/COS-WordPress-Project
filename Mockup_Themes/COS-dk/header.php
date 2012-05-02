@@ -45,7 +45,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <?php if (is_home()) : ?> <!-- Only download slider if on home page -->
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
-<script src="<?php bloginfo('template_directory'); ?>/js/jquery.tinyscrollbar.min.js"></script>
 
 <?php endif; ?>
  
@@ -94,22 +93,5 @@
         </div>
 
     </header>
-    <section id="top_dept_links">
-        <div class="dept_list wrap clearfix">
-            <h1><span>UCF</span> College of Sciences</h1>
-            <ul>
-                <li>Anthropology</li>
-                <li>Biology</li>
-                <li>Chemistry</li>
-                <li>Communication</li>
-                <li>Mathematics</li>
-                <li>Physics</li>
-                <li>Political Science</li>
-                <li>Psychology</li>
-                <li>Sociology</li>
-                <li>Statistics</li>
-            </ul>
-        </div>
-    </section>
 
 <div id="container">

@@ -974,7 +974,7 @@ add_filter('comment_form_default_fields','starkers_fields');
 function starkers_widgets_init() {
 	// Area 1, located at the top of the sidebar.
 	register_sidebar( array(
-		'name' => __( 'Primary Widget Area', 'starkers' ),
+		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
 		'description' => __( 'The primary widget area', 'starkers' ),
 		'before_widget' => '<li>',
@@ -984,59 +984,60 @@ function starkers_widgets_init() {
 	) );
 
 	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
-	register_sidebar( array(
-		'name' => __( 'Secondary Widget Area', 'starkers' ),
-		'id' => 'secondary-widget-area',
-		'description' => __( 'The secondary widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
+	// register_sidebar( array(
+	// 	'name' => __( 'Bottom Sidebar', 'starkers' ),
+	// 	'id' => 'secondary-widget-area',
+	// 	'description' => __( 'The secondary widget area', 'starkers' ),
+	// 	'before_widget' => '<li>',
+	// 	'after_widget' => '</li>',
+	// 	'before_title' => '<h3>',
+	// 	'after_title' => '</h3>',
+	// ) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'First Footer Widget Area', 'starkers' ),
+		'name' => __( 'Left Footer Widget Area', 'starkers' ),
 		'id' => 'first-footer-widget-area',
 		'description' => __( 'The first footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h2 class="title">',
+		'after_title' => '</h2>',
 	) );
 
 	// Area 4, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'Second Footer Widget Area', 'starkers' ),
+		'name' => __( 'Center Footer Widget Area', 'starkers' ),
 		'id' => 'second-footer-widget-area',
 		'description' => __( 'The second footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h2 class="title">',
+		'after_title' => '</h2>',
 	) );
 
 	// Area 5, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'Third Footer Widget Area', 'starkers' ),
+		'name' => __( 'Right Footer Widget Area', 'starkers' ),
 		'id' => 'third-footer-widget-area',
 		'description' => __( 'The third footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h2 class="title">',
+		'after_title' => '</h2>',
 	) );
 
 	// Area 6, located in the footer. Empty by default.
-	register_sidebar( array(
-		'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
-		'id' => 'fourth-footer-widget-area',
-		'description' => __( 'The fourth footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
+	// Un-comment for 4 widget areas (CSS & Footer.php has to be edited)
+	// register_sidebar( array(
+	// 	'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
+	// 	'id' => 'fourth-footer-widget-area',
+	// 	'description' => __( 'The fourth footer widget area', 'starkers' ),
+	// 	'before_widget' => '',
+	// 	'after_widget' => '',
+	// 	'before_title' => '<h3>',
+	// 	'after_title' => '</h3>',
+	// ) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
 add_action( 'widgets_init', 'starkers_widgets_init' );

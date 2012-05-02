@@ -45,7 +45,7 @@ get_header(); ?>
 			<?php try {
 				include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
 				$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_bloginfo('title').'&feed=rss2'); // specify feed url
-				$items = array_slice($feed->items, 0, 7); // specify first and last item
+				$items = array_slice($feed->items, 0, 3); // specify first and last item
 				} catch(Exception $e) {
 					echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
 				}

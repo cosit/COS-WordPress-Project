@@ -8,7 +8,7 @@
  */
 ?>
 
-	<aside>
+	<aside class="sidebar">
 		<ul>
 
 <?php
@@ -41,15 +41,4 @@
 
 		<?php endif; // end primary widget area ?>
 		</ul>
-
-<?php
-	// A second sidebar for widgets, just because.
-	if ( is_active_sidebar( 'secondary-widget-area' ) ) : ?>
-
-			<ul>
-				<?php dynamic_sidebar( 'secondary-widget-area' ); ?>
-			</ul>
-
-<?php endif; ?>
-	
 	</aside>

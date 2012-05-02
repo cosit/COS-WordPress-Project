@@ -32,8 +32,8 @@
 @socialMediaHeight: @headerHeight - 55px;
 @headerLinksHeight: @headerHeight - @socialMediaHeight; 
 @sliderHeight: 400px;
-@titleHeight: 24px; // subject to change based on length of dept. name
-@navMenuItemSpacing: 5px; // subject to change
+@titleHeight: 28px; // subject to change based on length of dept. name
+@navMenuItemSpacing: 2.5px; // subject to change
 @widgetsHeight: 300px;
 @footerHeight: 150px;
 @mainFooterHeight: @widgetsHeight + @footerHeight;
@@ -296,12 +296,10 @@ section {
 	.wrap { width: 1180px; }
 	ul.slides {
 		margin: 0 auto;
-		li {display:none;}
 		li img {
 			width: 100%;
 			max-width: 1180px;
 			height: auto;
-			top: -200px;
 		}
 		li h2 {
 			color: @darkBlue;
@@ -448,6 +446,10 @@ section {
 	#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 	#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 	#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
+
+	#contact_department li {margin-top:4px;}
+	#contact_phone li {margin-top:3px;}
+	#contact_email li {margin-top:13px;}
 
 	#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 	#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -771,6 +773,18 @@ section {
 		}
 	}
 
+	.sidebar {
+		.column(3);
+		display:block;
+		float:right;
+		margin-top:30px;
+		background: @sideGray;
+		.drop-shadow(0,0,8px,0.3);
+	}
+		.sidebar ul li {
+			padding: 0px 0 5px 10px;
+		}
+
 	.pageNav {
 		.column(3);
 		display: block;
@@ -823,12 +837,19 @@ section {
 	margin-top: -@mainFooterHeight ;
 }
 
+#widget_container {
+	height:@widgetsHeight;	
+	margin: 0 auto;
+	width:960px;
+}
+
 #widgets {
 	height: @widgetsHeight;
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
 	font-size: 12px;
+	margin: 0 auto;
 
 	div.widget {
 		.widgetBox;
@@ -836,6 +857,11 @@ section {
 		min-height: 300px;
 		border-right: 1px dashed @lightBlueGray;
 		padding: 10px;
+		text-align:left;
+
+		.title {
+		text-align:center;
+		}
 
 		h1 {
 			color: @UCFGold;
@@ -848,6 +874,9 @@ section {
 			font-size: 18px;
 			padding-bottom: 5px;
 		}
+		h3 {
+			padding:0;
+		}
 		p {
 			font-size: 12px;
 			line-height: 14px;
@@ -855,10 +884,11 @@ section {
 		ul {
 			padding: 10px 0;
 		}
+		li {
+			padding:2.5px;
+		}
 		li>a {
-			display: block;
-			width: 100%;
-			padding: 3px;
+			padding: 1.5px;
 			font-size: 14px;
 			color: darken(@offWhite, 20%);
 			&:hover {

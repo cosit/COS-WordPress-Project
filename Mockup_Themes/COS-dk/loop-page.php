@@ -31,6 +31,7 @@
 			</article>
 		</div>
 <?php page_nav(); ?>
+<?php get_sidebar(); ?>
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
