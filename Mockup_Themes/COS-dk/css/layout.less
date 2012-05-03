@@ -31,7 +31,7 @@
 @headerHeight: 85px;
 @socialMediaHeight: @headerHeight - 55px;
 @headerLinksHeight: @headerHeight - @socialMediaHeight; 
-@sliderHeight: 400px;
+@sliderHeight: 340px;
 @sliderWidth: 1000px;
 @titleHeight: 24px; // subject to change based on length of dept. name
 @navMenuItemSpacing: 5px; // subject to change
@@ -350,17 +350,27 @@ section {
 	}
 }
 
+#contactContainer{
+	position: relative;
+	width: 1000px;
+	top: -340px;
+	right: -95px;
+	margin-left: auto;
+	margin-right:auto;
+}
 #contact {
 	position: absolute;
 	right: 20px;
 	top: 35px;
-	width: 305px; // = 4 columns
+	width: 275px;
+	//width: 305px; // = 4 columns
 	height: auto;
 	background: @blueGray;
 	.rounded(8px);
 	a {.linkStyleGold;}
 	a:hover {text-decoration: underline;}
 	.drop-shadow(0,0,10px,0.3);
+	z-index:15;
 
 	h2 {
 		height: 30px;
@@ -372,7 +382,8 @@ section {
 		text-transform: none;
 		font-weight: 300;
 		color: @blueGray;
-		span {
+		z-index:16;
+		span._1 {
 			display: inline-block;
 			height: 30px;
 			line-height: 30px;
@@ -444,6 +455,8 @@ section {
 		margin: 5px 10px;
 		width: 32px;
 		height: 32px;
+		left:0px;
+		top:2px;
 	}
 	#contact_department span { background: url('img/contact_icons.png') 0 0; }
 	#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
