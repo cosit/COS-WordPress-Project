@@ -11,7 +11,7 @@
 add_action( 'after_setup_theme', 'starkers_setup' );
 
 // *********************************************
-// COS THEME OPTIONS  sadfasdfsadfasdf
+// COS THEME OPTIONS
 // *********************************************
 
 function COS_themeoptions_admin_menu() {
