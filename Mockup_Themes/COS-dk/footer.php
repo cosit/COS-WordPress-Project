@@ -12,8 +12,6 @@
 	</div>
 </div> <!-- /container -->
 
-<!--asd;lfjkas;dfjk-->
-
 <footer id="main_footer">
 	<!-- Bottom widgets -->
 
