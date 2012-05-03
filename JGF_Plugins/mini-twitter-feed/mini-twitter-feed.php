@@ -82,7 +82,7 @@ class MinitwitterWidget extends WP_Widget {
 		?>
 		<?php echo $before_widget; ?>
 		<?php echo '<div class="tweets"> 
-				<h2 class="title">Follow Us On Twitter!</h2> 
+				<h1 class="title">Follow Us On Twitter!</h2> 
 				<div class="content_tweets_'.$this->get_field_id('id').'"> </div> 
 				<div class="tweets_footer">
 					<!--<span id="bird"></span>-->
