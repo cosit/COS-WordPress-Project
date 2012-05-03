@@ -17,7 +17,7 @@ get_header(); ?>
 					if ( ! empty( $category_description ) )
 						echo '' . $category_description . '';
 
-				get_template_part( 'loop', 'category' );
+				get_template_part( 'loop', 'page' );
 				?>
 
 <?php get_sidebar(); ?>
