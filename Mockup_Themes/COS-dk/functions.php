@@ -592,10 +592,12 @@ function show_people( $catID = 0 ) {
 		$facultyArgs = array( 
 			'post_type' => 'people',
 			'people_cat' => $catID,
+			'posts_per_page' => -1,
 		);
 	} else {
 		$facultyArgs = array( 
 			'post_type' => 'people',
+			'posts_per_page' => -1,
 		);
 	}
 
