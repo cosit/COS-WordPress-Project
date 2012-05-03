@@ -20,12 +20,14 @@ get_header(); ?>
 </section>
 
 <!-- Contact box - not a section because it lies on top of slider -->
-<div id="contact">
-	<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
+<div id="contactContainer">
+	<div id="contact">
+		<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
 
-	<?php show_contact_area(); ?>
+		<?php show_contact_area(); ?>
+	</div>
+	<div style="clear:both;"></div>
 </div>
-
 
 
 
