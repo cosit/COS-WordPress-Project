@@ -1,65 +1,98 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
+/**
+ * The Header for our theme.
+ *
+ * Displays all of the <head> section
+ *
+ * @package WordPress
+ * @subpackage Starkers
+ * @since Starkers HTML5 3.0
+ */
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
 
-<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
+<!-- ADD UCF HEADER -->
+<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
+<!-- END UCF HEADER -->
 
-<head profile="http://gmpg.org/xfn/11">
-	
-	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
-	
-	<?php if (is_search()) { ?>
-	   <meta name="robots" content="noindex, nofollow" /> 
-	<?php } ?>
+<meta charset="<?php bloginfo( 'charset' ); ?>" />
+<title><?php
+ 
+    global $page, $paged;
 
-	<title>
-		   <?php
-		      if (function_exists('is_tag') && is_tag()) {
-		         single_tag_title("Tag Archive for &quot;"); echo '&quot; - '; }
-		      elseif (is_archive()) {
-		         wp_title(''); echo ' Archive - '; }
-		      elseif (is_search()) {
-		         echo 'Search for &quot;'.wp_specialchars($s).'&quot; - '; }
-		      elseif (!(is_404()) && (is_single()) || (is_page())) {
-		         wp_title(''); echo ' - '; }
-		      elseif (is_404()) {
-		         echo 'Not Found - '; }
-		      if (is_home()) {
-		         bloginfo('name'); echo ' - '; bloginfo('description'); }
-		      else {
-		          bloginfo('name'); }
-		      if ($paged>1) {
-		         echo ' - page '. $paged; }
-		   ?>
-	</title>
-	
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-	
-	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" />
-	
-	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
+    $thisDept = get_bloginfo('name');
 
-	<?php if ( is_singular() ) wp_enqueue_script( 'comment-reply' ); ?>
+    echo 'UCF '; // eventually add function to recognize whether this is "UCF" or "COS"
 
-	<?php wp_head(); ?>
+    echo $thisDept;
+ 
+    wp_title( '', true, 'left' ); 
+ 
+?></title>
 
-	<!-- ADD UCF HEADER -->
-		<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
-	<!-- END UCF HEADER -->
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+<link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
+<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
+
+ 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="<?php bloginfo('template_directory'); ?>/js/modernizr-1.6.min.js"></script>
+<script src="<?php bloginfo('template_directory'); ?>/js/less-1.2.2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<?php if (is_home()) : ?> <!-- Only download slider if on home page -->
+<script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
+
+
+<?php endif; ?>
+ 
+<?php
+    /* We add some JavaScript to pages with the comment form
+     * to support sites with threaded comments (when in use).
+     */
+    if ( is_singular() && get_option( 'thread_comments' ) )
+        wp_enqueue_script( 'comment-reply' );
+ 
+    /* Always have wp_head() just before the closing </head>
+     * tag of your theme, or you will break many plugins, which
+     * generally use this hook to add elements to <head> such
+     * as styles, scripts, and meta tags.
+     */
+    wp_head();
+?>
 </head>
-
+ 
 <body <?php body_class(); ?>>
-	<!-- <div id="page-wrap"> -->
-	<div id="header_container">
-		<div id="header">
-			<h1>UCF<a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
-			<?php /* <div class="description"><?php bloginfo('description'); ?></div> //Descriptiono not used */?> 
-            
-            <!--Custom Nav-->
-			<nav id="access" role="navigation">
-				<?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to wp_page_menu. The menu assiged to the primary position is the one used. If none is assigned, the menu with the lowest ID is used. */ ?>
-                <?php wp_nav_menu( array( 'theme_location' => 'main', 'menu_class' => 'headerNav', 'sort_column' => 'menu_order') ); ?>
-			</nav>
-			<!-- End Custom Nav-->
-		</div>
-	</div>
+ 
+    <header id="main_header">
+        <div class="wrap clearfix">
+            <?php show_social(); ?>
+<!--             <ul id="socialMedia">
+                <li><a href="http://www.facebook.com" title="Facebook" class="facebook">
+                </a></li>
+                <li><a href="http://www.twitter.com" title="Twitter" class="twitter">
+                </a></li>
+            </ul> -->
 
+            <hgroup>
+                <h1><span class="branding_prefix">UCF</span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                    <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
+                </a></h1>
+            </hgroup>
+
+            <?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to the 'starkers_menu' function which can be found in functions.php.  The menu assiged to the primary position is the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
+            <?php wp_nav_menu( array( 
+                'container' => 'nav', 
+                'fallback_cb' => 'starkers_menu', 
+                'theme_location' => 'primary' 
+            ) ); ?>
+            <span id="pageID" style="display:none;"><?php echo get_query_var('page_id'); ?></span>
+
+        </div>
+
+    </header>
+
+<div id="container">

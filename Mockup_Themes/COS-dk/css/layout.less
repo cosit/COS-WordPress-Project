@@ -32,6 +32,7 @@
 @socialMediaHeight: @headerHeight - 55px;
 @headerLinksHeight: @headerHeight - @socialMediaHeight; 
 @sliderHeight: 400px;
+@sliderWidth: 1000px;
 @titleHeight: 24px; // subject to change based on length of dept. name
 @navMenuItemSpacing: 5px; // subject to change
 @widgetsHeight: 300px;
@@ -293,7 +294,7 @@ section {
 	text-align: center;
 	height: @sliderHeight;
 	overflow: hidden;
-	.wrap { width: 1180px; }
+	.wrap { width: @sliderWidth; }
 	ul.slides {
 		margin: 0 auto;
 		li {display:none;}
@@ -823,12 +824,23 @@ section {
 	margin-top: -@mainFooterHeight ;
 }
 
+#widget_container {
+	height:@widgetsHeight;	
+	margin: 0 auto;
+	width:960px;
+	.widget li {
+		display: block;
+		width: 100%;
+	}
+}
+
 #widgets {
 	height: @widgetsHeight;
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
 	font-size: 12px;
+	margin: 0 auto;
 
 	div.widget {
 		.widgetBox;
@@ -836,6 +848,11 @@ section {
 		min-height: 300px;
 		border-right: 1px dashed @lightBlueGray;
 		padding: 10px;
+		text-align:left;
+
+		.title {
+		text-align:center;
+		}
 
 		h1 {
 			color: @UCFGold;
@@ -848,26 +865,33 @@ section {
 			font-size: 18px;
 			padding-bottom: 5px;
 		}
+		h3 {
+			padding:0;
+		}
 		p {
 			font-size: 12px;
 			line-height: 14px;
 		}
-		ul {
-			padding: 10px 0;
+		>ul {
+			padding: 5px 0;
+			>li {
+				padding: 3px;
+				font-size: 14px;
+				color: darken(@offWhite, 20%);
+				&:hover {
+					background: @lightBlueGray;
+				}
+				&:before {
+					content: '\00BB    ';
+					color: @UCFGold;
+				}
+				>ul {
+					display: none; // Temp hide subdirectories
+				}
+			}
 		}
-		li>a {
-			display: block;
-			width: 100%;
-			padding: 3px;
+		.textwidget {
 			font-size: 14px;
-			color: darken(@offWhite, 20%);
-			&:hover {
-				background: @lightBlueGray;
-			}
-			&:before {
-				content: '\00BB    ';
-				color: @UCFGold;
-			}
 		}
 		&:last-child {
 			border-right: none;
@@ -901,6 +925,7 @@ section {
 		}
 	}
 }
+
 
 #the_footer {
 	z-index: 2;

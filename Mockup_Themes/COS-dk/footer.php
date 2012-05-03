@@ -16,27 +16,48 @@
 
 <footer id="main_footer">
 	<!-- Bottom widgets -->
-	<?php show_footer_widgets(); ?>
+
+	<section id="widgets">
+		<div id="widget_container">
+			<div id="first-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'first-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'first-footer-widget-area' ); ?>
+				<?php endif; ?>
+			</div>
+
+			<div id="second-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'second-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'second-footer-widget-area' ); ?>
+				<?php endif; ?>
+			</div>
+
+			<div id="third-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'third-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'third-footer-widget-area' ); ?>
+				<?php endif; ?>
+			</div>
+		</div>
+	</section>
 
 	<section id="the_footer">
 		<div class="wrap">
 		<?php 
-			get_sidebar( 'footer' );
-			show_people_cats(); 
+			// get_sidebar( 'footer' );
+			show_people_cats(); /* Important: do not remove  */
 		?>
 			<div class="dept_list">
 				<h1><span>UCF</span> College of Sciences</h1>
 				<ul>
-					<li>Anthropology</li>
-					<li>Biology</li>
-					<li>Chemistry</li>
-					<li>Communication</li>
-					<li>Mathematics</li>
-					<li>Physics</li>
-					<li>Political Science</li>
-					<li>Psychology</li>
-					<li>Sociology</li>
-					<li>Statistics</li>
+					<li><a href="http://anthropology.cos.ucf.edu" target="_new">Anthropology</a></li>
+					<li><a href="http://biology.cos.ucf.edu" target="_new">Biology</a></li>
+					<li><a href="http://chemistry.cos.ucf.edu" target="_new">Chemistry</a></li>
+					<li><a href="http://communication.cos.ucf.edu" target="_new">Communication</a></li>
+					<li><a href="http://math.cos.ucf.edu" target="_new">Mathematics</a></li>
+					<li><a href="http://physics.cos.ucf.edu" target="_new">Physics</a></li>
+					<li><a href="http://politicalscience.cos.ucf.edu" target="_new">Political Science</a></li>
+					<li><a href="http://psychology.cos.ucf.edu" target="_new">Psychology</a></li>
+					<li><a href="http://sociology.cos.ucf.edu" target="_new">Sociology</a></li>
+					<li><a href="http://statistics.cos.ucf.edu" target="_new">Statistics</a></li>
 				</ul>
 			</div>
 		</div>
@@ -217,8 +238,15 @@
 		console.log('clocked');
 	});
 
-	// Custom Scrollbar
-	$('.widget').tinyscrollbar();
+
+	// Replace title of page if longer one already exists in post
+	(function(){
+		var oldTitle = $('.innerContent>article>header>h1');
+		var newTitle = oldTitle.parent().next('h1');
+
+		if( newTitle.length > 0 ){ oldTitle.replaceWith(newTitle); }
+	})();
+
 </script>
 
 </body>

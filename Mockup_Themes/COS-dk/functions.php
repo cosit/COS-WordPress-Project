@@ -33,14 +33,35 @@ function COS_themeoptions_page() {
         <form method="POST" action="">  
             <input type="hidden" name="update_themeoptions" value="true" />  
 
-            <h3>Title Prefix</h3>
+            <?php $title_prefix = get_option('COS_title_prefix'); ?>
+            <h3>Title Prefix: <em><?php echo $title_prefix; ?></em></h3>
             <select name="title_prefix" id="">
-            	<option value="UCF">UCF</option>
-            	<option value="COS">COS</option>
+            	<option value="UCF" <?php if($title_prefix='UCF') echo 'selected';?>>UCF</option>
+            	<option value="COS" <?php if($title_prefix='COS') echo 'selected';?>>COS</option>
             </select>
 
             <h4>Title Size</h4>
-            <p><input type="text" name="title_size" id="title_size"></p>
+            <?php $title_size = get_option('COS_title_size') > 0 ? get_option('title_size') : 24; ?>
+            <p><input type="text" name="title_size" id="title_size" value="<?php echo $title_size; ?>"></p>
+
+            <?php $news_cat = get_option('COS_news_cat'); ?>
+            <h4>News Category to Display (default: <em><?php echo $news_cat; ?></em>)</h4>
+            <select name="news_cat" id="">
+            	<option value="<?php echo $news_cat?> selected">Default</option>
+            	<option value="anthropology">Anthropology</option>
+            	<option value="biology-departments">Biology</option>
+            	<option value="chemistry-departments">Chemistry</option>
+            	<option value="communication">Communication, Nicholson School of</option>
+            	<option value="forensic-science">Forensic Science, National Center of</option>
+            	<option value="global-perspectives">Global Perspectives</option>
+            	<option value="lou-frey-institute">Lou Frey Institute</option>
+            	<option value="mathematics">Mathematics</option>
+            	<option value="physics-departments">Physics</option>
+            	<option value="political-science-departments">Political Science</option>
+            	<option value="psychology-departments">Psychology</option>
+            	<option value="sociology">Sociology</option>
+            	<option value="statistics">Statistics</option>
+            </select>
 
   
 <!--             <h4>Colour Stylesheet To Use</h4>  
@@ -70,28 +91,16 @@ function COS_themeoptions_page() {
   
     </div>  
     <?php  
+
 }
 
 function COS_themeoptions_update() {
 	// this is where validation would go
-	update_option('mytheme_colour', 	$_POST['colour']);
+	update_option('COS_title_prefix', 	$_POST['title_prefix']);
 
-	update_option('mytheme_ad1image', 	$_POST['ad1image']);
-	update_option('mytheme_ad1url', 	$_POST['ad1url']);
+	update_option('COS_title_size', 	$_POST['title_size']);
+	update_option('COS_news_cat', 		$_POST['news_cat']);
 
-	update_option('mytheme_ad2image', 	$_POST['ad2image']);
-	update_option('mytheme_ad2url', 	$_POST['ad2url']);
-
-	if ($_POST['display_sidebar']=='on') { $display = 'checked'; } else { $display = ''; }
-	update_option('mytheme_display_sidebar', 	$display);
-
-	if ($_POST['display_search']=='on') { $display = 'checked'; } else { $display = ''; }
-	update_option('mytheme_display_search', 	$display);
-
-	if ($_POST['display_twitter']=='on') { $display = 'checked'; } else { $display = ''; }
-	update_option('mytheme_display_twitter', 	$display);
-
-	update_option('mytheme_twitter_username', 	$_POST['twitter_username']);
 }
 
 add_action('admin_menu', 'COS_themeoptions_admin_menu');
@@ -514,7 +523,7 @@ function show_people_cats( $displayCats = true ) {
 			$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a></li>';
 		}
 		if( $displayCats ){
-			echo '<ul id="people_cats" class="children">';
+			echo '<ul id="people_cats" class="children" style="display:none;">';
 			echo $peopleCatList;
 			echo '</ul>';
 		}
@@ -974,7 +983,7 @@ add_filter('comment_form_default_fields','starkers_fields');
 function starkers_widgets_init() {
 	// Area 1, located at the top of the sidebar.
 	register_sidebar( array(
-		'name' => __( 'Primary Widget Area', 'starkers' ),
+		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
 		'description' => __( 'The primary widget area', 'starkers' ),
 		'before_widget' => '<li>',
@@ -996,47 +1005,47 @@ function starkers_widgets_init() {
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'First Footer Widget Area', 'starkers' ),
+		'name' => __( 'Left Footer Widget Area', 'starkers' ),
 		'id' => 'first-footer-widget-area',
 		'description' => __( 'The first footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h1 class="title">',
+		'after_title' => '</h1>',
 	) );
 
 	// Area 4, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'Second Footer Widget Area', 'starkers' ),
+		'name' => __( 'Center Footer Widget Area', 'starkers' ),
 		'id' => 'second-footer-widget-area',
 		'description' => __( 'The second footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h1 class="title">',
+		'after_title' => '</h1>',
 	) );
 
 	// Area 5, located in the footer. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'Third Footer Widget Area', 'starkers' ),
+		'name' => __( 'Right Footer Widget Area', 'starkers' ),
 		'id' => 'third-footer-widget-area',
 		'description' => __( 'The third footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h1 class="title">',
+		'after_title' => '</h1>',
 	) );
 
-	// Area 6, located in the footer. Empty by default.
-	register_sidebar( array(
-		'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
-		'id' => 'fourth-footer-widget-area',
-		'description' => __( 'The fourth footer widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
+	// // Area 6, located in the footer. Empty by default.
+	// register_sidebar( array(
+	// 	'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
+	// 	'id' => 'fourth-footer-widget-area',
+	// 	'description' => __( 'The fourth footer widget area', 'starkers' ),
+	// 	'before_widget' => '<li>',
+	// 	'after_widget' => '</li>',
+	// 	'before_title' => '<h3>',
+	// 	'after_title' => '</h3>',
+	// ) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
 add_action( 'widgets_init', 'starkers_widgets_init' );

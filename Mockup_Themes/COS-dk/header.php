@@ -23,11 +23,10 @@
     global $page, $paged;
 
     $thisDept = get_bloginfo('name');
+    $brandingPrefix = get_option('COS_title_prefix');
 
-    echo 'UCF '; // eventually add function to recognize whether this is "UCF" or "COS"
+    echo $brandingPrefix . ' ' . $thisDept;
 
-    echo $thisDept;
- 
     wp_title( '', true, 'left' ); 
  
 ?></title>
@@ -66,6 +65,9 @@
 </head>
  
 <body <?php body_class(); ?>>
+    <!--[if lt IE 9]>
+According to the conditional comment this is IE lower than 9<br />
+<![endif]-->
  
     <header id="main_header">
         <div class="wrap clearfix">
@@ -78,7 +80,7 @@
             </ul> -->
 
             <hgroup>
-                <h1><span class="branding_prefix">UCF</span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                <h1><span class="branding_prefix"><?php echo( $brandingPrefix ); ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
                     <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
             </hgroup>
