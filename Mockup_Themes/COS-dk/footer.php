@@ -41,10 +41,10 @@
 
 	<section id="the_footer">
 		<div class="wrap">
-		<?php 
-			// get_sidebar( 'footer' );
-			show_people_cats(); /* Important: do not remove  */
-		?>
+			<?php 
+				// get_sidebar( 'footer' );
+				show_people_cats(); /* Important: do not remove  */
+			?>
 			<div class="dept_list">
 				<h1><span>UCF</span> College of Sciences</h1>
 				<ul>

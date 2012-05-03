@@ -450,6 +450,10 @@ section {
 	#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 	#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
 
+	#contact_department li {margin-top:4px;}
+	#contact_phone li {margin-top:3px;}
+	#contact_email li {margin-top:13px;}
+
 	#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 	#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
 	#contact_phone:hover span    { background: url('img/contact_icons_hover.png') 0 -80px; }
@@ -772,6 +776,18 @@ section {
 		}
 	}
 
+	.sidebar {
+		.column(3);
+		display:block;
+		float:right;
+		margin-top:30px;
+		background: @sideGray;
+		.drop-shadow(0,0,8px,0.3);
+	}
+		.sidebar ul li {
+			padding: 0px 0 5px 10px;
+		}
+	
 	.pageNav {
 		.column(3);
 		display: block;

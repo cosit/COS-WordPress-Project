@@ -96,7 +96,7 @@ According to the conditional comment this is IE lower than 9<br />
         </div>
 
     </header>
-    <section id="top_dept_links">
+    <!-- <section id="top_dept_links">
         <div class="dept_list wrap clearfix">
             <h1><span>UCF</span> College of Sciences</h1>
             <ul>
@@ -112,6 +112,6 @@ According to the conditional comment this is IE lower than 9<br />
                 <li>Statistics</li>
             </ul>
         </div>
-    </section>
+    </section> -->
 
 <div id="container">
