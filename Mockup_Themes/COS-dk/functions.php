@@ -696,7 +696,7 @@ function show_contact_area(){
 
 		// Display the list items in this format:
 		echo <<<CONTACT
-			<h2>Contact Us</h2>
+			<h2><span class='_1'>Contact Us</span></h2>
 
 			<ul id="contact_department">
 				<span class="contactIcon"></span>
