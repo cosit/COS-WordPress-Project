@@ -29,7 +29,7 @@ get_header(); ?>
 <?php
 	rewind_posts();
 
-	get_template_part( 'loop', 'archive' );
+	get_template_part( 'loop', 'page' );
 ?>
 
 <?php get_sidebar(); ?>
