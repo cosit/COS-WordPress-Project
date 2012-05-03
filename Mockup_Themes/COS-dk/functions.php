@@ -542,9 +542,11 @@ function show_person( $id ) {
 		'p_email'       => get_field('email'),
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
-		'biography' => get_field('biography'),
-		'research'  => '<p>'.get_field('research_areas').'</p>',
-		'misc'      => get_field('miscellaneous'),
+		'biography' 	=> get_field('biography'),
+		'research' 		=> '<p>'.get_field('research_areas').'</p>',
+		'classes'      	=> get_field('classes'),
+		'highlights'    => get_field('highlights'),
+		'misc'      	=> get_field('miscellaneous'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
 	);
@@ -636,7 +638,6 @@ function show_people( $catID = 0 ) {
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
-				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
