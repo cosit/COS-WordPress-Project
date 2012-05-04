@@ -117,99 +117,124 @@ section {
 	}
 
 	nav {
-		z-index: 3;
-		float: left;
-		.hSansSerif;
-		text-transform: uppercase;
+           z-index: 3;
+           float: left;
+           .hSansSerif;
+           text-transform: uppercase;
 
-		>ul>li {
-			position: relative;
-			float: left;
-			display: inline-block;
-			text-align: center;
-			height: @headerLinksHeight;
-			margin: 0 @navMenuItemSpacing;
+           >ul>li {
+                position: relative;
+                float: left;
+                display: inline-block;
+                text-align: center;
+                height: @headerLinksHeight;
+                margin: 0 @navMenuItemSpacing;
 
-			&.current_page_item {
-				// margin-bottom: -8px;
-				// height: 35px + 8px;
-				// background: url('img/nav_select.png') bottom center no-repeat;
-				>a {
-					color: @offWhite;
-					background: @darkBlue;
+                &.current_page_item {
+                     // margin-bottom: -8px;
+                     // height: 35px + 8px;
+                     // background: url('img/nav_select.png') bottom center no-repeat;
+                     >a {
+                           color: @offWhite;
+                           background: @darkBlue;
 
-				}
-			}
-			>a {
-				.transition(0.5s, ease-out);
-			}
+                     }
+                }
+                >a {
+                     .transition(0.5s, ease-out);
+                }
 
-			&:hover>a {
-				.transition(0.5s, ease-out);
-				background: @offWhite;
-				color: @darkBlue;
-				.navLinkHover;
-			}
-		}
-		>ul>li>a, >ul>li>.unclickable {
-			display: block;
-			background: @darkBlue;
-			font-size: 12px;
-			padding: 5px;
-			margin-top: 16px;
-			.rounded(8px);
-			cursor: pointer;
-			// &:hover {
-			// 	color: @darkBlue;
-			// 	background: @offWhite;
-			// }
-		}
-		>ul>li>ul.children {
-			position: absolute;
-			z-index: 2;
-			display: none; // hide at first
-			font-size: 12px;
-			//right: 0; //Uncomment for right aligned drop-down menu
-			left: -6px; //For left aligned drop-down menu
-			background: @blueGray;
-			text-align: center;
-			top: @headerLinksHeight;
-			width: 200px;
-			.border-radius(0, 8px, 8px, 0);
-			border: 1px solid @offWhite;
-			border-top: none;
-			.drop-shadow(0,0,5px,0.3);
-			li {
-				background: @blueGray;
-				.transition(0.4s, ease-out);
-				border-bottom: 1px solid @offWhite;
-				border-top: 1px solid @darkBlue;
-				&:last-child{ 
-					border-bottom: none;
-					.border-radius(0, 8px, 8px, 0);
-				}
+                &:hover>a {
+                     .transition(0.5s, ease-out);
+                     background: @offWhite;
+                     color: @darkBlue;
+                     .navLinkHover;
+                }
+           }
+           >ul>li>a, >ul>li>.unclickable {
+                display: block;
+                background: @darkBlue;
+                font-size: 12px;
+                padding: 5px;
+                margin-top: 16px;
+                .rounded(8px);
+                cursor: pointer;
+                // &:hover {
+                //   color: @darkBlue;
+                //   background: @offWhite;
+                // }
+           }
+           >ul>li:hover>ul.children {
+                 display: block; // for IE
+           }
+           >ul>li ul.children {
+                position: absolute;
+                z-index: 3;
+                display: none; // hide at first
+                font-size: 12px;
+                //right: 0; //Uncomment for right aligned drop-down menu
+				left: -6px; //For left aligned drop-down menu
+                background: @blueGray;
+                text-align: center;
+                top: @headerLinksHeight;
+                width: 200px;
 
-				&:hover {
-					cursor: pointer;
-					background: @lightBlueGray;
-					.transition(0.4s, ease-out);
-				}
-				a, .unclickable {	
-					color: white !important;
-					display: block;
-					width: 90%;
-					height: 100%;
-					padding: 7px 5%;
-				}
-				&:first-child {
-					border-top: solid 4px darken(@blueGray, 7%);
-					a { 
-						padding-top: 2px + 10px;
-					}
-				}
-			}
-		}
-	}
+                border: 1px solid @offWhite;
+                border-top: none;
+                .drop-shadow(0,0,5px,0.3);
+
+                >li {
+                     background: @blueGray;
+                     .transition(0.4s, ease-out);
+                     border-bottom: 1px solid @offWhite;
+                     border-top: 1px solid @darkBlue;
+                     &:last-child{ 
+                           border-bottom: none;
+                           .border-radius(0, 8px, 8px, 0);
+                     }
+                     &:hover {
+                           cursor: pointer;
+                           background: @lightBlueGray;
+                           .transition(0.4s, ease-out);
+                     }
+                     >a, >.unclickable {  
+                           color: white !important;
+                           display: block;
+                           width: 90%;
+                           height: 100%;
+                           padding: 7px 5%;
+                     }
+
+                }
+           }
+           >ul>li>ul.children{
+                .border-radius(0, 8px, 8px, 0);
+                >li{
+                     &:first-child {
+                           border-top: solid 4px darken(@blueGray, 7%);
+
+                           a { 
+                                padding-top: 2px + 10px;
+                           }
+                     }
+                }
+           }
+           >ul>li>ul.children>li>ul.children {
+           		display:none;
+                top: 0;
+                left: 100%;
+                z-index: -2;
+                .border-radius(8px, 8px, 8px, 8px);
+                >li {
+                     border-left: solid 4px darken(@blueGray, 5%);
+                }
+                >li:first-child {                          
+                     .border-radius(8px, 0, 0, 0); 
+                      border-top: solid 1px @offWhite;
+                }
+           }
+     }
+
 
 	#socialMedia {
 		height: @socialMediaHeight; // Do not change!
@@ -369,7 +394,7 @@ section {
 	a {.linkStyleGold;}
 	a:hover {text-decoration: underline;}
 	.drop-shadow(0,0,10px,0.3);
-	z-index:15;
+	z-index:2;
 
 	h2 {
 		height: 30px;
@@ -416,7 +441,7 @@ section {
 			background: @offWhite url('img/search.png') 5px center no-repeat;
 			// border: 1px solid @lighterBlueGray;
 			border: none;
-			width: 60%;
+			width: 80%;
 			color: @lightBlueGray;
 			font-size: 12px;
 			height: 14px;
