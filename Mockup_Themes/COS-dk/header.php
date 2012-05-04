@@ -65,10 +65,7 @@
 </head>
  
 <body <?php body_class(); ?>>
-    <!--[if lt IE 9]>
-According to the conditional comment this is IE lower than 9<br />
-<![endif]-->
- 
+     
     <header id="main_header">
         <div class="wrap clearfix">
             <?php show_social(); ?>
