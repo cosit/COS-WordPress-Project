@@ -811,6 +811,9 @@ section {
 				padding: 10px;
 			}
 		}
+		h4{
+			padding: 10px 0; 
+		}
 	}
 
 	.sidebar {
@@ -867,6 +870,17 @@ section {
 				cursor: default;
 			}
 		}
+		>ul>li>ul>li{
+			padding-left:15px;
+			background: @sideGray;
+			&:hover, &.current_page_item {
+				.inner-shadow(0, 0, 4px, 0.1);
+				background: darken(@sideGray, 5%);
+			}
+			&.current_page_item>a:hover {
+				cursor: default;
+			}
+		}
 	}
 }
 
@@ -904,7 +918,7 @@ section {
 		text-align:left;
 
 		.title {
-		text-align:left; 
+		text-align:left; 	
 		}
 
 		h1 {
