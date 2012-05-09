@@ -16,7 +16,7 @@ get_header(); ?>
 		<div id="single_person" class="innerContent">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
-			<h1>People <span>&raquo;</span> <?php $title = preg_split('/,/', $post->post_title); echo $title[1] . ' ' . $title[0]; ?> </h1>
+			<h1>People <span>&raquo;</span> <?php the_title(); ?> </h1>
 				<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> >
 				<?php show_person( get_the_ID() ); ?>
 					<footer>

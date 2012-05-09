@@ -20,14 +20,12 @@ get_header(); ?>
 </section>
 
 <!-- Contact box - not a section because it lies on top of slider -->
-<div id="contactContainer">
-	<div id="contact">
-		<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
+<div id="contact">
+	<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
 
-		<?php show_contact_area(); ?>
-	</div>
-	<div style="clear:both;"></div>
+	<?php show_contact_area(); ?>
 </div>
+
 
 
 
@@ -47,7 +45,7 @@ get_header(); ?>
 			<?php try {
 				include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
 				$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_option('COS_news_cat').'&feed=rss2'); // specify feed url
-				$items = array_slice($feed->items, 0, 3); // specify first and last item
+				$items = array_slice($feed->items, 0, get_option('COS_news_items')); // specify first and last item
 				} catch(Exception $e) {
 					echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
 				}

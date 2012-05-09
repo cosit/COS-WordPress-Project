@@ -33,7 +33,19 @@
 
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+
+<!--[if !IE]>-->
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
+<!--<![endif]-->
+
+<!--[if gte IE 9]><!-->
+<link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
+<!--<![endif]-->
+
+<!--[if IE]>
+<link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout_IE.less" media="all">
+<![endif]-->
+
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
 
@@ -47,7 +59,8 @@
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.tinyscrollbar.min.js"></script>
 
 <?php endif; ?>
- 
+
+
 <?php
     /* We add some JavaScript to pages with the comment form
      * to support sites with threaded comments (when in use).
@@ -65,7 +78,7 @@
 </head>
  
 <body <?php body_class(); ?>>
-     
+ 
     <header id="main_header">
         <div class="wrap clearfix">
             <?php show_social(); ?>
@@ -93,22 +106,24 @@
         </div>
 
     </header>
-    <!-- <section id="top_dept_links">
+<!--[if !IE]>-->
+    <section id="top_dept_links">
         <div class="dept_list wrap clearfix">
             <h1><span>UCF</span> College of Sciences</h1>
             <ul>
-                <li>Anthropology</li>
-                <li>Biology</li>
-                <li>Chemistry</li>
-                <li>Communication</li>
-                <li>Mathematics</li>
-                <li>Physics</li>
-                <li>Political Science</li>
-                <li>Psychology</li>
-                <li>Sociology</li>
-                <li>Statistics</li>
+                <li><a href="http://anthropology.cos.ucf.edu" target="_new">Anthropology</a></li>
+                <li><a href="http://biology.cos.ucf.edu" target="_new">Biology</a></li>
+                <li><a href="http://chemistry.cos.ucf.edu" target="_new">Chemistry</a></li>
+                <li><a href="http://communication.cos.ucf.edu" target="_new">Communication</a></li>
+                <li><a href="http://math.cos.ucf.edu" target="_new">Mathematics</a></li>
+                <li><a href="http://physics.cos.ucf.edu" target="_new">Physics</a></li>
+                <li><a href="http://politicalscience.cos.ucf.edu" target="_new">Political Science</a></li>
+                <li><a href="http://psychology.cos.ucf.edu" target="_new">Psychology</a></li>
+                <li><a href="http://sociology.cos.ucf.edu" target="_new">Sociology</a></li>
+                <li><a href="http://statistics.cos.ucf.edu" target="_new">Statistics</a></li>
             </ul>
         </div>
-    </section> -->
+    </section>
+<!--<![endif]-->
 
 <div id="container">
