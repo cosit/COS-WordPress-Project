@@ -1011,6 +1011,15 @@ function starkers_widgets_init() {
 	) );
 
 	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
+	register_sidebar( array(
+		'name' => __( 'Bottom Sidebar', 'starkers' ),
+		'id' => 'secondary-widget-area',
+		'description' => __( 'The secondary widget area', 'starkers' ),
+		'before_widget' => '<li>',
+		'after_widget' => '</li>',
+		'before_title' => '<h3>',
+		'after_title' => '</h3>',
+	) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(
@@ -1050,10 +1059,10 @@ function starkers_widgets_init() {
 	// 	'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
 	// 	'id' => 'fourth-footer-widget-area',
 	// 	'description' => __( 'The fourth footer widget area', 'starkers' ),
-	// 	'before_widget' => '<li>',
-	// 	'after_widget' => '</li>',
-	// 	'before_title' => '<h3>',
-	// 	'after_title' => '</h3>',
+	// 	'before_widget' => '',
+	// 	'after_widget' => '',
+	// 	'before_title' => '<h1 class="title">',
+	// 	'after_title' => '</h1>',
 	// ) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
