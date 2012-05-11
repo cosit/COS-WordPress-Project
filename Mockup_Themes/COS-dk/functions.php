@@ -1124,6 +1124,18 @@ function my_custom_login_logo() {
 
 add_action('login_head', 'my_custom_login_logo');
 
+// changing the login page URL
+    function put_my_url(){
+    return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
+    }
+    add_filter('login_headerurl', 'put_my_url');
+
+// changing the login page URL hover text
+    function put_my_title(){
+    return ('College of Sciences Information Technology'); // changing the title from "Powered by WordPress" to whatever you wish
+    }
+    add_filter('login_headertitle', 'put_my_title');
+
 function showMessage($message, $errormsg = false)
 {
     if ($errormsg) {
