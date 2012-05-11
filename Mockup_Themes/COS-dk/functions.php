@@ -63,15 +63,6 @@ function COS_themeoptions_page() {
             	<option value="statistics">Statistics</option>
             </select>
 
-            <?php $news_items = get_option('COS_news_items'); ?>
-            <h4>Number of News Items to Display </h4>
-            <input type="text" name="news_items" id="news_items" value=<?php echo $news_items; ?>>
-
-            <?php $events_items = get_option('COS_events_items'); ?>
-            <h4>Number of Events Items to Display </h4>
-            <input type="text" name="events_items" id="events_items" value=<?php echo $events_items; ?>>
-
-
   
 <!--             <h4>Colour Stylesheet To Use</h4>  
             <select name ="colour">  
@@ -109,8 +100,6 @@ function COS_themeoptions_update() {
 
 	update_option('COS_title_size', 	$_POST['title_size']);
 	update_option('COS_news_cat', 		$_POST['news_cat']);
-	update_option('COS_news_items', 		$_POST['news_items']);
-	update_option('COS_events_items', 		$_POST['events_items']);
 
 }
 
@@ -162,7 +151,7 @@ function people_nav( $pageID = '' ){
 	$currentPage = get_post( $pageID );
 	// Check if post/page is a child or a parent
 
-	echo '<nav class="pageNav sidebar"><h2>People</h2><ul>';
+	echo '<nav class="pageNav"><h2>People</h2><ul>';
 	echo show_people_cats( false );
 	echo '</ul></nav>';
 }
@@ -465,14 +454,9 @@ function show_social() {
 			'disabled' => get_field('disabled'),
 		);
 
-		// Check the URL for 'HTTP://'
-		if( !stripos($social['link'], 'http://') || !stripos($social['link'], 'https://') ) {
-			$social['link'] = 'http://' . $social['link'];
-		}
-
 		echo <<<SOCIAL
 			<li>
-				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}" target="_new"></a>
+				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}"></a>
 			</li>
 SOCIAL;
 	endwhile; endif; wp_reset_query();
@@ -539,7 +523,7 @@ function show_people_cats( $displayCats = true ) {
 			$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a></li>';
 		}
 		if( $displayCats ){
-			echo '<ul id="people_cats" class="children">';
+			echo '<ul id="people_cats" class="children" style="display:none;">';
 			echo $peopleCatList;
 			echo '</ul>';
 		}
@@ -558,9 +542,11 @@ function show_person( $id ) {
 		'p_email'       => get_field('email'),
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
-		'biography' => get_field('biography'),
-		'research'  => '<p>'.get_field('research_areas').'</p>',
-		'misc'      => get_field('miscellaneous'),
+		'biography' 	=> get_field('biography'),
+		'research' 		=> '<p>'.get_field('research_areas').'</p>',
+		'classes'      	=> get_field('classes'),
+		'highlights'    => get_field('highlights'),
+		'misc'      	=> get_field('miscellaneous'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
 	);
@@ -647,12 +633,11 @@ function show_people( $catID = 0 ) {
 		<article class="person clearfix">
 			<figure><img src="{$person['photo']}" /></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
+				<h2><a href="{$person['link']}" class="personLink">{$person['first_name']} {$person['last_name']}</a></h2>
 				<li class="person_position">{$person['position']}</h3>
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
-				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
@@ -714,7 +699,7 @@ function show_contact_area(){
 
 		// Display the list items in this format:
 		echo <<<CONTACT
-			<h2>Contact Us</h2>
+			<h2><span class='_1'>Contact Us</span></h2>
 
 			<ul id="contact_department">
 				<span class="contactIcon"></span>
@@ -1003,7 +988,7 @@ function starkers_widgets_init() {
 	register_sidebar( array(
 		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
-		'description' => __( 'The primary sidebar widget area', 'starkers' ),
+		'description' => __( 'The primary widget area', 'starkers' ),
 		'before_widget' => '<li>',
 		'after_widget' => '</li>',
 		'before_title' => '<h3>',
@@ -1128,3 +1113,30 @@ function starkers_posted_in() {
 	);
 }
 endif;
+
+//////////// Dashboard Cusomtization ////////////
+
+function my_custom_login_logo() {
+    echo '<style type="text/css">
+        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
+    </style>';
+}
+
+add_action('login_head', 'my_custom_login_logo');
+
+function showMessage($message, $errormsg = false)
+{
+    if ($errormsg) {
+        echo '<div id="message" class="error">';
+    }
+    else {
+        echo '<div id="message" class="updated fade">';
+    }
+    echo "<p><strong>$message</strong></p></div>";
+} 
+ 
+function showAdminMessages()
+{
+    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
+}
+add_action('admin_notices', 'showAdminMessages');
