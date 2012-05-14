@@ -134,6 +134,21 @@ section {
 				// margin-bottom: -8px;
 				// height: 35px + 8px;
 				// background: url('img/nav_select.png') bottom center no-repeat;
+
+				&:after {
+					top: 100%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+					border-top-color: @darkBlue;
+					border-width: 8px;
+					left: 50%;
+					margin-left: -8px;
+					z-index: 4;
+				}
 				>a {
 					color: @offWhite;
 					background: @darkBlue;
@@ -180,7 +195,7 @@ section {
 
 			border: 1px solid @offWhite;
 			border-top: none;
-			.drop-shadow(0,0,5px,0.3);
+			.drop-shadow(0,5px,7px,0.3);
 
 			>li {
 				background: @blueGray;
@@ -544,7 +559,7 @@ section {
 		padding: 10px 0;
 
 	}
-	>h1:first-child {
+	header>h1 {
 			padding: 0 0 10px 0;
 	}
 	h2 {
@@ -583,10 +598,15 @@ section {
 		border: 1px solid @lightBlueGray;
 	}
 
-
+	#left_content {
+		.column(6);
+	}
+	#right_content {
+		.column(6);
+	}
 	.news {
 		&.subPage{ .column(9); }
-		.column(6);
+
 		h1 {
 			padding: 10px 0;
 		}
@@ -621,7 +641,6 @@ section {
 		}
 	}
 	.events {
-		.column(6);
 		&.subPage{ 
 			.column(9);
 			background: none; 
@@ -736,6 +755,45 @@ section {
 				margin: 5px 0;
 			}
 
+		}
+	}
+	.officeHours {
+		h2 {
+			text-transform: uppercase;
+			font-size: 12px;
+			padding: 0;
+			margin-top: -10px;
+
+		}
+
+		>div {
+			figure {
+				display: inline-block;
+				width: 15%;
+				overflow: hidden;
+				img {
+					max-width: 50px;
+				}
+			}
+
+			padding: 5px 0;
+			border-top: 1px dashed @lightBlueGray;
+			.person_office_hrs {
+				width: 85%;
+				margin: 0;
+				display: inline-block;
+				position: absolute;
+				top: 10px;
+				padding: 0;
+				h3 {
+					display: block;
+					padding: 0px;
+				}
+
+				li {
+					display: inline-block;
+				}
+			}
 		}
 	}
 	.innerContent {

@@ -8,10 +8,9 @@
  */
 ?>
 	<div id="backToTop">
-		<a href="#top"></a>
+		<a href="top"></a>
 	</div>
 </div> <!-- /container -->
-
 
 
 <footer id="main_footer">

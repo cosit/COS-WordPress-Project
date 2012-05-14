@@ -36,11 +36,12 @@ get_header(); ?>
 	</div>
 </section>
 
+
 <!-- Central content for dept home page - default shown is News + Events -->
 <section id="main_content">
 	<div class="wrap clearfix">
 		<!-- Divs given class of "news" or "events" because they will be adapted for use as a sidebar item -->
-		<div class="news">
+		<div id="left_content" class="news">
 	 		<h1>News</h1>
 			<?php try {
 				include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
@@ -61,8 +62,11 @@ get_header(); ?>
 				<?php endforeach; ?>
 				<?php endif; ?>
 		</div>
-
-		<div class="events">
+		
+		<div id="right_content">
+				<?php show_office_hours(); ?>
+		</div>
+<!-- 		<div id="right_content" class="events">
 			<h1>Events	</h1>
 			<?php try {
 				include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
@@ -92,31 +96,14 @@ get_header(); ?>
 			<?php endforeach; ?>
 			
 			<?php endif; ?>
-				<!-- expanded into li.eventMonth, li.eventDay, li.eventYear via jQuery -->
-<!-- 		<article>
-				<span class="eventDate">07/31/204</span>
-				<ul class="eventInfo">
-					<li class="eventTitle">Sample Title</li>
-					<li class="eventTime">03:00 - 04:00</li>
-					<li class="eventLocation">CSB 214</li>
-				</ul>
-			</article>
-
-			<article>
-				<span class="eventDate">04/21/2013</span>
-				<ul class="eventInfo">
-					<li class="eventTitle">Sample Title Two</li>
-					<li class="eventTime">03:00 - 04:00</li>
-					<li class="eventLocation">CSB 214</li>
-				</ul>
-			</article> -->
-		</div>
+		</div> -->
 	</div>
 
 
 </section>
  
 <!-- <?php // get_sidebar(); ?>  Sidebar is hidden on main page -->
+
 
 <?php get_footer(); ?>
 

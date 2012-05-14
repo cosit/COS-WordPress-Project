@@ -40,7 +40,10 @@
 
 <!--[if gte IE 9]><!-->
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
+<!-- <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/responsive.less" media="all"> -->
 <!--<![endif]-->
+
+
 
 <!--[if IE]>
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout_IE.less" media="all">

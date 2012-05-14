@@ -63,6 +63,15 @@ function COS_themeoptions_page() {
             	<option value="statistics">Statistics</option>
             </select>
 
+            <?php $news_items = get_option('COS_news_items'); ?>
+            <h4>Number of News Items to Display </h4>
+            <input type="text" name="news_items" id="news_items" value=<?php echo $news_items; ?>>
+
+            <?php $events_items = get_option('COS_events_items'); ?>
+            <h4>Number of Events Items to Display </h4>
+            <input type="text" name="events_items" id="events_items" value=<?php echo $events_items; ?>>
+
+
   
 <!--             <h4>Colour Stylesheet To Use</h4>  
             <select name ="colour">  
@@ -100,6 +109,8 @@ function COS_themeoptions_update() {
 
 	update_option('COS_title_size', 	$_POST['title_size']);
 	update_option('COS_news_cat', 		$_POST['news_cat']);
+	update_option('COS_news_items', 		$_POST['news_items']);
+	update_option('COS_events_items', 		$_POST['events_items']);
 
 }
 
@@ -151,7 +162,7 @@ function people_nav( $pageID = '' ){
 	$currentPage = get_post( $pageID );
 	// Check if post/page is a child or a parent
 
-	echo '<nav class="pageNav"><h2>People</h2><ul>';
+	echo '<nav class="pageNav sidebar"><h2>People</h2><ul>';
 	echo show_people_cats( false );
 	echo '</ul></nav>';
 }
@@ -454,9 +465,14 @@ function show_social() {
 			'disabled' => get_field('disabled'),
 		);
 
+		// Check the URL for 'HTTP://'
+		if( !stripos($social['link'], 'http://') || !stripos($social['link'], 'https://') ) {
+			$social['link'] = 'http://' . $social['link'];
+		}
+
 		echo <<<SOCIAL
 			<li>
-				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}"></a>
+				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}" target="_new"></a>
 			</li>
 SOCIAL;
 	endwhile; endif; wp_reset_query();
@@ -523,7 +539,7 @@ function show_people_cats( $displayCats = true ) {
 			$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a></li>';
 		}
 		if( $displayCats ){
-			echo '<ul id="people_cats" class="children" style="display:none;">';
+			echo '<ul id="people_cats" class="children">';
 			echo $peopleCatList;
 			echo '</ul>';
 		}
@@ -542,11 +558,9 @@ function show_person( $id ) {
 		'p_email'       => get_field('email'),
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
-		'biography' 	=> get_field('biography'),
-		'research' 		=> '<p>'.get_field('research_areas').'</p>',
-		'classes'      	=> get_field('classes'),
-		'highlights'    => get_field('highlights'),
-		'misc'      	=> get_field('miscellaneous'),
+		'biography' => get_field('biography'),
+		'research'  => '<p>'.get_field('research_areas').'</p>',
+		'misc'      => get_field('miscellaneous'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
 	);
@@ -625,23 +639,32 @@ function show_people( $catID = 0 ) {
 			'research_ex' => excerpt(get_field('research_areas'), 140),
 			'cv'          => get_field('curriculum_vitae'),
 			'link'        => get_permalink(),
-		);
 
+		// Office Hours
+			'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
+			'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
+			'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
+			'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
+			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
+		);
 
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
 		<article class="person clearfix">
 			<figure><img src="{$person['photo']}" /></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['first_name']} {$person['last_name']}</a></h2>
+				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
 				<li class="person_position">{$person['position']}</h3>
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
+				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
 PEOPLE;
+
+
 
 	endwhile; endif; wp_reset_query();
 	echo '</div>';
@@ -649,6 +672,110 @@ PEOPLE;
 
 //Shortcode for displaying all people
 add_shortcode('show_people', 'show_people');
+
+function show_office_hours() {
+	$officeHoursArgs = array( 
+		'post_type' => 'people',
+		'people_cat' => 0,
+		'posts_per_page' => -1,
+	);
+	query_posts( $officeHoursArgs );
+
+	// Custom Options
+	$title = "Office Hours";
+	$subtitle = "Faculty with office hours today (<strong>".date("l")."</strong>):";
+	$today = date( "w" ); // Don't change
+
+	echo '<div class="officeHours"><h1>'.$title.'</h1>';
+	echo '<h2>'.$subtitle.'</h2>';
+
+	if(have_posts()) : while (have_posts()) : the_post();			
+	// Grab the Post ID for the Custom Fields Function			
+	$thisID = get_the_ID();
+
+	$person = array(
+		'first_name'  => get_field('first_name'),
+		'last_name'   => get_field('last_name'),
+		'photo'       => get_field('headshot'),
+		'phone'       => get_field('phone'),
+		'email'       => get_field('email'),
+		'location'    => get_field('location'),
+		'position'    => get_field('position'),
+		'biography'   => get_field('biography'),
+		'research_ex' => excerpt(get_field('research_areas'), 140),
+		'cv'          => get_field('curriculum_vitae'),
+		'link'        => get_permalink(),
+
+		// Office Hours
+		'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
+		'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
+		'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
+		'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
+		'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
+	);
+	switch ($today){
+		case 1: // Monday
+			if($person['office_hours_mon']) echo_hrs( $person, "mon" );
+			break;
+		case 2: // Tuesday	
+			if($person['office_hours_tue']) echo_hrs( $person, "tue" );
+			break;
+		case 3: // Wednesday
+			if($person['office_hours_wed']) echo_hrs( $person, "wed" );
+			break;
+		case 4: // Thursday
+			if($person['office_hours_thu']) echo_hrs( $person, "thu" );
+			break;
+		case 5: // Friday
+			if($person['office_hours_fri']) echo_hrs( $person, "fri" );
+			break;
+	}
+
+	endwhile; endif; wp_reset_query();
+
+
+}
+
+function parse_hrs( $hours ) {
+	$hrs_array = preg_split("/[-,]/", $hours);
+	foreach( $hrs_array as &$value ){
+		$value = strtotime( $value );
+		$value = date( "g:i A", $value );
+	}
+	unset( $value );
+
+	// print_r( $hrs_array );
+
+	// There must be an even number of elements in array
+	if( count($hrs_array) % 2 == 0 ){
+		return $hrs_array;
+	} else {
+		return false;
+	}
+}
+
+function echo_hrs( $person, $day ) {
+	$office_hours_today = 'office_hours_'.$day;
+	$parity = true;
+	$connector = "&nbsp;to&nbsp;";
+	
+	echo("<div>");
+	echo("<figure><img src=".$person['photo']." /></figure>");
+	echo('<ul class="person_office_hrs">');
+	echo("<h3><a href=".$person['link'].">".$person['last_name'].", ".$person['first_name']."</a></h3>");
+
+
+	foreach( $person[$office_hours_today] as $hour ){
+		$separator = ($hour == end($person[$office_hours_today]) ? "" : ";&nbsp;");
+
+		echo('<li><strong>'.$hour.'</strong>');
+		echo( $parity ? $connector : $separator );
+		echo('</li>');
+		$parity = !$parity;
+	}
+	echo "</ul></div>";
+
+}
 
 
 // Custom Post Type for Contact information
@@ -699,7 +826,7 @@ function show_contact_area(){
 
 		// Display the list items in this format:
 		echo <<<CONTACT
-			<h2><span class='_1'>Contact Us</span></h2>
+			<h2>Contact Us</h2>
 
 			<ul id="contact_department">
 				<span class="contactIcon"></span>
@@ -988,7 +1115,7 @@ function starkers_widgets_init() {
 	register_sidebar( array(
 		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
-		'description' => __( 'The primary widget area', 'starkers' ),
+		'description' => __( 'The primary sidebar widget area', 'starkers' ),
 		'before_widget' => '<li>',
 		'after_widget' => '</li>',
 		'before_title' => '<h3>',
@@ -996,15 +1123,6 @@ function starkers_widgets_init() {
 	) );
 
 	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
-	register_sidebar( array(
-		'name' => __( 'Bottom Sidebar', 'starkers' ),
-		'id' => 'secondary-widget-area',
-		'description' => __( 'The secondary widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(
@@ -1044,10 +1162,10 @@ function starkers_widgets_init() {
 	// 	'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
 	// 	'id' => 'fourth-footer-widget-area',
 	// 	'description' => __( 'The fourth footer widget area', 'starkers' ),
-	// 	'before_widget' => '',
-	// 	'after_widget' => '',
-	// 	'before_title' => '<h1 class="title">',
-	// 	'after_title' => '</h1>',
+	// 	'before_widget' => '<li>',
+	// 	'after_widget' => '</li>',
+	// 	'before_title' => '<h3>',
+	// 	'after_title' => '</h3>',
 	// ) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
@@ -1113,42 +1231,3 @@ function starkers_posted_in() {
 	);
 }
 endif;
-
-//////////// Dashboard Cusomtization ////////////
-
-function my_custom_login_logo() {
-    echo '<style type="text/css">
-        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
-    </style>';
-}
-
-add_action('login_head', 'my_custom_login_logo');
-
-// changing the login page URL
-    function put_my_url(){
-    return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
-    }
-    add_filter('login_headerurl', 'put_my_url');
-
-// changing the login page URL hover text
-    function put_my_title(){
-    return ('College of Sciences Information Technology'); // changing the title from "Powered by WordPress" to whatever you wish
-    }
-    add_filter('login_headertitle', 'put_my_title');
-
-function showMessage($message, $errormsg = false)
-{
-    if ($errormsg) {
-        echo '<div id="message" class="error">';
-    }
-    else {
-        echo '<div id="message" class="updated fade">';
-    }
-    echo "<p><strong>$message</strong></p></div>";
-} 
- 
-function showAdminMessages()
-{
-    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
-}
-add_action('admin_notices', 'showAdminMessages');

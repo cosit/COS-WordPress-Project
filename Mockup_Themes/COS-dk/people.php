@@ -25,7 +25,10 @@ Template Name: People List
 				</footer>
 			</article>
 		</div>
+		
+		<div id="sidebar">
 		<?php people_nav(); ?>
+		</div>	
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
