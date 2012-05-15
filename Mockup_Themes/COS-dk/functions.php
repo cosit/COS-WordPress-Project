@@ -306,9 +306,10 @@ function show_slider_items() {
 			<li class="slide{$slide['position']}">
 				<h2>{$slide['title']}</h2>
 				<img src="{$slide['image']}" />
-				<p>{$slide['content']}</p>
+				<p>{$slide['content']}
 SLIDE;
 		edit_post_link( 'Edit This Slide', '', '' );
+		echo '</p>';
 		echo '</li>';
 
 	endwhile; endif; wp_reset_query();
@@ -547,6 +548,20 @@ function show_people_cats( $displayCats = true ) {
 	return $peopleCatList;
 }
 
+function person_toolbar( $person ){
+	$msg = array(
+		'email' => "Send Email",
+		'link' => "Visit Page",
+		'quickview' => "Quick View",
+	);
+
+	echo '<ul class="person_toolbar">';
+	echo '<li><a href="mailto:'.$person['email'].'">'.$msg['email'].'</a></li>';
+	echo '<li><a href="'.$person['link'].'">'.$msg['link'].'</a></li>';
+	echo '<li><a href="#">'.$msg['quickview'].'</a></li>';
+	echo '</ul>';
+}
+
 function show_person( $id ) {
 
 	// All fields beginning with 'p_' are default fields that don't appear as tabular data
@@ -758,22 +773,26 @@ function echo_hrs( $person, $day ) {
 	$office_hours_today = 'office_hours_'.$day;
 	$parity = true;
 	$connector = "&nbsp;to&nbsp;";
+	$separator = "</li><li>";
 	
 	echo("<div>");
 	echo("<figure><img src=".$person['photo']." /></figure>");
 	echo('<ul class="person_office_hrs">');
 	echo("<h3><a href=".$person['link'].">".$person['last_name'].", ".$person['first_name']."</a></h3>");
 
-
+	echo('<li>');
 	foreach( $person[$office_hours_today] as $hour ){
-		$separator = ($hour == end($person[$office_hours_today]) ? "" : ";&nbsp;");
+		$separator = ($hour == end($person[$office_hours_today]) ? "" : $separator);
 
-		echo('<li><strong>'.$hour.'</strong>');
+		echo('<strong>'.$hour.'</strong>');
 		echo( $parity ? $connector : $separator );
-		echo('</li>');
 		$parity = !$parity;
 	}
-	echo "</ul></div>";
+	echo('</li>');
+
+	person_toolbar( $person );
+	echo "</ul>";
+	echo "</div>";
 
 }
 

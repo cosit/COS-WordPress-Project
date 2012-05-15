@@ -12,11 +12,9 @@ get_header(); ?>
 
 <section id="slider">
 	<!-- jQuery slider will be implemented here, and pulled from 'slider' category of posts -->
-	<div class="sliderItems wrap">
-		<ul class="slides">
-			<?php show_slider_items(); ?>
-	 	</ul>
-	</div>
+
+	<?php show_slider_items(); ?>
+	
 </section>
 
 <!-- Contact box - not a section because it lies on top of slider -->
