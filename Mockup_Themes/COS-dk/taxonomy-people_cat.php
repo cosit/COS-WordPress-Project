@@ -18,10 +18,11 @@ get_header(); ?>
 			<h1>People <span>&raquo;</span> <?php echo ucwords( $_GET['people_cat'] ); ?> </h1>
 			<?php show_people( $_GET['people_cat'] ); ?>
 		</div>
+
 		<div id="sidebar">
-			<?php people_nav( get_query_var('page_id') ); ?>
-			<?php get_sidebar(); ?>
-		</div>
+		<?php people_nav( get_query_var('page_id') ); ?>
+		<?php get_sidebar(); ?>
+		</div> 
 
 	</div> <!-- End Wrap -->
 </section>

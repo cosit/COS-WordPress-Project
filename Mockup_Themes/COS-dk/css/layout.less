@@ -4,6 +4,7 @@
 @import "grid.less";
 @import "elements.less";
 @import "typography.less";
+@import "hope.less";
 
 @column-width: 60;
 @gutter-width: 20;
@@ -130,30 +131,12 @@ section {
 			height: @headerLinksHeight;
 			margin: 0 @navMenuItemSpacing;
 
-			&.current_page_item {
+			&.current_page_item, &.current_page_ancestor, &.current_page_parent {
 				// margin-bottom: -8px;
 				// height: 35px + 8px;
 				// background: url('img/nav_select.png') bottom center no-repeat;
 
-				&:after {
-					top: 100%;
-					border: solid transparent;
-					content: " ";
-					height: 0;
-					width: 0;
-					position: absolute;
-					pointer-events: none;
-					border-top-color: @darkBlue;
-					border-width: 8px;
-					left: 50%;
-					margin-left: -8px;
-					z-index: 4;
-				}
-				>a {
-					color: @offWhite;
-					background: @darkBlue;
-
-				}
+				.current_page_item_arrow();
 			}
 			>a {
 				.transition(0.5s, ease-out);
@@ -1573,6 +1556,27 @@ section {
 .hide {
 	display: none;
 	visibility: hidden;
+}
+.current_page_item_arrow {
+	&:after {
+		top: 100%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-top-color: @darkBlue;
+		border-width: 8px;
+		left: 50%;
+		margin-left: -8px;
+		z-index: 4;
+	}
+	>a {
+		color: @offWhite;
+		background: @darkBlue;
+
+	}
 }
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */

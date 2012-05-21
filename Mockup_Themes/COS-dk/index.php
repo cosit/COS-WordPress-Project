@@ -26,7 +26,6 @@ get_header(); ?>
 
 
 
-
 <!-- Main box links for dept websites; e.g. "Undergraduate", "Graduate", "Research" -->
 <section id="main_links">
 	<div class="wrap">

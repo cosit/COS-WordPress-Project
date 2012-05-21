@@ -10,6 +10,9 @@
 /** Tell WordPress to run starkers_setup() when the 'after_setup_theme' hook is run. */
 add_action( 'after_setup_theme', 'starkers_setup' );
 
+// Do shortcodes in widgets, woohoo!
+add_filter('widget_text', 'do_shortcode');
+
 // *********************************************
 // COS THEME OPTIONS
 // *********************************************
@@ -71,6 +74,7 @@ function COS_themeoptions_page() {
             <h4>Number of Events Items to Display </h4>
             <input type="text" name="events_items" id="events_items" value=<?php echo $events_items; ?>>
 
+
   
 <!--             <h4>Colour Stylesheet To Use</h4>  
             <select name ="colour">  
@@ -105,10 +109,12 @@ function COS_themeoptions_page() {
 function COS_themeoptions_update() {
 	// this is where validation would go
 	update_option('COS_title_prefix', 	$_POST['title_prefix']);
+
 	update_option('COS_title_size', 	$_POST['title_size']);
 	update_option('COS_news_cat', 		$_POST['news_cat']);
-	update_option('COS_news_items', 	$_POST['news_items']);
-	update_option('COS_events_items', 	$_POST['events_items']);
+	update_option('COS_news_items', 		$_POST['news_items']);
+	update_option('COS_events_items', 		$_POST['events_items']);
+
 }
 
 add_action('admin_menu', 'COS_themeoptions_admin_menu');
@@ -159,11 +165,82 @@ function people_nav( $pageID = '' ){
 	$currentPage = get_post( $pageID );
 	// Check if post/page is a child or a parent
 
-	echo '<nav class="pageNav"><h2>People</h2><ul>';
+	echo '<nav class="pageNav sidebar"><h2>People</h2><ul>';
 	echo show_people_cats( false );
 	echo '</ul></nav>';
 }
 add_shortcode('people_nav', 'people_nav');
+
+// Footer Widget
+function footer_widget() {
+	$labels = array(
+		'name' => _x('Footer Widgets', 'post type general name'),
+		'singular_name' => _x('Footer Widget', 'post type singular name'),
+		'add_new' => _x('Add New', 'slider'),
+		'add_new_item' => __('Add New Footer Widget'),
+		'edit_item' => __('Edit Footer Widget'),
+		'new_item' => __('New Footer Widget'),
+		'all_items' => __('All Footer Widgets'),
+		'view_item' => __('View Footer Widget'),
+		'search_items' => __('Search Footer Widgets'),
+		'not_found'  => __('No footer widgets found.'),
+		'not_found_in_trash'  => __('No footer widgets found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('Footer Widgets'),
+	);
+
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('Footer Widget'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'supports' => array('title','custom-fields'),
+	);
+
+	register_post_type( 'footer_widget', $args );
+}
+add_action('init', 'footer_widget');
+
+function show_footer_widgets() {
+	$fWidgetsArgs = array(
+		'post_type' => 'footer_widget',
+	);
+
+	query_posts( $fWidgetsArgs );
+
+	echo '<section id="widgets">';
+	echo '<div class="wrap clearfix">';
+
+	if(have_posts()) : while (have_posts()) : the_post();	
+		$thisID = get_the_ID();
+
+		$f_widget = array(
+			'title' => get_the_title(),
+			'content' => get_field('content'),
+			'is_disabled' => get_field('disabled') == 'true' ? true : false, // TRUE if disabled
+			'edit' => get_edit_post_link( $thisID ),
+		);
+
+		 // Skip slider item if it's expired
+		if( $f_widget['is_disabled']  ) continue;
+
+		echo '<div class="widget"><h1>';
+		echo $f_widget['title'];
+		echo '</h1><p>';
+		echo $f_widget['content'];
+		edit_post_link( 'Edit Widget', '<span class="edit_footer_widget">', '</span>' );
+		echo '</p></div>';
+
+		echo '</li>';
+
+	endwhile; endif; wp_reset_query();
+
+	echo '</div>';
+	echo '</section>';
+}
 
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
@@ -466,7 +543,7 @@ function show_people_cats( $displayCats = true ) {
 			$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a></li>';
 		}
 		if( $displayCats ){
-			echo '<ul id="people_cats" class="children">';
+			echo '<ul id="people_cats" class="children" style="display: none;">';
 			echo $peopleCatList;
 			echo '</ul>';
 		}
@@ -488,7 +565,7 @@ function person_toolbar( $person ){
 	echo '</ul>';
 }
 
-function show_person( $id ) {
+function show_person( $id, $is_ie = false ) {
 
 	// All fields beginning with 'p_' are default fields that don't appear as tabular data
 	$person = array(
@@ -499,35 +576,42 @@ function show_person( $id ) {
 		'p_email'       => get_field('email'),
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
-		'biography' 	=> get_field('biography'),
-		'research' 		=> '<p>'.get_field('research_areas').'</p>',
-		'classes'      	=> get_field('classes'),
-		'highlights'    => get_field('highlights'),
-		'misc'      	=> get_field('miscellaneous'),
+		'biography' => get_field('biography'),
+		'research'  => '<p>'.get_field('research_areas').'</p>',
+		'misc'      => get_field('miscellaneous'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
 	);
 
 	// Create array of tabs to display (and populate them), only if content exists
-	$contentTabs = '<ul class="personTabs">';
-	$content = '<ul class="personContent">';
-	foreach  ($person as $field => $value ) {
-		if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-			$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-			$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
+	if( !$is_ie ){
+		$contentTabs = '<ul class="personTabs">';
+		$content = '<ul class="personContent">';
+		foreach  ($person as $field => $value ) {
+			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
+				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
+			}
+		}
+		$contentTabs .= '</ul>';
+		$content .= '</ul>';
+	} else {
+		$content = '<ul class="personContent">';
+		foreach  ($person as $field => $value ) {
+			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
+			}
 		}
 	}
-	$contentTabs .= '</ul>';
-	$content .= '</ul>';
 
 	echo <<<PERSON
 	<article class="person clearfix">
 		<figure><img src="{$person['p_photo']}"/></figure>
 		<ul class="personBasics">
-			<li class="person_position">{$person['p_position']}</h3>
-			<li class="person_location">{$person['p_location']}</h3>
-			<li class="person_phone">{$person['p_phone']}</h3>
-			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a></h3>
+			<li class="person_position">{$person['p_position']}
+			<li class="person_location">{$person['p_location']}
+			<li class="person_phone">{$person['p_phone']}
+			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
 			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
 
 		</ul>
@@ -591,21 +675,23 @@ function show_people( $catID = 0 ) {
 			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
 		);
 
-
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
 		<article class="person clearfix">
 			<figure><img src="{$person['photo']}" /></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['first_name']} {$person['last_name']}</a></h2>
+				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
 				<li class="person_position">{$person['position']}</h3>
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
+				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
 PEOPLE;
+
+
 
 	endwhile; endif; wp_reset_query();
 	echo '</div>';
@@ -626,9 +712,11 @@ function show_office_hours() {
 	$title = "Office Hours";
 	$subtitle = "Faculty with office hours today (<strong>".date("l")."</strong>):";
 	$today = date( "w" ); // Don't change
+	$no_office_hrs = "Sorry, we couldn't find any faculty with office hours today.";
 
 	echo '<div class="officeHours"><h1>'.$title.'</h1>';
 	echo '<h2>'.$subtitle.'</h2>';
+
 
 	if(have_posts()) : while (have_posts()) : the_post();			
 	// Grab the Post ID for the Custom Fields Function			
@@ -1058,7 +1146,7 @@ add_filter('comment_form_default_fields','starkers_fields');
 function starkers_widgets_init() {
 	// Area 1, located at the top of the sidebar.
 	register_sidebar( array(
-		'name' => __( 'Top Sidebar', 'starkers' ),
+		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
 		'description' => __( 'The primary sidebar widget area', 'starkers' ),
 		'before_widget' => '<li>',
@@ -1068,15 +1156,6 @@ function starkers_widgets_init() {
 	) );
 
 	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
-	register_sidebar( array(
-		'name' => __( 'Bottom Sidebar', 'starkers' ),
-		'id' => 'secondary-widget-area',
-		'description' => __( 'The secondary widget area', 'starkers' ),
-		'before_widget' => '<li>',
-		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
-	) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(
@@ -1116,10 +1195,10 @@ function starkers_widgets_init() {
 	// 	'name' => __( 'Fourth Footer Widget Area', 'starkers' ),
 	// 	'id' => 'fourth-footer-widget-area',
 	// 	'description' => __( 'The fourth footer widget area', 'starkers' ),
-	// 	'before_widget' => '',
-	// 	'after_widget' => '',
-	// 	'before_title' => '<h1 class="title">',
-	// 	'after_title' => '</h1>',
+	// 	'before_widget' => '<li>',
+	// 	'after_widget' => '</li>',
+	// 	'before_title' => '<h3>',
+	// 	'after_title' => '</h3>',
 	// ) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
@@ -1185,42 +1264,3 @@ function starkers_posted_in() {
 	);
 }
 endif;
-
-//////////// Dashboard Cusomtization ////////////
-
-function my_custom_login_logo() {
-    echo '<style type="text/css">
-        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
-    </style>';
-}
-
-add_action('login_head', 'my_custom_login_logo');
-
-// changing the login page URL
-    function put_my_url(){
-    return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
-    }
-    add_filter('login_headerurl', 'put_my_url');
-
-// changing the login page URL hover text
-    function put_my_title(){
-    return ('College of Sciences Information Technology'); // changing the title from "Powered by WordPress" to whatever you wish
-    }
-    add_filter('login_headertitle', 'put_my_title');
-
-function showMessage($message, $errormsg = false)
-{
-    if ($errormsg) {
-        echo '<div id="message" class="error">';
-    }
-    else {
-        echo '<div id="message" class="updated fade">';
-    }
-    echo "<p><strong>$message</strong></p></div>";
-} 
- 
-function showAdminMessages()
-{
-    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
-}
-add_action('admin_notices', 'showAdminMessages');

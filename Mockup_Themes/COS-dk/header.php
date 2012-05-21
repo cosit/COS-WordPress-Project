@@ -10,7 +10,9 @@
  */
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<!--[if lt IE 9]>     <html id="ie"> <![endif]-->
+<!--[if gt IE 9]>  <html id="ie"> <![endif]-->
+<!--[if !IE]><!--> <html>             <!--<![endif]-->
 <head>
 
 <!-- ADD UCF HEADER -->
@@ -34,20 +36,11 @@
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 
-<!--[if !IE]>-->
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
-<!--<![endif]-->
-
-<!--[if gte IE 9]><!-->
-<link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
-<!-- <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/responsive.less" media="all"> -->
-<!--<![endif]-->
 
 
 
-<!--[if IE]>
-<link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout_IE.less" media="all">
-<![endif]-->
+
 
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
@@ -60,6 +53,15 @@
 <?php if (is_home()) : ?> <!-- Only download slider if on home page -->
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.tinyscrollbar.min.js"></script>
+<!--[if lt IE 7]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+<![endif]-->
+<!--[if lt IE 8]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+<![endif]-->
 
 <?php endif; ?>
 

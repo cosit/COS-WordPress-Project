@@ -8,10 +8,9 @@
  */
 ?>
 	<div id="backToTop">
-		<a href="#top"></a>
+		<a href="top"></a>
 	</div>
 </div> <!-- /container -->
-
 
 
 <footer id="main_footer">
@@ -42,10 +41,12 @@
 
 	<section id="the_footer">
 		<div class="wrap">
+			
 		<?php 
 			// get_sidebar( 'footer' );
 			show_people_cats(); /* Important: do not remove  */
 		?>
+
 			<div class="dept_list">
 				<h1><span>UCF</span> College of Sciences</h1>
 				<ul>
@@ -99,7 +100,7 @@
 	}
 
 	// Indicate people nav link
-	$('#main_header nav>ul>li').has('a:contains("People")').addClass('peopleNav');
+	$('#main_header nav>ul>li>a:contains("People")').parent().addClass('peopleNav');
 
     // Display people categories in nav menu
 	$('.peopleNav').append( $('#people_cats') );
