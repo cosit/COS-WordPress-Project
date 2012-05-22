@@ -297,19 +297,19 @@ function show_slider_items() {
 			'content' => get_field('content'),
 			'image' => get_field('image'),
 			'position' => ucwords( get_field('position') ),
-			'is_disabled' => get_field('disabled') == 'true' ? true : false, // TRUE if disabled
+			'is_disabled' => get_field('disabled') ,
 			'is_expired' => $isExpired, // TRUE if expired
 			'edit' => get_edit_post_link( $thisID ),
 		);
 
-		 // Skip slider item if it's expired
-		if( $slide['is_expired'] || $slide['is_disabled']  ) continue;
+		 // Skip slider item if it's expired or disabled
+		if( $slide['is_expired'] || $slide['is_disabled'] ) continue;
 
 		echo <<<SLIDE
 			<li class="slide{$slide['position']}">
 				<h2>{$slide['title']}</h2>
 				<img src="{$slide['image']}" />
-				<p>{$slide['content']}
+				<p>{$slide['content']}{$slide['is_disabled']}
 SLIDE;
 		edit_post_link( 'Edit This Slide', '', '' );
 		echo '</p>';
@@ -576,11 +576,12 @@ function show_person( $id, $is_ie = false ) {
 		'p_email'       => get_field('email'),
 		'p_location'    => get_field('location'),
 		'p_position'    => get_field('position'),
+		'p_cv'          => get_field('curriculum_vitae'),
+		'p_link'        => get_permalink(),
 		'biography' => get_field('biography'),
 		'research'  => '<p>'.get_field('research_areas').'</p>',
 		'misc'      => get_field('miscellaneous'),
-		'p_cv'          => get_field('curriculum_vitae'),
-		'p_link'        => get_permalink(),
+
 	);
 
 	// Create array of tabs to display (and populate them), only if content exists
@@ -700,7 +701,10 @@ PEOPLE;
 //Shortcode for displaying all people
 add_shortcode('show_people', 'show_people');
 
-function show_office_hours() {
+function show_office_hours( $is_sidebar ) {
+	if( is_home() ){
+		$is_sidebar = false;
+	}
 	$officeHoursArgs = array( 
 		'post_type' => 'people',
 		'people_cat' => 0,
@@ -714,56 +718,66 @@ function show_office_hours() {
 	$today = date( "w" ); // Don't change
 	$no_office_hrs = "Sorry, we couldn't find any faculty with office hours today.";
 
-	echo '<div class="officeHours"><h1>'.$title.'</h1>';
-	echo '<h2>'.$subtitle.'</h2>';
-
+	if( $is_sidebar ){
+		echo '<h3>'.$title.'</h3>';
+		echo '<p>'.$subtitle.'</p>';
+		echo '<ul class="xoxo">';
+	} else {
+		echo '<div class="officeHours"><h1>'.$title.'</h1>';
+		echo '<h2>'.$subtitle.'</h2>';
+	}
 
 	if(have_posts()) : while (have_posts()) : the_post();			
-	// Grab the Post ID for the Custom Fields Function			
-	$thisID = get_the_ID();
+		// Grab the Post ID for the Custom Fields Function			
+		$thisID = get_the_ID();
 
-	$person = array(
-		'first_name'  => get_field('first_name'),
-		'last_name'   => get_field('last_name'),
-		'photo'       => get_field('headshot'),
-		'phone'       => get_field('phone'),
-		'email'       => get_field('email'),
-		'location'    => get_field('location'),
-		'position'    => get_field('position'),
-		'biography'   => get_field('biography'),
-		'research_ex' => excerpt(get_field('research_areas'), 140),
-		'cv'          => get_field('curriculum_vitae'),
-		'link'        => get_permalink(),
+		$person = array(
+			'first_name'  => get_field('first_name'),
+			'last_name'   => get_field('last_name'),
+			'photo'       => get_field('headshot'),
+			'phone'       => get_field('phone'),
+			'email'       => get_field('email'),
+			'location'    => get_field('location'),
+			'position'    => get_field('position'),
+			'biography'   => get_field('biography'),
+			'research_ex' => excerpt(get_field('research_areas'), 140),
+			'cv'          => get_field('curriculum_vitae'),
+			'link'        => get_permalink(),
 
-		// Office Hours
-		'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
-		'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
-		'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
-		'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
-		'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
-	);
-	switch ($today){
-		case 1: // Monday
-			if($person['office_hours_mon']) echo_hrs( $person, "mon" );
-			break;
-		case 2: // Tuesday	
-			if($person['office_hours_tue']) echo_hrs( $person, "tue" );
-			break;
-		case 3: // Wednesday
-			if($person['office_hours_wed']) echo_hrs( $person, "wed" );
-			break;
-		case 4: // Thursday
-			if($person['office_hours_thu']) echo_hrs( $person, "thu" );
-			break;
-		case 5: // Friday
-			if($person['office_hours_fri']) echo_hrs( $person, "fri" );
-			break;
-	}
+			// Office Hours
+			'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
+			'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
+			'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
+			'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
+			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
+		);
+		switch ($today){
+			case 1: // Monday
+				if($person['office_hours_mon']) echo_hrs( $person, "mon", $is_sidebar );
+				break;
+			case 2: // Tuesday	
+				if($person['office_hours_tue']) echo_hrs( $person, "tue", $is_sidebar );
+				break;
+			case 3: // Wednesday
+				if($person['office_hours_wed']) echo_hrs( $person, "wed", $is_sidebar );
+				break;
+			case 4: // Thursday
+				if($person['office_hours_thu']) echo_hrs( $person, "thu", $is_sidebar );
+				break;
+			case 5: // Friday
+				if($person['office_hours_fri']) echo_hrs( $person, "fri", $is_sidebar );
+				break;
+		}
 
 	endwhile; endif; wp_reset_query();
 
-
+	if( $is_sidebar ){
+		echo '</ul>';
+	} else {
+		echo '</div>';
+	}
 }
+add_action('office_hours', 'show_office_hours');
 
 function parse_hrs( $hours ) {
 	$hrs_array = preg_split("/[-,]/", $hours);
@@ -783,31 +797,45 @@ function parse_hrs( $hours ) {
 	}
 }
 
-function echo_hrs( $person, $day ) {
+function echo_hrs( $person, $day, $is_sidebar ) {
 	$office_hours_today = 'office_hours_'.$day;
 	$parity = true;
 	$connector = "&nbsp;to&nbsp;";
 	$separator = "</li><li>";
 	
-	echo("<div>");
-	echo("<figure><img src=".$person['photo']." /></figure>");
-	echo('<ul class="person_office_hrs">');
-	echo("<h3><a href=".$person['link'].">".$person['last_name'].", ".$person['first_name']."</a></h3>");
+	if( !$is_sidebar ){
+		echo("<div>");
+		echo("<figure><img src=".$person['photo']." /></figure>");
+		echo('<ul class="person_office_hrs xoxo">');
+		echo("<h4><a href=".$person['link'].">".$person['last_name'].", ".$person['first_name']."</a></h4>");
 
-	echo('<li>');
-	foreach( $person[$office_hours_today] as $hour ){
-		$separator = ($hour == end($person[$office_hours_today]) ? "" : $separator);
+		echo('<li>');
+		foreach( $person[$office_hours_today] as $hour ){
+			$separator = ($hour == end($person[$office_hours_today]) ? "" : $separator);
 
-		echo('<strong>'.$hour.'</strong>');
-		echo( $parity ? $connector : $separator );
-		$parity = !$parity;
+			echo('<strong>'.$hour.'</strong>');
+			echo( $parity ? $connector : $separator );
+			$parity = !$parity;
+		}
+		echo('</li>');
+
+		person_toolbar( $person );
+		echo "</ul>";
+		echo "</div>";
+	} else {
+		echo '<li>';
+		echo("<a href=".$person['link'].">".$person['last_name'].", ".$person['first_name']."</a>");
+		echo '</li>';
+		echo '<ul class="officeHours"><li>';
+		foreach( $person[$office_hours_today] as $hour ){
+			$separator = ($hour == end($person[$office_hours_today]) ? "" : $separator);
+
+			echo('<strong>'.$hour.'</strong>');
+			echo( $parity ? $connector : $separator );
+			$parity = !$parity;
+		}
+		echo '</li></ul>';
 	}
-	echo('</li>');
-
-	person_toolbar( $person );
-	echo "</ul>";
-	echo "</div>";
-
 }
 
 
@@ -902,7 +930,7 @@ add_shortcode('home_contact', 'home_contact_area');
 function breadcrumbs() {
  
   $showOnHome = 0; // 1 - show breadcrumbs on the homepage, 0 - don't show
-  $delimiter = '<span class="crumbSep">&raquo;</span>'; // delimiter between crumbs
+  $delimiter = '<span class="crumbSep"> &raquo; </span>'; // delimiter between crumbs
   $home = 'Home'; // text for the 'Home' link
   $showCurrent = 0; // 1 - show current post/page title in breadcrumbs, 0 - don't show
   $before = '<a href="#">'; // tag before the current crumb
@@ -944,7 +972,7 @@ function breadcrumbs() {
         $post_type = get_post_type_object(get_post_type());
 
         $slug = $post_type->rewrite;
-        echo '<a href="' . $homeLink . '/' . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a> ' . $delimiter . ' ';
+        echo '<a href="' . $homeLink . '/' . $slug['slug'] . '/">' . $post_type->labels->name . '</a> ' . $delimiter . ' ';
         if ($showCurrent == 1) echo $before . get_the_title() . $after;
       } else {
         $cat = get_the_category(); $cat = $cat[0];
@@ -954,7 +982,7 @@ function breadcrumbs() {
  
     } elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
       $post_type = get_post_type_object(get_post_type());
-      echo $before . $post_type->labels->singular_name . $after;
+      echo $before . $post_type->labels->name . $after;
  
     } elseif ( is_attachment() ) {
       $parent = get_post($post->post_parent);
@@ -1004,7 +1032,65 @@ function breadcrumbs() {
   }
 } 
 
+function show_news() { ?>
+	<div class="news">
+ 		<h1>News</h1>
+		<?php try {
+			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
+			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_option('COS_news_cat').'&feed=rss2'); // specify feed url
+			$items = array_slice($feed->items, 0, get_option('COS_news_items')); // specify first and last item
+			} catch(Exception $e) {
+				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
+			}
+		?>
 
+			<?php if (!empty($items)) : ?>
+			<?php foreach ($items as $item) : ?>
+			<article>
+				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
+				<p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
+				<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
+			</article>
+			<?php endforeach; ?>
+			<?php endif; ?>
+	</div> <?php
+}
+add_action('show_news', 'show_news');
+
+function show_events() {?>
+	<div class="events">
+	<h1>Events	</h1>
+		<?php try {
+			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
+			$feed = fetch_rss('http://events.ucf.edu/?calendar_id=217&upcoming=upcoming&format=rss&limit=100'); // specify feed url
+			$items = array_slice($feed->items, 0, 7); // specify first and last item
+			} catch(Exception $e) {
+				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
+			}
+		?>
+
+		<?php if (!empty($items)) : ?>
+
+		<?php foreach ($items as $item) : ?>
+			<article>
+
+				<span class="eventDate"><?php echo substr($item['ucfevent']['startdate'],5,11); ?> </span>
+				<ul class="eventInfo">
+					<li class="eventTitle"><a href="<?php echo $item['link']; ?>" title="<?php echo($item['title']); ?>"
+						<?php echo(substr($item['title'],0,43)==$item['title']?
+							'>'.$item['title']
+							:' class="expandEventTitle">'.substr($item['title'],0,43).'...'); ?>
+					</a></li>
+					<li class="eventTime"><?php echo substr($item['ucfevent']['startdate'],17,5); ?> - <?php echo substr($item['ucfevent']['enddate'],17,5); ?></li>
+					<li class="eventLocation"><?php echo $item['ucfevent']['location_name']; ?></li>
+				</ul>
+			</article>
+		<?php endforeach; ?>
+		
+		<?php endif; ?>
+	</div> <?php
+}
+add_action('show_events', 'show_events');
 
 function starkers_setup() {
 
@@ -1155,7 +1241,25 @@ function starkers_widgets_init() {
 		'after_title' => '</h3>',
 	) );
 
-	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
+	register_sidebar( array(
+		'name' => __( 'Front Page Left Column', 'starkers' ),
+		'id' => 'front-left-widget-area',
+		'description' => __( 'The left side of the home page', 'starkers' ),
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '',
+		'after_title' => '',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Front Page Right Column', 'starkers' ),
+		'id' => 'front-right-widget-area',
+		'description' => __( 'The right side of the home page', 'starkers' ),
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '',
+		'after_title' => '',
+	) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(

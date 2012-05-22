@@ -10,8 +10,7 @@
  */
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 9]>     <html id="ie"> <![endif]-->
-<!--[if gt IE 9]>  <html id="ie"> <![endif]-->
+<!--[if lte IE 9]>     <html id="ie"> <![endif]-->
 <!--[if !IE]><!--> <html>             <!--<![endif]-->
 <head>
 
@@ -53,15 +52,7 @@
 <?php if (is_home()) : ?> <!-- Only download slider if on home page -->
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.tinyscrollbar.min.js"></script>
-<!--[if lt IE 7]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
-<![endif]-->
-<!--[if lt IE 8]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE8.js"></script>
-<![endif]-->
-<!--[if lt IE 9]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
-<![endif]-->
+
 
 <?php endif; ?>
 
@@ -82,7 +73,7 @@
 ?>
 </head>
  
-<body <?php body_class(); ?>>
+<body name="top" <?php body_class(); ?>>
  
     <header id="main_header">
         <div class="wrap clearfix">
