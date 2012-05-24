@@ -16,10 +16,10 @@ html#ie {
 		background: url('img/bg.png') repeat;
 	}
 	#container {
-		min-height: 100%;
+		min-height: 400px;
 		height: auto !important;
 		height: 100%;
-		margin-bottom: @mainFooterHeight + 400px;
+		margin-bottom: @mainFooterHeight + 25px;
 	}
 
 	#main_header {
@@ -125,7 +125,7 @@ html#ie {
 				width: 100%;
 				max-width: 1180px;
 				height: auto;
-				top: -200px;
+				top: 0;
 			}
 			li h2 {
 				color: @darkBlue;
@@ -154,12 +154,12 @@ html#ie {
 				p {top: 140px;}
 			}
 			li.slideBottom {
-				h2 {top: 260px;}
-				p {top: 300px; }
+				h2 {top: 235px;}
+				p {top: 275px; }
 			}
 			li.slideSpread {
 				h2 {top: 20px;}
-				p {top: 300px;}
+				p {top: 270px;}
 			}
 			.innerText {
 				position: absolute;
@@ -184,9 +184,9 @@ html#ie {
 
 	#contact {
 		position: absolute;
-		right: 20px;
+		right: 70px;
 		top: 15px;
-		width: 305px; // = 4 columns
+		width: 260px; // = 4 columns
 		height: auto;
 		background: @blueGray;
 		.rounded(8px);
@@ -204,7 +204,7 @@ html#ie {
 			text-transform: none;
 			font-weight: 300;
 			color: @blueGray;
-			span {
+			span._1 {
 				display: inline-block;
 				height: 30px;
 				line-height: 30px;
@@ -238,7 +238,7 @@ html#ie {
 				background: @offWhite url('img/search.png') 5px center no-repeat;
 				// border: 1px solid @lighterBlueGray;
 				border: none;
-				width: 60%;
+				width: 80%;
 				color: @lightBlueGray;
 				font-size: 12px;
 				height: 14px;
@@ -277,6 +277,10 @@ html#ie {
 			width: 32px;
 			height: 32px;
 		}
+
+		#contact_department { background: @lightBlueGray; }
+		#contact_phone    { background: @lightBlueGray; }	
+
 		#contact_department span { background: url('img/contact_icons.png') 0 0; }
 		#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 		#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
@@ -293,14 +297,14 @@ html#ie {
 	}
 
 	#main_links {
-		height: 80px;
+		height: 100px;
 		padding: 10px 0;
 		margin-bottom: 10px;
 		.inner-shadow(0, 0, 10px, 0.3);
 
 		div.wrap>div {
 			.column(4);
-			height: 80px;
+			height: 100px;
 			background-size: 100% auto;
 			h2 {
 				display: block;
@@ -336,7 +340,7 @@ html#ie {
 
 		h1 {
 			.hSerif;
-			font-size: 36px;
+			font-size: 32px;
 			color: @darkBlue;
 			padding: 10px 0;
 
@@ -371,7 +375,6 @@ html#ie {
 		p, li {
 			font-size: 12px;
 			color: @darkBlue;
-			list-style: disc;
 		}
 		a {
 			color: @lightBlueGray;
@@ -426,7 +429,7 @@ html#ie {
 				border-top: 1px dashed @lightBlueGray;
 				padding: 0;
 				color: @darkBlue;
-				margin-bottom: 20px;
+				margin-bottom: 10px;
 				
 				h2 {
 					font-size: 18px;
@@ -729,11 +732,10 @@ html#ie {
 		}
 	}
 
-	body.home #main_footer {
-		margin-top: 20px !important;
-	}
+
 	#main_footer {
-		margin-top: 0;
+		height: @mainFooterHeight + 20px;
+		margin-top: -@mainFooterHeight;
 	}
 
 	#widget_container {
@@ -935,6 +937,7 @@ html#ie {
 				display: none;
 			}
 			>li {
+				list-style: disc;
 				font-weight: bold;
 				font-size: 14px;
 				&.person_research {
