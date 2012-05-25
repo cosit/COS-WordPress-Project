@@ -105,7 +105,7 @@ section {
 	.drop-shadow(0,0,5px,0.5);
 
 	h1 {
-		.column(4);
+		.column(4);		
 		.hSansSerif;
 		text-transform: uppercase;
 		display: inline-block;
@@ -115,6 +115,7 @@ section {
 		line-height: @headerLinksHeight;
 		.branding_prefix { color: @UCFGold; cursor: pointer; }
 		text-shadow: 1px 1px 15px #777;
+		width: 295px; 
 	}
 
 	nav {
@@ -399,7 +400,7 @@ section {
 
 	ul.slides {
 		margin: 0 auto;
-		li {display:none;}
+		//li {display:none;}
 		li img {
 			width: 100%;
 			max-width: 1180px;
@@ -463,7 +464,7 @@ section {
 #contactContainer{
 	position: relative;
 	width: 1000px;
-	top: -345px;
+	top: -340px;
 	right: -95px;
 	margin-left: auto;
 	margin-right:auto;
@@ -471,7 +472,7 @@ section {
 #contact {
 	position: absolute;
 	right: 70px;
-	top: 15px;
+	top: 10px;
 	width: 260px; // = 4 columns
 	height: auto;
 	background: @blueGray;
@@ -490,7 +491,7 @@ section {
 		text-transform: none;
 		font-weight: 300;
 		color: @blueGray;
-		span._1 {
+		span.contact_title {
 			display: inline-block;
 			height: 30px;
 			line-height: 30px;
@@ -524,9 +525,9 @@ section {
 			background: @offWhite url('img/search.png') 5px center no-repeat;
 			// border: 1px solid @lighterBlueGray;
 			border: none;
-			width: 80%;
+			width: 90%;
 			color: @lightBlueGray;
-			font-size: 12px;
+			font-size: 10px;
 			height: 14px;
 			.hSerifIt;
 			.drop-shadow(0,0,3px,0.3);
@@ -552,7 +553,7 @@ section {
 		min-height: 42px;
 		li {
 			margin-left: 50px;
-			margin-top: 10px;
+			margin-top: 3px;
 		}
 	}
 	span.contactIcon {
@@ -570,6 +571,8 @@ section {
 	#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 	#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 	#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
+
+	#contact_email li {margin-top:12px;}
 
 	#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 	#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -1136,13 +1139,13 @@ section {
 
 
 #main_footer {
-	height: @mainFooterHeight+20px;
+	min-height: @mainFooterHeight+100%;
 	background: @darkBlue;
 	margin-top: -@mainFooterHeight ;
 }
 
 #widget_container {
-	height:@widgetsHeight;	
+	min-height:@widgetsHeight;	
 	margin: 0 auto;
 	width:960px;
 	.widget li {
@@ -1152,7 +1155,7 @@ section {
 }
 
 #widgets {
-	height: @widgetsHeight;
+	min-height: @widgetsHeight;
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
@@ -1248,7 +1251,7 @@ section {
 
 #the_footer {
 	z-index: 2;
-	height: @footerHeight;
+	min-height: @footerHeight;
 
 	#copyright {
 		float: left;
@@ -1298,7 +1301,7 @@ section {
 		background: transparent url('img/search.png') 10px center no-repeat;
 		-webkit-appearance: textfield;
 		.hSansSerif;
-		font-size: 16px;
+		font-size: 14px;
 		border: 1px solid @lighterBlueGray;
 		padding: 6px 38px 6px 33px;
 		.rounded(5px);
