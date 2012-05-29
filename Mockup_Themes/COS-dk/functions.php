@@ -1314,41 +1314,90 @@ function starkers_posted_in() {
 
 //////////// Dashboard Cusomtization ////////////
 
-function my_custom_login_logo() {
-    echo '<style type="text/css">
-        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
-    </style>';
-}
+// Change Log-In Screen Logo
+	function my_custom_login_logo() {
+	    echo '<style type="text/css">
+	        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
+	    </style>';
+	}
 
 add_action('login_head', 'my_custom_login_logo');
 
-// changing the login page URL
+// Change Log-In Screen Logo URL
     function put_my_url(){
     return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
     }
     add_filter('login_headerurl', 'put_my_url');
 
-// changing the login page URL hover text
+// Change Log-In Screen Logo Hover State
     function put_my_title(){
-    return ('College of Sciences Information Technology'); // changing the title from "Powered by WordPress" to whatever you wish
+    return ('College of Sciences Information Technology'); // Change the title from "Powered by WordPress"
     }
     add_filter('login_headertitle', 'put_my_title');
 
-function showMessage($message, $errormsg = false)
-{
-    if ($errormsg) {
-        echo '<div id="message" class="error">';
-    }
-    else {
-        echo '<div id="message" class="updated fade">';
-    }
-    echo "<p><strong>$message</strong></p></div>";
-} 
- 
-function showAdminMessages()
-{
-    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
-}
-add_action('admin_notices', 'showAdminMessages');
+// Add error/info message box to top of the Dashboard
+	function showMessage($message, $errormsg)
+	{
+	    if ($errormsg) {
+	        echo '<div id="message" class="error">';
+	    }
+	    else {
+	        echo '<div id="message" class="updated fade">';
+	    }
+	    echo "<p><strong>$message</strong></p></div>";
+	} 
+
+// Write message to show in the error/info box
+	// Set boolean to True for red error box, False for yellow info box
+	function showAdminMessages()
+	{
+	    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
+	}
+	add_action('admin_notices', 'showAdminMessages');
+
+// Customize WordPress Dashboard Footer
+	function remove_footer_admin () {
+		echo "&copy; ".date('Y')." - UCF College of Sciences Information Technology";
+	}
+	add_filter('admin_footer_text', 'remove_footer_admin');
+
+// Adding a custom widget in WordPress Dashboard
+	function wpc_dashboard_widget_function() {
+		// Entering the text between the quotes
+		echo "<ul>
+		<li><strong>Release Date:</strong> July 2012</li>
+		<li><strong>Author:</strong> College of Sciences Information Technology</li>
+		<li><strong>Support E-Mail:</strong> <a href='mailto:costech@ucf.edu'>costech@ucf.edu</a></li>
+		<li><strong>Support Phone:</strong> 407-823-2793</li>
+		</ul>";
+	}
+	function wpc_add_dashboard_widgets() {
+		wp_add_dashboard_widget('wp_dashboard_widget', 'Support Contact Information', 'wpc_dashboard_widget_function');
+	}
+	add_action('wp_dashboard_setup', 'wpc_add_dashboard_widgets' );
+
+//Hiding Default Dashboard Widgets
+	add_action('wp_dashboard_setup', 'wpc_dashboard_widgets');
+	function wpc_dashboard_widgets() {
+		global $wp_meta_boxes;
+		//Main Column Widgets
+			// Today widget
+			//unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);
+			// Last comments
+			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']);
+			// Incoming links
+			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
+			// Plugins
+			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
+		//Side Column Widgets
+			//Quick Press
+			//unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
+			//Recent Drafts
+			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']);
+			//WordPress Blog
+			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
+			//Other WordPress News
+			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
+	}
 
 endif;
