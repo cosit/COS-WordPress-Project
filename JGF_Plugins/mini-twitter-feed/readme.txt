@@ -4,7 +4,7 @@ Donate link: http://minitwitter.webdevdesigner.com
 Tags: twitter, twitter feed, mini twitter, tweets, widget, shortcode 
 Requires at least: 2.8
 Tested up to: 3.3.1
-Stable tag: 1.2
+Stable tag: 1.4
 
 Embed your twitter feed or the feed from your favorite users on your Wordpress blog. Shortcodes and widgets are used.
 
@@ -38,6 +38,11 @@ You can change the color of your links by the color of your website changing `<s
 
 You have to use the "id" section on your shortcode. For example, the first twitter feed will be: [minitwitter id=1 username="ladygaga"] and the second feed: [minitwitter id=2 username="justinbieber"]. The widget section does it automatically.
 
+= What are the "query" and "list" fields in the widget section? =
+
+The field "query" is NOT required. It is only to show themes or sentences like "#worldcup".
+The field "list" is NOT required too. It is to display the tweets of one of your list.
+
 == Screenshots ==
 
 1. The twitter feed on your blog.
@@ -55,6 +60,15 @@ Font -1px on all plugin
 
 Bug fix for IE
 Bug fix quotes query
+
+= 1.3 =
+
+CSS change 
+URL for author and plugin
+
+= 1.4 =
+
+use of jQuery for no conflict
 
 == Upgrade Notice ==
 

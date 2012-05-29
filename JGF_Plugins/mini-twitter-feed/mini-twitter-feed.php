@@ -3,11 +3,11 @@
 /*
 
 	Plugin Name: Mini twitter feed
-	Plugin URI: http://webdevdevdesigner.com
-	Description: this plugin displays tweets from your feed, from the Twitter Search, from a list or from your favorite users. 
+	Plugin URI: http://minitwitter.webdevdesigner.com
+	Description: This plugin displays tweets from your feed, from the Twitter Search, from a list or from your favorite users. 
 	Author: Web Dev Designer
-	Version: 1.2
-	Author URI: http://webdevdevdesigner.com
+	Version: 1.4
+	Author URI: http://www.webdevdesigner.com
 	
 	
     Copyright 2012  Web Dev Designer (email : olivier@webdevdesigner.com)
@@ -35,14 +35,14 @@ function mtf_create_shortcode( $atts, $content=null ) {
 	$options .= (($atts['list'])?'list:"'.$atts['list'].'",':'');
 	
 	return '<div class="tweets"> 
-				<div class="tweets_header">Mini Tweets</div> 
+				<div class="tweets_header">Mini <a href="http://minitwitter.webdevdesigner.com">Tweets</a></div> 
 				<div class="content_tweets'.$atts['id'].'"> </div> 
 				<div class="tweets_footer">
 					<span id="bird"></span>
 				</div> 
 			</div>
 			<script type="text/javascript">
-				$(".content_tweets'.$atts['id'].'").miniTwitter({
+				jQuery(".content_tweets'.$atts['id'].'").miniTwitter({
 					'.$options.'
 					retweet:true
 				});
@@ -82,14 +82,13 @@ class MinitwitterWidget extends WP_Widget {
 		?>
 		<?php echo $before_widget; ?>
 		<?php echo '<div class="tweets"> 
-				<h1 class="title">Follow Us On Twitter!</h2> 
+				<div class="tweets_header">Mini <a href="http://minitwitter.webdevdesigner.com">Tweets</a></div> 
 				<div class="content_tweets_'.$this->get_field_id('id').'"> </div> 
 				<div class="tweets_footer">
-					<!--<span id="bird"></span>-->
 				</div> 
 			</div>
 			<script type="text/javascript">
-				$(".content_tweets_'.$this->get_field_id('id').'").miniTwitter({
+				jQuery(".content_tweets_'.$this->get_field_id('id').'").miniTwitter({
 					'.$options.'
 					retweet:true
 				});

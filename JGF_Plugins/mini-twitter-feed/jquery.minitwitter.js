@@ -150,8 +150,8 @@
 					$(widget).append(tweets[i].avatar+tweets[i].header+tweets[i].textTweet+tweets[i].footer);
 				}
 				$( "."+$(widget).attr('class')+" .mt_text a").css('color', '#'+tweets[0].linkColor);
-				hover ( "."+$(widget).attr('class')+" .mt_header a", tweets[0].linkColor, "FFF" );
-				hover ( "."+$(widget).attr('class')+" .mt_footer a", tweets[0].linkColor, "FFF" );
+				hover ( "."+$(widget).attr('class')+" .mt_header a", tweets[0].linkColor, "333" );
+				hover ( "."+$(widget).attr('class')+" .mt_footer a", tweets[0].linkColor, "999" );
 			}); 
 		};
 
