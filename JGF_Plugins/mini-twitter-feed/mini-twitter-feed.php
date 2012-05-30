@@ -35,7 +35,7 @@ function mtf_create_shortcode( $atts, $content=null ) {
 	$options .= (($atts['list'])?'list:"'.$atts['list'].'",':'');
 	
 	return '<div class="tweets"> 
-				<div class="tweets_header">Mini <a href="http://minitwitter.webdevdesigner.com">Tweets</a></div> 
+				<div class="tweets_header">Follow Us On Twitter!</div> 
 				<div class="content_tweets'.$atts['id'].'"> </div> 
 				<div class="tweets_footer">
 					<span id="bird"></span>
@@ -82,7 +82,7 @@ class MinitwitterWidget extends WP_Widget {
 		?>
 		<?php echo $before_widget; ?>
 		<?php echo '<div class="tweets"> 
-				<div class="tweets_header">Mini <a href="http://minitwitter.webdevdesigner.com">Tweets</a></div> 
+				<div class="tweets_header">Follow Us On Twitter!</div> 
 				<div class="content_tweets_'.$this->get_field_id('id').'"> </div> 
 				<div class="tweets_footer">
 				</div> 

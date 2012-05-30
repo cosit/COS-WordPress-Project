@@ -14,7 +14,7 @@
 	      	page: 1,                 
 	      	retweet: true,
 	      	refresh: null,
-	      	linkColor: 'FFC904',
+	      	// linkColor: null,
 	      	nofollow: true,
 	      	blank: true,
 	      	tweetId: 0
@@ -135,7 +135,7 @@
 
 		    //obj.replyName = (object.in_reply_to_screen_name != 'undefined') ? object.in_reply_to_screen_name : '';
 		    //linkcolors
-		    obj.linkColor = (o.linkColor == null) ? ( object.from_user_id || object.user.profile_link_color) : o.linkColor;
+		    // obj.linkColor = (o.linkColor == null) ? ( object.from_user_id || object.user.profile_link_color) : o.linkColor;
 
 		    return obj;
 	    }
@@ -149,19 +149,19 @@
 				for(var i=0; i<tweets.length; i++) {
 					$(widget).append(tweets[i].avatar+tweets[i].header+tweets[i].textTweet+tweets[i].footer);
 				}
-				$( "."+$(widget).attr('class')+" .mt_text a").css('color', '#'+tweets[0].linkColor);
-				hover ( "."+$(widget).attr('class')+" .mt_header a", tweets[0].linkColor, "333" );
-				hover ( "."+$(widget).attr('class')+" .mt_footer a", tweets[0].linkColor, "999" );
+				// $( "."+$(widget).attr('class')+" .mt_text a").css('color', '#'+tweets[0].linkColor);
+				// hover ( "."+$(widget).attr('class')+" .mt_header a", tweets[0].linkColor, "FFF" );
+				// hover ( "."+$(widget).attr('class')+" .mt_footer a", tweets[0].linkColor, "FFF" );
 			}); 
 		};
 
-		function hover ( element, newcolor, initcolor ) {
-			$(element).hover(function(){
-					$(this).css('color', '#'+newcolor);
-				}, function () {
-					$(this).css('color',"#"+initcolor);
-			});
-		}
+		// function hover ( element, newcolor, initcolor ) {
+		// 	$(element).hover(function(){
+		// 			$(this).css('color', '#'+newcolor);
+		// 		}, function () {
+		// 			$(this).css('color',"#"+initcolor);
+		// 	});
+		// }
 
 		return this.each(function(i, widget) {
 

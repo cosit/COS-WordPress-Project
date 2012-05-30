@@ -1,7 +1,7 @@
 /* jquery.minitwitter.js - http://minitwitter.webdevdesigner.com/
  	Copyright (c) 2012 Olivier Bréchet */
 
-.tweets {
+.widget .tweets {
 	/*border:1px solid #e7e7e7;
 	border-radius:5px;*/
 	max-width:520px;
@@ -10,70 +10,70 @@
 	margin:auto;
 }
 
-.tweets a {
+.widget .tweets a {
 	color:#FFFFFF;
 	text-decoration:none;
 }
 
-.tweets a:hover {
+.widget .tweets a:hover {
 	text-decoration:underline;
 }
 
-.tweet {
+.widget .tweet {
 	border-bottom:1px solid #e7e7e7;
-	padding:8px;
+	padding:12px 8px 5px 8px;
 }
 
-.tweets_header {
-	border-bottom:1px solid #e7e7e7;
+.widget .tweets_header {
 	padding:0 0 10px 0;
-	font-weight:bold;
-	font-size:14px;
+	font-size:21px;
 	text-align:center;
+	color:#FFC904;
+	font-family: 'MuseoSlab500', Georgia, Palatino, "Palatino Linotype", Times;
 }
 
-.tweets .tweets_header a {
+.widget .tweets .tweets_header a {
 	color:#FFFFFF !important;
 	text-decoration:none !important;
 	font-weight:bold !important;
 }
 
-.tweets .tweets_header a:hover {
+.widget .tweets .tweets_header a:hover {
 	text-decoration:underline !important;
 }
 
-.tweets_footer {
+.widget .tweets_footer {
 	padding:6px 12px;
 	text-align: center;
 }
 
-.tweets_footer span.powered {
+.widget .tweets_footer span.powered {
 	font-size:9px;
 }
 
-.tweets_footer span.powered p {
+.widget .tweets_footer span.powered p {
 	margin:0;
 	text-align: center;
 	font-size:9px;
 	color:#999;
 }
 
-.tweets_footer span.powered a {
+.widget .tweets_footer span.powered a {
 	font-size:9px;
 	color:#999;
 	text-decoration:none;
 }
 
-.tweets_footer span.powered a:hover {
+.widget .tweets_footer span.powered a:hover {
 	text-decoration:underline;
 }
 
-.tweets_footer #bird, .mt_footer .image_r {
+.widget .tweets_footer #bird, .mt_footer .image_r {
 	background:url("http://twimg0-a.akamaihd.net/a/1331143368/t1/img/twitter_web_sprite_icons.png") no-repeat;
 }
 
 
-.tweets_footer #bird{
+.widget .tweets_footer #bird{
 	display:inline-block;
 	margin:0px auto;
 	background-position: 0 0;
@@ -81,52 +81,59 @@
 	height: 26px;
 }
 
-.time {
+.widget .time {
 	float:right;
 	color:#999;
 	font-size:11px;
 	display:none;
 }
 
-.avatar {
+.widget .avatar {
 	float:left;
 	margin-right:12px;
 	border-radius:5px;
 }
 
-.avatar img {
+.widget .avatar img {
 	border-radius:5px;
 }
 
-.mt_header {
+.widget .mt_header {
 	padding-bottom:5px;
 	padding-left:60px;
 }
 
-.mt_screen_name {
+.widget .mt_screen_name {
 	font-size:12px;
 	color:#999;
 	display: none;
 }
 
-.mt_header a {
+.widget .mt_header a {
 	font-weight:bold;
-	color:#FFFFFF;
-	text-decoration:none;
+	color:#FFC904;
+	text-decoration:underline;
 }
 
-.mt_text {
+.widget .mt_text {
 	padding-left:60px;
 	text-align:left;
 }
 
-.mt_footer {
+.widget .mt_text a {
+	color:#FFC904 !important;
+	text-decoration:underline !important;
+}
+
+.widget .mt_footer {
 	color:#999;
 	font-size:12px;
 	padding-left:60px;
+	padding-top:5px;
+	padding-bottom:5px;
 }
 
-.mt_footer .image_r {
+.widget .mt_footer .image_r {
 	display:inline-block;
 	margin-bottom:-2px;
 	margin-right:4px;
@@ -136,6 +143,162 @@
 	background-color:#999;
 }
 
-.mt_footer a{
+.widget .mt_footer a{
+	color:#999;
+}
+
+///////////////////////////////////////
+
+.sidebar_widget .tweets {
+	/*border:1px solid #e7e7e7;
+	border-radius:5px;*/
+	max-width:520px;
+	color:#FFFFFF;
+	/*background-color:#fff;*/
+	margin:auto;
+	padding-bottom:10px;
+}
+
+.sidebar_widget .tweets a {
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+.sidebar_widget .tweets a:hover {
+	text-decoration:underline;
+}
+
+.sidebar_widget .tweet {
+	border-bottom:1px solid #e7e7e7;
+	padding:8px;
+}
+
+.sidebar_widget .tweets_header {
+	padding:10px 0 10px 0;
+	font-size:18px;
+	text-align:center;
+	color:#6C747A;
+	font-family: 'MuseoSlab500', Georgia, Palatino, "Palatino Linotype", Times;
+	border-top:dashed thin #6C747A;
+}
+
+.sidebar_widget .tweets .tweets_header a {
+	color:#FFFFFF !important;
+	text-decoration:none !important;
+	font-weight:bold !important;
+}
+
+.sidebar_widget .tweets .tweets_header a:hover {
+	text-decoration:underline !important;
+}
+
+.sidebar_widget .tweets_footer {
+	padding-bottom:10px;
+	margin-bottom:15px;
+	text-align: center;
+	border-bottom:dashed thin #6C747A;
+}
+
+.sidebar_widget .tweets_footer span.powered {
+	font-size:9px;
+}
+
+.sidebar_widget .tweets_footer span.powered p {
+	margin:0;
+	text-align: center;
+	font-size:9px;
+	color:#999;
+}
+
+.sidebar_widget .tweets_footer span.powered a {
+	font-size:9px;
+	color:#999;
+	text-decoration:none;
+}
+
+.sidebar_widget .tweets_footer span.powered a:hover {
+	text-decoration:underline;
+}
+
+.sidebar_widget .tweets_footer #bird, .mt_footer .image_r {
+	background:url("http://twimg0-a.akamaihd.net/a/1331143368/t1/img/twitter_web_sprite_icons.png") no-repeat;
+}
+
+
+.sidebar_widget .tweets_footer #bird{
+	display:inline-block;
+	margin:0px auto;
+	background-position: 0 0;
+	width: 34px;
+	height: 26px;
+}
+
+.sidebar_widget .time {
+	float:right;
+	color:#999;
+	font-size:11px;
+	display:none;
+}
+
+.sidebar_widget .avatar {
+	float:left;
+	margin-right:8px;
+	border-radius:5px;
+}
+
+.sidebar_widget .avatar img {
+	border-radius:5px;
+	width:30px;
+	height:30px;
+}
+
+.sidebar_widget .mt_header {
+	padding-bottom:5px;
+	padding-left:46px;
+}
+
+.sidebar_widget .mt_screen_name {
+	font-size:12px;
+	color:#999;
+	display: none;
+}
+
+.sidebar_widget .mt_header a {
+	font-weight:bold;
+	color:#282828 !important;
+	text-decoration:underline;
+}
+
+.sidebar_widget .mt_text {
+	padding-left:46px;
+	text-align:left;
+	font-size:12px;
+	color:#6C747A;
+}
+
+.sidebar_widget .mt_text a {
+	color:#282828 !important;
+	text-decoration:underline !important;
+}
+
+.sidebar_widget .mt_footer {
+	color:#999;
+	font-size:12px;
+	padding-left:60px;
+	padding-top:10px;
+	border-bottom:solid thin #6C747A;
+}
+
+.sidebar_widget .mt_footer .image_r {
+	display:inline-block;
+	margin-bottom:-2px;
+	margin-right:4px;
+	background-position: -20px -290px;
+	width: 14px;
+	height:13px;
+	background-color:#999;
+}
+
+.sidebar_widget .mt_footer a{
 	color:#999;
 }
