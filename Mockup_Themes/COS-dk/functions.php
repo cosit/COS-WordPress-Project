@@ -462,7 +462,7 @@ function people_cat() {
 			'sort' => true,
 			'hierarchical' => true,
 			'args' => array( 'orderby' => 'term_order' ),
-			'rewrite' => array( 'slug' => 'group' )
+			'rewrite' => false //array( 'slug' => 'group' )
 		)
 	);
 }
@@ -1170,7 +1170,7 @@ function starkers_widgets_init() {
 		'name' => __( 'Sidebar', 'starkers' ),
 		'id' => 'primary-widget-area',
 		'description' => __( 'The primary sidebar widget area', 'starkers' ),
-		'before_widget' => '<li>',
+		'before_widget' => '<li class="sidebar_widget">',
 		'after_widget' => '</li>',
 		'before_title' => '<h3>',
 		'after_title' => '</h3>',
