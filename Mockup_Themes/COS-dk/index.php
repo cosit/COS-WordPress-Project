@@ -27,9 +27,6 @@ get_header(); ?>
 	<div style="clear:both;"></div>
 </div>
 
-
-
-<!-- Main box links for dept websites; e.g. "Undergraduate", "Graduate", "Research" -->
 <section id="main_links">
 	<div class="wrap">
 		<?php show_main_links(); ?>
@@ -40,27 +37,16 @@ get_header(); ?>
 <!-- Central content for dept home page - default shown is News + Events -->
 <section id="main_content">
 	<div class="wrap clearfix">
-		<div id="left_content">
-			<?php if ( is_active_sidebar( 'front-left-widget-area' ) ) : ?>
-				<?php dynamic_sidebar( 'front-left-widget-area' ); ?>
-			<?php endif; ?>
-			<?php // show_news(); ?>
-		</div>
+		<?php if ( is_active_sidebar( 'front-left-widget-area' ) ) : ?>
+			<?php dynamic_sidebar( 'front-left-widget-area' ); ?>
+		<?php endif; ?>
+		<?php // show_news(); ?>
 
-		<div id="right_content">
-			<?php if ( is_active_sidebar( 'front-right-widget-area' ) ) : ?>
-				<?php dynamic_sidebar( 'front-right-widget-area' ); ?>
-			<?php endif; ?>
+		<?php if ( is_active_sidebar( 'front-right-widget-area' ) ) : ?>
+			<?php dynamic_sidebar( 'front-right-widget-area' ); ?>
+		<?php endif; ?>
 
-			<?php // show_office_hours(); ?>
-			<?php // show_events(); ?>
-		</div>
-<!-- 		
-			
-	 -->
 	</div>
-
-
 </section>
  
 <!-- <?php // get_sidebar(); ?>  Sidebar is hidden on main page -->

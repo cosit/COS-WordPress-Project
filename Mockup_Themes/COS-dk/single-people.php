@@ -18,9 +18,9 @@ get_header(); ?>
 
 			<h1>People <span>&raquo;</span> <?php $title = preg_split('/,/', $post->post_title); echo $title[1] . ' ' . $title[0]; ?> </h1>
 				<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> >
-				<!--[if lt IE 8]> <?php show_person( get_the_ID(), true ); ?> <![endif]-->				
-				<!--[if gt IE 7]> <?php show_person( get_the_ID(), false ); ?> <![endif]-->			
-				<!--[if !IE]><!--> <?php show_person( get_the_ID(), false ); ?> <!--<![endif]--> 
+				<!--[if lt IE 9]> <?php show_person( get_the_ID(), true ); ?> <![endif]-->
+				<!--[if IE 9]><?php show_person( get_the_ID(), false ); ?> <![endif]-->
+				<!--[if !IE]><!--> <?php show_person( get_the_ID(), false ); ?> <!--<![endif]-->
 				
 					<footer>
 						<?php edit_post_link( __( 'Edit Person', 'starkers' ), '', '' ); ?>
@@ -32,11 +32,10 @@ get_header(); ?>
 		<?php people_nav(); ?>
 		<?php get_sidebar(); ?>
 	</div>
-
-</div>
 	
 <?php endwhile; ?>
-	</section>
+	</div>
+</section>
 
 <?php get_footer(); ?>
 

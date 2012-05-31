@@ -64,7 +64,7 @@
 			</div>
 		</div>
 
-		<h3 id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</h3>
+		<h3 id="copyright">© <?php echo date(Y);?> University of Central Florida, College of Sciences, All Rights Reserved</h3>
 	</section>
 
 </footer>
@@ -96,7 +96,7 @@
 			controlNav: true
 		});
 	} catch(err) {
-		console.log('flexslider.js not loaded.');
+		console.log('flexslider.js not loaded. shit.');
 	}
 
 	// Indicate people nav link
@@ -173,7 +173,7 @@
 
 	// Back to top button
 	var scrollToTop = function(){
-		$('html, body').animate({scrollTop: 0}, 'medium', 'easeInOutCubic');
+		$('html, body').animate({scrollTop: 0}, 'medium'/*, 'easeInOutCubic'*/);
 		return false;
 	};
 

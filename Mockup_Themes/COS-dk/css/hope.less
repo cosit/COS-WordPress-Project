@@ -16,10 +16,9 @@ html#ie {
 		background: url('img/bg.png') repeat;
 	}
 	#container {
-		min-height: 400px;
 		height: auto !important;
 		height: 100%;
-		margin-bottom: @mainFooterHeight + 25px;
+		margin-bottom: @mainFooterHeight + 400px;
 	}
 
 	#main_header {
@@ -120,11 +119,12 @@ html#ie {
 
 		ul.slides {
 			margin: 0 auto;
-			//li {display:none;}
+			li {display:none;}
 			li img {
 				width: 100%;
 				max-width: 1180px;
 				height: auto;
+				top: -200px;
 			}
 			li h2 {
 				color: @darkBlue;
@@ -153,12 +153,12 @@ html#ie {
 				p {top: 140px;}
 			}
 			li.slideBottom {
-				h2 {top: 235px;}
-				p {top: 275px; }
+				h2 {top: 260px;}
+				p {top: 300px; }
 			}
 			li.slideSpread {
 				h2 {top: 20px;}
-				p {top: 270px;}
+				p {top: 300px;}
 			}
 			.innerText {
 				position: absolute;
@@ -181,20 +181,11 @@ html#ie {
 		}
 	}
 
-	#contactContainer{
-		position: relative;
-		width: 1000px;
-		top: -340px;
-		right: -95px;
-		margin-left: auto;
-		margin-right:auto;
-	}
-
 	#contact {
 		position: absolute;
-		right: 70px;
+		right: 20px;
 		top: 15px;
-		width: 260px; // = 4 columns
+		width: 305px; // = 4 columns
 		height: auto;
 		background: @blueGray;
 		.rounded(8px);
@@ -212,7 +203,7 @@ html#ie {
 			text-transform: none;
 			font-weight: 300;
 			color: @blueGray;
-			span.contact_title {
+			span {
 				display: inline-block;
 				height: 30px;
 				line-height: 30px;
@@ -246,9 +237,9 @@ html#ie {
 				background: @offWhite url('img/search.png') 5px center no-repeat;
 				// border: 1px solid @lighterBlueGray;
 				border: none;
-				width: 90%;
+				width: 60%;
 				color: @lightBlueGray;
-				font-size: 10px;
+				font-size: 12px;
 				height: 14px;
 				.hSerifIt;
 				.drop-shadow(0,0,3px,0.3);
@@ -274,7 +265,6 @@ html#ie {
 			min-height: 42px;
 			li {
 				margin-left: 50px;
-				margin-top:3px;
 			}
 		}
 		span.contactIcon {
@@ -286,16 +276,10 @@ html#ie {
 			width: 32px;
 			height: 32px;
 		}
-
-		#contact_department { background: @lightBlueGray; }
-		#contact_phone    { background: @lightBlueGray; }	
-
 		#contact_department span { background: url('img/contact_icons.png') 0 0; }
 		#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 		#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 		#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
-
-		#contact_email li {margin-top:12px;}
 
 		#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 		#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -308,14 +292,14 @@ html#ie {
 	}
 
 	#main_links {
-		height: 100px;
+		height: 80px;
 		padding: 10px 0;
 		margin-bottom: 10px;
 		.inner-shadow(0, 0, 10px, 0.3);
 
 		div.wrap>div {
 			.column(4);
-			height: 100px;
+			height: 80px;
 			background-size: 100% auto;
 			h2 {
 				display: block;
@@ -351,7 +335,7 @@ html#ie {
 
 		h1 {
 			.hSerif;
-			font-size: 32px;
+			font-size: 36px;
 			color: @darkBlue;
 			padding: 10px 0;
 
@@ -386,6 +370,7 @@ html#ie {
 		p, li {
 			font-size: 12px;
 			color: @darkBlue;
+			list-style: disc;
 		}
 		a {
 			color: @lightBlueGray;
@@ -440,7 +425,7 @@ html#ie {
 				border-top: 1px dashed @lightBlueGray;
 				padding: 0;
 				color: @darkBlue;
-				margin-bottom: 10px;
+				margin-bottom: 20px;
 				
 				h2 {
 					font-size: 18px;
@@ -501,6 +486,8 @@ html#ie {
 				}
 			}
 			.eventDate {
+				max-width: 50px;
+				text-align: center;
 				display: inline-block;
 				position: absolute;
 				top: 5px;
@@ -743,14 +730,15 @@ html#ie {
 		}
 	}
 
-
+	body.home #main_footer {
+		margin-top: 20px !important;
+	}
 	#main_footer {
-		height: @mainFooterHeight + 100%;
-		margin-top: -@mainFooterHeight;
+		margin-top: 0;
 	}
 
 	#widget_container {
-		min-height:@widgetsHeight;	
+		height:@widgetsHeight;	
 		margin: 0 auto;
 		width:960px;
 		.widget li {
@@ -760,7 +748,7 @@ html#ie {
 	}
 
 	#widgets {
-		min-height: @widgetsHeight;
+		height: @widgetsHeight;
 		overflow: hidden;
 		background: @blueGray url('img/blueGray_bg.png') repeat;
 		color: @offWhite;
@@ -903,7 +891,7 @@ html#ie {
 			background: transparent url('img/search.png') 10px center no-repeat;
 			-webkit-appearance: textfield;
 			.hSansSerif;
-			font-size: 14px;
+			font-size: 16px;
 			border: 1px solid @lighterBlueGray;
 			padding: 6px 38px 6px 33px;
 			.rounded(5px);
@@ -944,15 +932,10 @@ html#ie {
 	.sort_people { display: none; }
 	#people_list {
 		ul.personBasics {
-			margin-bottom:5px;
-
-			h2 {margin-top: 0; padding-top:0;}
-
 			h3 { // why the hell does IE add empty h3 tags???
 				display: none;
 			}
 			>li {
-				list-style: disc;
 				font-weight: bold;
 				font-size: 14px;
 				&.person_research {
