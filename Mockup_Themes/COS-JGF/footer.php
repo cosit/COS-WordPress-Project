@@ -8,39 +8,45 @@
  */
 ?>
 	<div id="backToTop">
-		<a href="top"></a>
+		<a href="#top"></a>
 	</div>
 </div> <!-- /container -->
 
 
-
 <footer id="main_footer">
 	<!-- Bottom widgets -->
+
 	<section id="widgets">
 		<div id="widget_container">
-		<div id="first-footer-widget-area" class="widget">
-			<?php if ( is_active_sidebar( 'first-footer-widget-area' ) ) : ?>
-				<?php dynamic_sidebar( 'first-footer-widget-area' ); ?>
-			<?php endif; ?>
-		</div>
+			<div id="first-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'first-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'first-footer-widget-area' ); ?>
+				<?php endif; ?>
+				
+			</div>
 
-		<div id="second-footer-widget-area" class="widget">
-			<?php if ( is_active_sidebar( 'second-footer-widget-area' ) ) : ?>
-				<?php dynamic_sidebar( 'second-footer-widget-area' ); ?>
-			<?php endif; ?>
-		</div>
+			<div id="second-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'second-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'second-footer-widget-area' ); ?>
+				<?php endif; ?>
+			</div>
 
-		<div id="third-footer-widget-area" class="widget">
-			<?php if ( is_active_sidebar( 'third-footer-widget-area' ) ) : ?>
-				<?php dynamic_sidebar( 'third-footer-widget-area' ); ?>
-			<?php endif; ?>
+			<div id="third-footer-widget-area" class="widget">
+				<?php if ( is_active_sidebar( 'third-footer-widget-area' ) ) : ?>
+					<?php dynamic_sidebar( 'third-footer-widget-area' ); ?>
+				<?php endif; ?>
+			</div>
 		</div>
-	</div>
 	</section>
-<div style="clear-both"></div>
 
 	<section id="the_footer">
 		<div class="wrap">
+			
+		<?php 
+			// get_sidebar( 'footer' );
+			show_people_cats(); /* Important: do not remove  */
+		?>
+
 			<div class="dept_list">
 				<h1><span>UCF</span> College of Sciences</h1>
 				<ul>
@@ -58,7 +64,7 @@
 			</div>
 		</div>
 
-		<h3 id="copyright">© 2012 University of Central Florida, College of Sciences, All Rights Reserved</h3>
+		<h3 id="copyright">© <?php echo date(Y);?> University of Central Florida, College of Sciences, All Rights Reserved</h3>
 	</section>
 
 </footer>
@@ -82,21 +88,41 @@
 
 	// Slider
 	try{
-		$('.sliderItems').flexslider();
+		$('.sliderItems').flexslider({
+			animation: "fade",
+			slideshow: "true",
+			slideshowSpeed: 7000,
+			directionNav: true,
+			controlNav: true
+		});
 	} catch(err) {
-		console.log('flexslider.js not loaded.');
+		console.log('flexslider.js not loaded. shit.');
 	}
 
 	// Indicate people nav link
-	$('#main_header nav>ul>li').has('a:contains("People")').addClass('peopleNav');
+	$('#main_header nav>ul>li>a:contains("People")').parent().addClass('peopleNav');
 
     // Display people categories in nav menu
-	$('.peopleNav').append( $('#people_cats').hide() );
+	$('.peopleNav').append( $('#people_cats') );
 
 	// Main nav links and dropdown menu
 	$('#main_header nav>ul>li').hover(
 		function(){
-			$(this).find('ul.children').slideDown('fast').show(); 
+			$(this).children('ul.children').slideDown('fast').show(); 
+			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+		},
+		function(){ 
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).children('ul.children').slideUp('fast');
+				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
+			} else {
+				$(this).children('ul.children').slideUp('fast');
+			}
+		}
+	);
+	$('#main_header nav>ul>li>ul>li').hover(
+		function(){
+			$(this).find('ul.children').slideDown('fast').show();
 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
@@ -147,7 +173,7 @@
 
 	// Back to top button
 	var scrollToTop = function(){
-		$('html, body').animate({scrollTop: 0}, 'medium', 'easeInOutCubic');
+		$('html, body').animate({scrollTop: 0}, 'medium'/*, 'easeInOutCubic'*/);
 		return false;
 	};
 
@@ -160,16 +186,24 @@
 		}
 	});
 
-	// Breadcrumb hover 
-	// $(window).resize( function(){
-	// 	var currentWidth = $(window).width();
-	// 	var leftMargin = ($(window).width() - 960) / 2;
-	// 	$('#breadcrumbs a:first-child').css({'margin-left': leftMargin });
-	// });
-	$('#breadcrumbs a').hover(
-		function(){$(this).next().addClass('breadcrumbHover')},
-		function(){$(this).next().removeClass('breadcrumbHover')}
-	);
+	// Parent finding for nav li elements 
+	$('nav li').has('.children').addClass('parent');
+
+	// Page nav expand
+	$('.pageNav li.parent').prepend('<span class="expand"><a href="#">+</a></span>');
+	$('.pageNav .expand>a').click( function(){
+		$this = $(this);
+		$children = $this.parent().parent().find('.children');
+		if($children.is(':visible')){
+			$this.text('+');
+			$children.hide();
+		} else {
+			$this.text('-');
+			$children.show();
+		};
+	});
+
+
 
 	// AJAX functions for displaying full person info
 	// $.ajaxSetup ({  
@@ -234,8 +268,77 @@
 		console.log('clocked');
 	});
 
-	// Custom Scrollbar
-	// $('.widget').tinyscrollbar();
+
+	// Replace title of page if longer one already exists in post
+	(function(){
+		var oldTitle = $('.innerContent>article>header>h1');
+		var newTitle = oldTitle.parent().next('h1');
+
+		if( newTitle.length > 0 ){ oldTitle.replaceWith(newTitle); }
+	})();
+
+	/**
+	 * jQuery.fn.sortElements
+	 * --------------
+	 * @param Function comparator:
+	 *   Exactly the same behaviour as [1,2,3].sort(comparator)
+	 *   
+	 * @param Function getSortable
+	 *   A function that should return the element that is
+	 *   to be sorted. The comparator will run on the
+	 *   current collection, but you may want the actual
+	 *   resulting sort to occur on a parent or another
+	 *   associated element.
+	 *   
+	 *   E.g. $('td').sortElements(comparator, function(){
+	 *      return this.parentNode; 
+	 *   })
+	 *   
+	 *   The <td>'s parent (<tr>) will be sorted instead
+	 *   of the <td> itself.
+	 */
+	jQuery.fn.sortElements = (function(){
+	    var sort = [].sort;
+	    return function(comparator, getSortable) {
+	        getSortable = getSortable || function(){return this;};
+	        var placements = this.map(function(){
+	            var sortElement = getSortable.call(this),
+	                parentNode = sortElement.parentNode,
+	 
+	                // Since the element itself will change position, we have
+	                // to have some way of storing its original position in
+	                // the DOM. The easiest way is to have a 'flag' node:
+	                nextSibling = parentNode.insertBefore(
+	                    document.createTextNode(''),
+	                    sortElement.nextSibling
+	                );
+	 
+	            return function() {
+	                if (parentNode === this) {
+	                    throw new Error(
+	                        "You can't sort elements if any one is a descendant of another."
+	                    );
+	                }
+	 
+	                // Insert before flag:
+	                parentNode.insertBefore(this, nextSibling);
+	                // Remove flag:
+	                parentNode.removeChild(nextSibling);
+	            };
+	        });
+	        return sort.call(this, comparator).each(function(i){
+	            placements[i].call(getSortable.call(this));
+	        });
+	    };
+	})();
+
+	$('.sort_people').click(function(){
+		$('#people_list>.person').sortElements(function(a, b){
+	    	return $(a).find('ul.personBasics>h2>a').text() > $(b).find('ul.personBasics>h2>a').text() ? 1 : -1;
+		});
+	});
+
+
 </script>
 
 </body>

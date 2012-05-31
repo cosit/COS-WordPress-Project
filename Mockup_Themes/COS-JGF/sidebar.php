@@ -24,14 +24,14 @@
 			</li>
 
 			<li>
-				<h3><?php _e( 'Archives', 'starkers' ); ?></h3>
+				<h2><?php _e( 'Archives', 'starkers' ); ?></h2>
 				<ul>
 					<?php wp_get_archives( 'type=monthly' ); ?>
 				</ul>
 			</li>
 
 			<li>
-				<h3><?php _e( 'Meta', 'starkers' ); ?></h3>
+				<h2><?php _e( 'Meta', 'starkers' ); ?></h2>
 				<ul>
 					<?php wp_register(); ?>
 					<li><?php wp_loginout(); ?></li>

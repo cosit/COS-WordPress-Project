@@ -30,7 +30,10 @@
 				</footer>
 			</article>
 		</div>
-<?php page_nav(); ?>
+		<div id="sidebar">
+			<?php page_nav(); ?>
+			<?php get_sidebar(); ?>
+		</div>
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
