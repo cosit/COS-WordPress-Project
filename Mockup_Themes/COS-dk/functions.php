@@ -35,6 +35,10 @@ function load_custom_script() {
     wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
     wp_enqueue_script('jquery.ui');
 
+    // #TABFIX
+    wp_register_script('tabcontent', get_bloginfo('template_directory').'/js/tabcontent.js');
+    wp_enqueue_script('tabcontent');
+
 }
 
 function load_custom_style() {
@@ -530,14 +534,28 @@ function person_toolbar( $person ){
 	echo '<ul class="person_toolbar">';
 	echo '<li><a href="mailto:'.$person['email'].'">'.$msg['email'].'</a></li>';
 	echo '<li><a href="'.$person['link'].'">'.$msg['link'].'</a></li>';
-	//echo '<li><a href="#">'.$msg['quickview'].'</a></li>';
+	echo '<li><a class="peopleModalView" title="'.$person['id'].'" href="#people_modal_person_'.$person['id'].'">'.$msg['quickview'].'</a></li>';
 	echo '</ul>';
+
+	
+}
+
+function people_modal( $person ) {
+	?>
+	<div id="people_modal_person_<?php echo $person['id']?>" class="people_modal">
+		<div class="people_modal_bg">	</div>
+		<div class="people_modal_person"> 
+			<h2><?php echo $person['first_name'] . ' ' . $person['last_name']; ?></h2>
+		</div>
+	</div>
+	<?php
 }
 
 function show_person( $id, $is_ie = false ) {
 
-	// All fields beginning with 'p_' are default fields that don't appear as tabular data
+	
 	$person = array(
+		// All fields beginning with 'p_' are default fields that don't appear as tabular data
 		'p_first_name'  => get_field('first_name'),
 		'p_last_name'   => get_field('last_name'),
 		'p_photo'       => get_field('headshot'),
@@ -547,9 +565,14 @@ function show_person( $id, $is_ie = false ) {
 		'p_position'    => get_field('position'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
+
+		// Tabular data - do not delete any, even if they do not exist
 		'biography' => get_field('biography'),
 		'research'  => get_field('research_areas'),
 		'misc'      => get_field('miscellaneous'),
+		'highlights' => get_field('highlights'),
+		'publications' => get_field('publications'),
+		'syllabi' => get_field('syllabi'),
 
 		// Office Hours
 		'p_office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
@@ -563,53 +586,123 @@ function show_person( $id, $is_ie = false ) {
 
 	$office_hours = get_hrs( $person );
 
-	// Create array of tabs to display (and populate them), only if content exists
-	if( !$is_ie ){
-		$contentTabs = '<ul class="personTabs">';
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
-			}
-		}
-		// Office Hours
-		
-		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
-		if( $person['p_office_hours_private'] ){
-			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
-		} else {
-			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
-		}
+// #TABFIX BEGIN ==================================
 
-		$contentTabs .= '</ul>';
-		$content .= '</ul>';
-	} else {
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
-			}
-		}
-	}
+// Create array of tabs to display (and populate them), only if content exists
 
-	echo <<<PERSON
-	<article class="person clearfix">
-		<figure><img src="{$person['p_photo']}"/></figure>
-		<ul class="personBasics">
-			<li class="person_position">{$person['p_position']}
-			<li class="person_location">{$person['p_location']}
-			<li class="person_phone">{$person['p_phone']}
-			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
-			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
+                $contentTabs = '<ul class="customTabs">';
+                $content = '';
+                $contentCounter = '0';
 
-		</ul>
-	</article>
+                foreach  ($person as $field => $value ) {
+                                if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+                                                $contentTabs .= '<li><a href="#" rel="'.$field.'"';
+                                                                if($contentCounter == '0'){
+                                                                                $contentTabs .= ' class="selected"';
+                                                                                $contentCounter = '1';   
+                                                                } 
+                                                $contentTabs .= '>' . $field . '</a></li>';
 
-	{$contentTabs}
-	{$content}
+                                                $content     .= '<div id="'. $field . '" class="tabcontent">' . $value . '</div>';
+                                }
+                }
+                // Office Hours
+                
+                $contentTabs .= '<li><a href="#" rel="person_office_hrs">Office Hours</a></li>';
+                if( $person['p_office_hours_private'] ){
+                                $office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
+                                $content .= '<div id="person_office_hrs" class="tabcontent"><h2>' . $office_hours_private_msg . '</h2></div>';
+                } else {
+                                $content .= '<div id="person_office_hrs" class="tabcontent">' . $office_hours . '</div>';
+                }
+
+                $contentTabs .= '</ul>';
+                //$content .= '</ul>';
+
+
+                echo <<<PERSON
+                <article class="person clearfix">
+                                <figure><img src="{$person['p_photo']}"/></figure>
+                                <ul class="personBasics">
+                                                <li class="person_position">{$person['p_position']}
+                                                <li class="person_location">{$person['p_location']}
+                                                <li class="person_phone">{$person['p_phone']}
+                                                <li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
+                                                <li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
+
+                                </ul>
+                </article>
+
+                <div id="individualTabs" class="indentmenu">
+                                {$contentTabs}
+                                <br style="clear: left" />
+                </div>
+                <div class="tabcontentstyle" >
+                                {$content}
+                </div>
+                <script type="text/javascript">
+
+                var mytabs=new ddtabcontent("individualTabs")
+                mytabs.setpersist(false)
+                mytabs.setselectedClassTarget("link")
+                mytabs.init()
+
+                </script>
+                
 PERSON;
+
+// #TABFIX END ==================================
+
+// OLD CONTENT
+
+// 	// Create array of tabs to display (and populate them), only if content exists
+// 	if( !$is_ie ){
+// 		$contentTabs = '<ul class="personTabs">';
+// 		$content = '<ul class="personContent">';
+// 		foreach  ($person as $field => $value ) {
+// 			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+// 				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
+// 				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
+// 			}
+// 		}
+// 		// Office Hours
+		
+// 		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
+// 		if( $person['p_office_hours_private'] ){
+// 			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
+// 			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
+// 		} else {
+// 			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
+// 		}
+
+// 		$contentTabs .= '</ul>';
+// 		$content .= '</ul>';
+// 	} else {
+// 		$content = '<ul class="personContent">';
+// 		foreach  ($person as $field => $value ) {
+// 			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+// 				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
+// 			}
+// 		}
+// 	}
+
+// 	echo <<<PERSON
+// 	<article class="person clearfix">
+// 		<figure><img src="{$person['p_photo']}"/></figure>
+// 		<ul class="personBasics">
+// 			<li class="person_position">{$person['p_position']}
+// 			<li class="person_location">{$person['p_location']}
+// 			<li class="person_phone">{$person['p_phone']}
+// 			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
+// 			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
+
+// 		</ul>
+// 	</article>
+
+// 	{$contentTabs}
+// 	{$content}
+// PERSON;
+
 }
 
 // Displays list of people based on category (default: all)
@@ -726,6 +819,7 @@ function show_office_hours( $is_sidebar=true ) {
 		$thisID = get_the_ID();
 
 		$person = array(
+			'id' => $thisID,
 			'first_name'  => get_field('first_name'),
 			'last_name'   => get_field('last_name'),
 			'photo'       => get_field('headshot'),
@@ -1059,11 +1153,10 @@ function breadcrumbs() {
   }
 } 
 
-function show_news( $cat, $items_to_show=3 ) { ?>
+function show_news( $cat, $items_to_show ) { ?>
 	<div class="news">
  		<!-- <h1>News</h1> -->
 		<?php 
-		echo $cat . ' - ' . $items_to_show;
 
 		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
@@ -1085,7 +1178,7 @@ function show_news( $cat, $items_to_show=3 ) { ?>
 			<?php endif; ?>
 	</div> <?php
 }
-add_action('show_news', 'show_news');
+add_action( 'show_news', 'show_news', 10, 2 );
 
 function show_events() {?>
 	

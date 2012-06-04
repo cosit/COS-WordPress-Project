@@ -69,6 +69,8 @@
 
 </footer>
 
+
+
 <?php
 	/* Always have wp_footer() just before the closing </body>
 	 * tag of your theme, or you will break many plugins, which
@@ -77,6 +79,10 @@
 
 	wp_footer();
 ?>
+
+<script type="text/javascript">
+
+</script>
 
 <!-- All of our jQuery scripts go here -->
 <script type="text/javascript">
@@ -256,7 +262,7 @@
 	$('.innerContent a').parent('li').addClass('link www');
 	$('a[href$=\\.pdf], a[href$=\\.PDF]').parent('li').removeClass('www').addClass('pdf');
 	$('a[href$=\\.doc], a[href$=\\.DOC]').parent('li').removeClass('www').addClass('doc');
-	$('.personBasics li, .personTabs li').removeClass('link www pdf doc');
+	$('.personBasics li, .personTabs li, .customTabs li').removeClass('link www pdf doc');
 
 	// Disable same-page clicking
 	$('.current_page_item>a').contents().unwrap().wrap('<span class="unclickable"></span>');

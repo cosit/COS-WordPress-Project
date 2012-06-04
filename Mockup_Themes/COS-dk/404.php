@@ -9,13 +9,19 @@
 
 get_header(); ?>
 
-	<h1><?php _e( 'Not Found', 'starkers' ); ?></h1>
-		<p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'starkers' ); ?></p>
-		<?php get_search_form(); ?>
+<section id="main_content">
+	<div class="wrap clearfix">
+	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
+	<?php get_search_form(); ?>
+		<h1><?php _e( 'Not Found', 'starkers' ); ?></h1>
+			<h2><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'starkers' ); ?></h2>
 
-	<script type="text/javascript">
-		// focus on search field after it has loaded
-		document.getElementById('s') && document.getElementById('s').focus();
-	</script>
+
+		<script type="text/javascript">
+			// focus on search field after it has loaded
+			document.getElementById('s') && document.getElementById('s').focus();
+		</script>
+	</div>
+</section>
 
 <?php get_footer(); ?>

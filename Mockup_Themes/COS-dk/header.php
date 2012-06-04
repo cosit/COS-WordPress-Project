@@ -16,7 +16,7 @@
 <head>
 
 <!-- ADD UCF HEADER -->
-<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
+<!-- <script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script> -->
 <!-- END UCF HEADER -->
 
 <meta charset="<?php bloginfo( 'charset' ); ?>" />

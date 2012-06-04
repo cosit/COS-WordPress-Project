@@ -979,6 +979,76 @@ section {
 			font-size: 12px;
 			line-height: 16px;
 		}
+
+		// #TABFIX BEGIN ==================================
+		.indentmenu{
+	        font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	        width: 100%; /*leave this value as is in most cases*/
+	        ul li:before{ content:'';}
+		}
+		.indentmenu ul{
+		        background: #E6E6E6;
+		        border-right: 1px solid #F2F2F2;
+		        border-left: 1px solid #CDCDCD;
+		        border-bottom: 3px solid #CDCDCD;
+		        color: #22282D;
+		        margin: 10px 0 0 0;
+		        padding: 0;
+		        float: left;
+		        font-size: 16px;
+		        font-style: normal !important;
+		        text-decoration: none;
+		        text-transform: uppercase;
+		        width: 100%;
+		}
+
+		.indentmenu ul li{
+		        display: inline;
+		        color: #6C747A;
+		        line-height: 30px;
+		}
+		.indentmenu ul li a{
+		        float: left;
+		        color: #6C747A;
+		        padding: 10px 11px;
+		        font-size: 16px;
+		        text-decoration: none;
+		        border-left: 1px solid #CDCDCD;
+		        border-right: 1px solid #F2F2F2; 
+		}
+		.indentmenu ul li a:hover{ text-decoration: none; background-color: #CDCDCD;}
+		.indentmenu ul li a:visited{
+		        text-decoration: none;
+		        color: #6C747A;
+		}
+		.indentmenu ul li a.selected{
+		        background: #CDCDCD;
+		        float: left;
+		        color: #6C747A;
+		        padding: 10px 11px;
+		        text-decoration: none;
+		        border-left: 1px solid #CDCDCD;
+		        border-right: 1px solid #F2F2F2; 
+		        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+		}              
+		.tabcontentstyle{ /*style of tab content oontainer*/
+		        margin-bottom: 1em;
+		        background: #F2F2F2;
+		        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+		        border: 1px solid #ECECEC; 
+		        padding: 20px;
+		        font-size: 12px;
+		        line-height: 16px;
+		        color: #22282D;
+		}              
+		.tabcontent{      display:none;     }
+		@media print {
+		        .tabcontent {
+		        display:block !important;
+		        }
+		}
+		// #TABFIX END ==================================
+
 		ul>li, ol>li {
 			margin-bottom: 5px;
 		}
@@ -991,6 +1061,8 @@ section {
 				color: @blueGray;
 			}
 		}
+
+
 		/* LINK ICON CLASSES */
 		ul>li.link:before {
 			content: '';
@@ -1523,6 +1595,47 @@ section {
 	}
 }
 
+.people_modal_person {
+	display: none;
+	position: absolute;
+}
+.people_modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	height: 100%;
+
+	.people_modal_bg {
+		top: 0; left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 101;
+		background: black;
+		.opacity(0);
+	}
+
+	.people_modal_person {
+		position: absolute;
+		z-index: 102;
+		width: 40%;
+		height: 100px;
+		padding: 10px;
+		top: 20%;
+		left: 30%;
+		background: white;
+	}
+
+	&:target {
+		display: block;
+		.people_modal_bg {
+			.opacity(0.6);
+		}
+		
+	}
+}
 
 
 /* CLASSES (for jQuery effects, etc.) */
