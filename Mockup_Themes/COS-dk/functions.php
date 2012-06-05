@@ -35,10 +35,6 @@ function load_custom_script() {
     wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
     wp_enqueue_script('jquery.ui');
 
-    // #TABFIX
-    wp_register_script('tabcontent', get_bloginfo('template_directory').'/js/tabcontent.js');
-    wp_enqueue_script('tabcontent');
-
 }
 
 function load_custom_style() {
@@ -573,6 +569,7 @@ function show_person( $id, $is_ie = false ) {
 		'highlights' => get_field('highlights'),
 		'publications' => get_field('publications'),
 		'syllabi' => get_field('syllabi'),
+		'courses' => get_field('courses'),
 
 		// Office Hours
 		'p_office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
@@ -586,122 +583,53 @@ function show_person( $id, $is_ie = false ) {
 
 	$office_hours = get_hrs( $person );
 
-// #TABFIX BEGIN ==================================
-
-// Create array of tabs to display (and populate them), only if content exists
-
-                $contentTabs = '<ul class="customTabs">';
-                $content = '';
-                $contentCounter = '0';
-
-                foreach  ($person as $field => $value ) {
-                                if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-                                                $contentTabs .= '<li><a href="#" rel="'.$field.'"';
-                                                                if($contentCounter == '0'){
-                                                                                $contentTabs .= ' class="selected"';
-                                                                                $contentCounter = '1';   
-                                                                } 
-                                                $contentTabs .= '>' . $field . '</a></li>';
-
-                                                $content     .= '<div id="'. $field . '" class="tabcontent">' . $value . '</div>';
-                                }
-                }
-                // Office Hours
-                
-                $contentTabs .= '<li><a href="#" rel="person_office_hrs">Office Hours</a></li>';
-                if( $person['p_office_hours_private'] ){
-                                $office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-                                $content .= '<div id="person_office_hrs" class="tabcontent"><h2>' . $office_hours_private_msg . '</h2></div>';
-                } else {
-                                $content .= '<div id="person_office_hrs" class="tabcontent">' . $office_hours . '</div>';
-                }
-
-                $contentTabs .= '</ul>';
-                //$content .= '</ul>';
-
-
-                echo <<<PERSON
-                <article class="person clearfix">
-                                <figure><img src="{$person['p_photo']}"/></figure>
-                                <ul class="personBasics">
-                                                <li class="person_position">{$person['p_position']}
-                                                <li class="person_location">{$person['p_location']}
-                                                <li class="person_phone">{$person['p_phone']}
-                                                <li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
-                                                <li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
-
-                                </ul>
-                </article>
-
-                <div id="individualTabs" class="indentmenu">
-                                {$contentTabs}
-                                <br style="clear: left" />
-                </div>
-                <div class="tabcontentstyle" >
-                                {$content}
-                </div>
-                <script type="text/javascript">
-
-                var mytabs=new ddtabcontent("individualTabs")
-                mytabs.setpersist(false)
-                mytabs.setselectedClassTarget("link")
-                mytabs.init()
-
-                </script>
-                
-PERSON;
-
-// #TABFIX END ==================================
-
-// OLD CONTENT
-
-// 	// Create array of tabs to display (and populate them), only if content exists
-// 	if( !$is_ie ){
-// 		$contentTabs = '<ul class="personTabs">';
-// 		$content = '<ul class="personContent">';
-// 		foreach  ($person as $field => $value ) {
-// 			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-// 				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-// 				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
-// 			}
-// 		}
-// 		// Office Hours
+	// Create array of tabs to display (and populate them), only if content exists
+	if( !$is_ie ){
+		$contentTabs = '<ul class="personTabs">';
+		$content = '<ul class="personContent">';
+		foreach  ($person as $field => $value ) {
+			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
+				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
+			}
+		}
+		// Office Hours
 		
-// 		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
-// 		if( $person['p_office_hours_private'] ){
-// 			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-// 			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
-// 		} else {
-// 			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
-// 		}
+		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
+		if( $person['p_office_hours_private'] ){
+			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
+			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
+		} else {
+			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
+		}
 
-// 		$contentTabs .= '</ul>';
-// 		$content .= '</ul>';
-// 	} else {
-// 		$content = '<ul class="personContent">';
-// 		foreach  ($person as $field => $value ) {
-// 			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-// 				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
-// 			}
-// 		}
-// 	}
+		$contentTabs .= '</ul>';
+		$content .= '</ul>';
+	} else {
+		$content = '<ul class="personContent">';
+		foreach  ($person as $field => $value ) {
+			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
+			}
+		}
+	}
 
-// 	echo <<<PERSON
-// 	<article class="person clearfix">
-// 		<figure><img src="{$person['p_photo']}"/></figure>
-// 		<ul class="personBasics">
-// 			<li class="person_position">{$person['p_position']}
-// 			<li class="person_location">{$person['p_location']}
-// 			<li class="person_phone">{$person['p_phone']}
-// 			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
-// 			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
+	echo <<<PERSON
+	<article class="person clearfix">
+		<figure><img src="{$person['p_photo']}"/></figure>
+		<ul class="personBasics">
+			<li class="person_position">{$person['p_position']}
+			<li class="person_location">{$person['p_location']}
+			<li class="person_phone">{$person['p_phone']}
+			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
+			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
 
-// 		</ul>
-// 	</article>
+		</ul>
+	</article>
 
-// 	{$contentTabs}
-// 	{$content}
-// PERSON;
+	{$contentTabs}
+	{$content}
+PERSON;
 
 }
 
@@ -784,7 +712,7 @@ PEOPLE;
 	echo '</div>';
 }
 
-//Shortcode for displaying all people
+//Shortcode for displaying all people - NOT NECESSARY ANYMORE
 add_shortcode('show_people', 'show_people');
 
 function show_office_hours( $is_sidebar=true ) {
@@ -935,13 +863,13 @@ function get_hrs( $person ){
 	$connector = "&nbsp;to&nbsp;";
 	$separator = "</li><li>";
 	$days = array('mon'=>'Monday', 'tue'=>'Tuesday', 'wed'=>'Wednesday', 'thu'=>'Thursday', 'fri'=>'Friday',);
-	$hours = '';
+	$hours = '<ul>';
 
 	foreach( $days as $day => $dayTitle ){
 		$office_hours_today = 'p_office_hours_'.$day;
 		
-		$hours .= '<h2>' . $dayTitle . '</h2>';
-		$hours .= '<p><ul><li>';
+		$hours .= '<li><h2>' . $dayTitle . '</h2>';
+		$hours .= '<ul><li>';
 
 		if( is_array($person[$office_hours_today]) ){
 			foreach( $person[$office_hours_today] as $hour ){
@@ -955,8 +883,10 @@ function get_hrs( $person ){
 			$hours .= '<em>' . $absent_msg . '</em>';
 		}
 		
-		$hours .= '</li></ul></p>';
+		$hours .= '</li></ul></li>';
 	}
+
+	$hours .= '</ul>';
 
 	return $hours;
 }
@@ -988,16 +918,24 @@ function show_contact_area(){
 	query_posts( $contactArgs );
 
 	if(have_posts()) : while (have_posts()) : the_post();			
-		//Grab the Post ID for the Custom Fields Function			
+
 		$thisID = get_the_ID();
-		
-		//Grab the Custom Field info from the HomeContact CPT
-		//The second variable in the function is whatever you named your variables
+
+		// Parse multiple email addresses
+		$emails_array = explode("\n", trim(get_field('email')));
+		$emails_string = '';
+
+		foreach ($emails_array as &$email) {
+			$email = trim($email);
+			$email = '<a href="mailto:'.$email.'">'.$email.'</a>';
+		}
+
+		$emails_array = implode("\n", $emails_array);
+
 		$contact = array(
 			'dept' => get_field('dept'),
 			'address'    => get_field('address'),
-			'email'      => '<a href="mailto:'.get_field('email').
-				'">'.get_field('email').'</a>',
+			'email'      => $emails_array,
 			'fax'        => 'F: ' . get_field('fax'),
 			'phone'      => 'P: ' . get_field('phone'),
 		);

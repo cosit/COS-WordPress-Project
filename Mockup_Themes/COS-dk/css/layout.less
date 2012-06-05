@@ -591,7 +591,7 @@ section {
 	#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 	#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 	#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
-	#contact_email li { margin-top: 12px; }
+	// #contact_email li { margin-top: 12px; } // Disabled due to multiple emails
 
 	#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 	#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -979,76 +979,6 @@ section {
 			font-size: 12px;
 			line-height: 16px;
 		}
-
-		// #TABFIX BEGIN ==================================
-		.indentmenu{
-	        font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-	        width: 100%; /*leave this value as is in most cases*/
-	        ul li:before{ content:'';}
-		}
-		.indentmenu ul{
-		        background: #E6E6E6;
-		        border-right: 1px solid #F2F2F2;
-		        border-left: 1px solid #CDCDCD;
-		        border-bottom: 3px solid #CDCDCD;
-		        color: #22282D;
-		        margin: 10px 0 0 0;
-		        padding: 0;
-		        float: left;
-		        font-size: 16px;
-		        font-style: normal !important;
-		        text-decoration: none;
-		        text-transform: uppercase;
-		        width: 100%;
-		}
-
-		.indentmenu ul li{
-		        display: inline;
-		        color: #6C747A;
-		        line-height: 30px;
-		}
-		.indentmenu ul li a{
-		        float: left;
-		        color: #6C747A;
-		        padding: 10px 11px;
-		        font-size: 16px;
-		        text-decoration: none;
-		        border-left: 1px solid #CDCDCD;
-		        border-right: 1px solid #F2F2F2; 
-		}
-		.indentmenu ul li a:hover{ text-decoration: none; background-color: #CDCDCD;}
-		.indentmenu ul li a:visited{
-		        text-decoration: none;
-		        color: #6C747A;
-		}
-		.indentmenu ul li a.selected{
-		        background: #CDCDCD;
-		        float: left;
-		        color: #6C747A;
-		        padding: 10px 11px;
-		        text-decoration: none;
-		        border-left: 1px solid #CDCDCD;
-		        border-right: 1px solid #F2F2F2; 
-		        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-		}              
-		.tabcontentstyle{ /*style of tab content oontainer*/
-		        margin-bottom: 1em;
-		        background: #F2F2F2;
-		        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-		        border: 1px solid #ECECEC; 
-		        padding: 20px;
-		        font-size: 12px;
-		        line-height: 16px;
-		        color: #22282D;
-		}              
-		.tabcontent{      display:none;     }
-		@media print {
-		        .tabcontent {
-		        display:block !important;
-		        }
-		}
-		// #TABFIX END ==================================
-
 		ul>li, ol>li {
 			margin-bottom: 5px;
 		}
@@ -1589,6 +1519,44 @@ section {
 					position: absolute;
 					margin-left: -15px;
 					color: @blueGray;
+				}
+			}
+		}
+		li#person_office_hrs {
+			padding: 0;
+			margin: 0;
+			>ul {
+				margin: 0;
+				>li {
+					margin: 10px 0.5%;
+					display: inline-block;
+					width: 19%;
+					height: 200px;
+					&:before { content: ""; margin: 0;}
+					vertical-align: text-top;
+					text-align: center;
+					background: darken(@offWhite, 10%);
+
+					h2 {
+						text-transform: uppercase;
+						.hSerif;
+						font-size: 16px;
+						background: @darkBlue;
+						padding: 5px 0;
+						color: @offWhite;
+					}
+					ul {
+						margin: 0;
+						padding: 5px;
+					}
+					li {
+						margin: 0;
+						padding: 0;
+						&:before { content: ""; margin: 0;}
+						text-align: center;
+						width: 100%;
+						margin-bottom: 5px;
+					}
 				}
 			}
 		}
