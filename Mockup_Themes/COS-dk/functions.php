@@ -19,9 +19,9 @@ add_filter('widget_text', 'do_shortcode');
 
 function load_custom_script() {
 
-    wp_deregister_script('jquery');
-    wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
-    wp_enqueue_script('jquery');
+    // wp_deregister_script('jquery');
+    // wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
+    // wp_enqueue_script('jquery');
 
     wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
     wp_enqueue_script('jquery.flexslider');
@@ -141,7 +141,7 @@ function page_nav( $pageID = 0 ){
 		
 	}
 
-	echo '<nav class="pageNav"><h2><a href="'.$parent.'">'. $title . '</a></h2><ul>';
+	echo '<nav class="pageNav" id="page_nav"><h2><a href="'.$parent.'">'. $title . '</a></h2><ul>';
 	echo $children;
 	echo '</ul>';
 
@@ -1087,7 +1087,7 @@ function breadcrumbs() {
       if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
     }
  
-    echo '</div>';
+    echo '<a class="mobile_menu" href="#page_nav">=</a></div>';
   }
 } 
 
@@ -1185,7 +1185,9 @@ if ( ! function_exists( 'starkers_menu' ) ):
  * @since Starkers HTML5 3.0
  */
 function starkers_menu() {
-	echo '<nav><ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
+	echo '<nav id="main_menu">';
+
+	echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
 	wp_list_pages('title_li=');
 	echo '</ul></nav>';
 }

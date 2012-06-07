@@ -53,6 +53,7 @@
 }
 html, body {
 	height: 100%;
+	font-size: 16px; // Base font size
 }
 #container {
 	min-height: 400px /*100%*/;
@@ -110,13 +111,15 @@ section {
 		.hSansSerif;
 		text-transform: uppercase;
 		display: inline-block;
-		font-size: @titleHeight;
+		font-size: @titleHeight; // 1.5 em
 		overflow: hidden;
 		height: @headerLinksHeight;
 		line-height: @headerLinksHeight;
 		.branding_prefix { color: @UCFGold; cursor: pointer; }
 		text-shadow: 1px 1px 15px #777;
 	}
+
+	.mobile_menu { display: none; }
 
 	nav {
 		z-index: 3;
@@ -170,7 +173,7 @@ section {
 			position: absolute;
 			z-index: 3;
 			display: none; // hide at first
-			font-size: 12px;
+			font-size: 0.75em /*12px*/;
 			// right: 0; 
 			left: -6px;
 			background: @blueGray;
@@ -345,7 +348,7 @@ section {
 				z-index: 6;
 				font-weight: bold;
 				color: @offWhite;
-				font-size: 10px;
+				font-size: 0.625em /*10px*/;
 				display: inline-block;
 				height: 20px;
 				width: 20px;
@@ -416,7 +419,7 @@ section {
 			h2 {
 				color: @darkBlue;
 				background: lighten(@UCFGold, 10%) ;
-				font-size: 21px;
+				font-size: 1.313em /*21px*/;
 				.innerText;
 				.drop-shadow(0,0,5px,0.4);
 				>a { color: @darkBlue; }
@@ -427,7 +430,7 @@ section {
 			p {
 				color: white;
 				background: darken(@darkBlue, 10%) ;
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 				line-height: 16px;
 				max-height: 80px;
 				overflow: hidden;
@@ -568,7 +571,7 @@ section {
 
 	>ul {
 		padding: 5px 0;
-		font-size: 14px;
+		font-size: 0.875em /*14px*/;
 		color: @offWhite;
 		min-height: 42px;
 		li {
@@ -628,7 +631,7 @@ section {
 			width: 100%;
 			bottom: 0;
 			text-align: center;
-			font-size: 18px;
+			font-size: 1.125em /*18px*/;
 			height: 27px;
 			line-height: 24px;
 			color: @offWhite;
@@ -672,7 +675,7 @@ section {
 
 	h1 {
 		.hSerif;
-		font-size: 32px;
+		font-size: 2em /*32px*/;
 		color: @darkBlue;
 		padding: 10px 0;
 
@@ -684,12 +687,12 @@ section {
 		color: @blueGray;
 		padding: 10px 0 ;
 		.hSansSerif;
-		font-size: 21px;
+		font-size: 1.313em /*21px*/;
 		line-height: 21px;
 	}
 	h3 {
 		color: @darkBlue;
-		font-size: 16px;
+		font-size: 1em /*16px*/;
 		padding: 10px 0;
 		.hSansSerif;
 
@@ -705,7 +708,7 @@ section {
 		margin-bottom: 5px;
 	}
 	p, li {
-		font-size: 12px;
+		font-size: 0.750em /*12px*/;
 		color: @darkBlue;
 	}
 	a {
@@ -766,7 +769,7 @@ section {
 			margin-bottom: 10px;
 			
 			h2 {
-				font-size: 18px;
+				font-size: 1.125em /*18px*/;
 			}
 			a:hover {
 				text-decoration: underline;
@@ -775,14 +778,14 @@ section {
 				color: lighten(@blueGray, 10%);
 			}
 			p {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				color: @blueGray;
 				margin-left: 10px;
 			}
 			aside {
 				text-transform: uppercase;
 				.hSansSerif;
-				font-size: 10px;
+				font-size: 0.625em /*10px*/;
 				color: @lightBlueGray;
 				text-align: right;
 				padding-top: 5px;
@@ -881,7 +884,7 @@ section {
 				display: inline-block;
 				.hSansSerif;
 				color: @darkBlue;
-				font-size: 18px;
+				font-size: 1.125em /*18px*/;
 				margin-bottom: 5px;
 				h2 {
 					padding-top: 0;
@@ -889,7 +892,7 @@ section {
 				}
 			}
 			.eventTime, .eventLocation {
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 				color: @blueGray;
 				padding: 2px 0;
 				&:before { .icon; }
@@ -897,7 +900,7 @@ section {
 			.eventTime:before {content: '\e079';}
 			.eventLocation:before {content: '\e068'}
 			.eventDescription {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				line-height: 16px;
 				color: @darkBlue;
 				margin: 5px 0;
@@ -908,7 +911,7 @@ section {
 	.officeHours {
 		h2 {
 			text-transform: uppercase;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			padding: 0;
 			margin-top: -10px;
 			margin-bottom: 10px;
@@ -939,7 +942,7 @@ section {
 					display: block;
 					padding: 0px;
 					margin-bottom: 5px;
-					font-size: 21px;
+					font-size: 1.313em /*21px*/;
 					a:hover {
 						text-decoration: underline;
 					}
@@ -949,7 +952,7 @@ section {
 					padding: 3px 5px;
 					strong {
 						color: @darkBlue;
-						font-size: 14px;
+						font-size: 0.875em /*14px*/;
 					}
 				}
 				&:hover>.person_toolbar {
@@ -976,7 +979,7 @@ section {
 			margin-left: 20px;
 		}
 		li {
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			line-height: 16px;
 		}
 		ul>li, ol>li {
@@ -1011,11 +1014,12 @@ section {
 				padding-left: 20px;
 			}
 		}
+
 		table {
 			width: 100%;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			th {
-				font-size: 16px;
+				font-size: 1em /*16px*/;
 				.hSansSerif;
 				text-align: center;
 				vertical-align: bottom;
@@ -1036,7 +1040,7 @@ section {
 		footer {
 			margin-top: 30px;
 			.post-edit-link {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				border-top: 1px solid @lighterBlueGray;
 				padding: 10px;
 			}
@@ -1057,7 +1061,7 @@ section {
 
 		h2, h3 {
 			padding: 5px 10px;
-			font-size: 18px;
+			font-size: 1.125em /*18px*/;
 			.hSerif;
 			text-align: left;
 			text-transform: none;
@@ -1069,12 +1073,12 @@ section {
 			padding: 5px 5%;
 			border-top: 1px dashed @lightBlueGray;
 			border-bottom: 1px dashed @lightBlueGray;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			text-align: center;
 			color: @blueGray;
 		}
 		ul.xoxo>li, .pagenav>ul>li>a {
-			font-size: 14px;
+			font-size: 1em /*16px*/;
 		}
 		ul.officeHours {
 			margin-bottom: 5px;
@@ -1126,7 +1130,7 @@ section {
 			}
 			>ul>li {
 				>a, >.unclickable {
-					font-size: 14px;
+					font-size: 0.875em /*14px*/;
 					display: block;
 					padding: 8px 5% 8px 10%;
 					width: 85%;
@@ -1145,7 +1149,7 @@ section {
 					background: @sideGray;
 				}
 				>ul.children>li>a, &.child>a {
-					font-size: 12px;
+					font-size: 0.750em /*12px*/;
 					display: block;
 					padding: 6px 5% 6px 15%;
 					width: 80%;
@@ -1161,7 +1165,7 @@ section {
 					text-align: center;
 					line-height: 30px;
 					>a {
-						font-size: 10px;
+						font-size: 0.625em /*10px*/;
 						display: inline-block;
 						height: 10px;
 						width: 10px;
@@ -1203,7 +1207,7 @@ section {
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
-	font-size: 12px;
+	font-size: 0.750em /*12px*/;
 	margin: 0 auto;
 
 	div.widget {
@@ -1221,27 +1225,27 @@ section {
 		h1 {
 			color: @UCFGold;
 			.hSerif;
-			font-size: 21px;
+			font-size: 1.313em /*21px*/;
 			padding-bottom: 10px;
 			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5)
 		}
 		h2 {
 			color: @offWhite;
-			font-size: 18px;
+			font-size: 1.125em /*18px*/;
 			padding-bottom: 5px;
 		}
 		h3 {
 			padding:0;
 		}
 		p {
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			line-height: 14px;
 		}
 		>ul {
 			padding: 5px 0;
 			>li {
 				padding: 3px;
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 				color: darken(@offWhite, 20%);
 				&:hover {
 					background: @lightBlueGray;
@@ -1256,7 +1260,7 @@ section {
 			}
 		}
 		.textwidget {
-			font-size: 14px;
+			font-size: 0.875em /*14px*/;
 			margin-bottom: 14px;
 		}
 		&:last-child {
@@ -1272,7 +1276,7 @@ section {
 
 	#copyright {
 		float: left;
-		font-size: 12;
+		font-size: 0.750em /*12px*/;
 		color: @blueGray;
 		width: 100%;
 		margin-top: 20px;
@@ -1318,7 +1322,7 @@ section {
 		background: transparent url('img/search.png') 10px center no-repeat;
 		-webkit-appearance: textfield;
 		.hSansSerif;
-		font-size: 16px;
+		font-size: 1em /*16px*/;
 		border: 1px solid @lighterBlueGray;
 		padding: 6px 38px 6px 33px;
 		.rounded(5px);
@@ -1338,7 +1342,7 @@ section {
 
 	a {
 		line-height: 21px;
-		font-size: 16px;
+		font-size: 1em /*16px*/;
 		display: inline-block;
 		.transition(0.5s, ease-out);
 		&:hover {
@@ -1350,11 +1354,13 @@ section {
 	span.crumbSep {
 		color: @UCFGold;
 		text-shadow: 0px 1px 0px rgba(255, 255, 255, .3), 0px -1px 0px rgba(0, 0, 0, .3);
-		font-size: 18px;
+		font-size: 1.125em /*18px*/;
 		line-height: 21px;
 		display: inline-block;
 		padding: 0 5px;
 	}
+
+	.mobile_menu {display: none;}
 }
 
 #people_list {
@@ -1373,14 +1379,14 @@ section {
 	h2 { /* Person's name */
 		padding: 0;
 		margin-bottom: 5px;
-		font-size: 21px;
+		font-size: 1.313em /*21px*/;
 	}
 	ul.personBasics {
 		float: left;
 		.hSansSerif;
 		max-width: 70%;
 		>li {
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			margin: 5px 0;
 			&:before { 
 				.icon; 
@@ -1392,7 +1398,7 @@ section {
 			&.person_email:before { content: '\2709'; }
 
 			&.person_research { 
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 			}
 		}
 	}
@@ -1413,7 +1419,7 @@ section {
 		float: left;
 		.hSansSerif;
 		li {
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			margin: 5px 0;
 			&:before { 
 				.icon; 
@@ -1449,7 +1455,7 @@ section {
 		>li {
 			display: inline-block;
 			line-height: 30px;
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			.hSansSerif;
 			text-transform: uppercase;
 			border-right: 1px solid @offWhite;
@@ -1499,14 +1505,14 @@ section {
 		>li {
 			display: block;
 			padding: 20px;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			line-height: 16px;
 			color: @darkBlue;
 			&:before {
 				content: '';
 			}
 			p {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				line-height: 16px;
 				color: @darkBlue;
 				margin-bottom: 10px;
@@ -1540,7 +1546,7 @@ section {
 					h2 {
 						text-transform: uppercase;
 						.hSerif;
-						font-size: 16px;
+						font-size: 1em /*16px*/;
 						background: @darkBlue;
 						padding: 5px 0;
 						color: @offWhite;
@@ -1649,7 +1655,7 @@ section {
 		display: inline-block;
 		float: left;
 		.hSansSerif;
-		font-size: 21px;
+		font-size: 1.313em /*21px*/;
 		text-transform: uppercase;
 		margin-right: 10px;
 
@@ -1658,7 +1664,7 @@ section {
 		}
 	}
 	li {
-		font-size: 10px;
+		font-size: 0.625em /*10px*/;
 		float: left;
 		display: inline-block;
 		margin: 0 5px;
