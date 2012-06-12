@@ -53,7 +53,7 @@
 }
 html, body {
 	height: 100%;
-	font-size: 16px; // Base font size
+	font-size: 1em;
 }
 #container {
 	min-height: 400px /*100%*/;
@@ -169,7 +169,7 @@ section {
 		>ul>li:hover>ul.children {
 			// display: block; // for IE
 		}
-		>ul>li ul.children {
+		>ul>li ul.children, >ul>li ul.sub-menu {
 			position: absolute;
 			z-index: 3;
 			display: none; // hide at first
@@ -217,7 +217,7 @@ section {
 
 			}
 		}
-		>ul>li>ul.children{
+		>ul>li>ul.children, >ul>li>ul.sub-menu{
 			.border-radius(0, 8px, 8px, 0);
 			>li{
 				&:first-child {
@@ -230,7 +230,8 @@ section {
 			}
 		}
 
-		>ul>li>ul.children>li>ul.children {
+		>ul>li>ul.children>li>ul.children,
+		>ul>li>ul.sub-menu>li>ul.sub-menu {
 			display:none;
 			top: 0;
 			left: 100%;
@@ -248,13 +249,14 @@ section {
 			}
 		}
 		// Submenu in last menu expands to left to prevent overflow to right
-		>ul>li:last-child>ul.children>li {
+		>ul>li:last-child>ul.children>li,
+		>ul>li:last-child>ul.sub-menu>li {
 			&.parent:before {
 				content: '\00AB';
 				right: auto;
 				left: 0;
 			}
-			>ul.children {
+			>ul.children, >ul.sub-menu {
 				left: auto; // reset left alignment
 				right: 100%;
 				>li {
@@ -926,7 +928,7 @@ section {
 				width: 15%;
 				overflow: hidden;
 				img {
-					max-width: 50px;
+					max-width: 80%;
 				}
 			}
 
@@ -1048,6 +1050,10 @@ section {
 	}
 	#sidebar {
 		.column(3);
+		ul>li {
+			font-size: 0.9em;
+		}
+
 
 		aside, .pageNav {
 			width: 100%;
@@ -1083,6 +1089,7 @@ section {
 		ul.officeHours {
 			margin-bottom: 5px;
 			li {
+				font-size: 0.8em;
 				padding-bottom: 3px;
 				margin-left: 11%;
 				padding-left: 5px;
@@ -1443,7 +1450,7 @@ section {
 		clear: both;
 	}
 	ul.personTabs {
-
+		font-size: 1 em !important;
 		display: block;
 		background: @sideGray;
 		color: @darkBlue;

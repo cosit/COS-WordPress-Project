@@ -22,7 +22,10 @@ get_header(); ?>
 	<div id="contact" style="float:right;">
 		<?php get_search_form(); ?> <!-- grabs custom search form at searchform.php -->
 
-		<?php show_contact_area(); ?>
+		<?php // show_contact_area(); ?>
+		<?php if ( is_active_sidebar( 'front-slider-right-widget-area' ) ) : ?>
+			<?php dynamic_sidebar( 'front-slider-right-widget-area' ); ?>
+		<?php endif; ?>
 	</div>
 	<div style="clear:both;"></div>
 </div>

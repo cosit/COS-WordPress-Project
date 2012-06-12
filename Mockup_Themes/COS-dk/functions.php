@@ -13,6 +13,12 @@ add_action( 'after_setup_theme', 'starkers_setup' );
 // Do shortcodes in widgets, woohoo!
 add_filter('widget_text', 'do_shortcode');
 
+add_action( 'init', 'register_my_menu' );
+function register_my_menu() {
+	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
+}
+
+
 // *********************************************
 // COS JAVASCRIPT FILES
 // *********************************************
@@ -907,22 +913,10 @@ function contact() {
 }
 add_action('init', 'contact');
 
-
-
-/******Contact Us Home Page Info*****/
-//Function to insert Home Featured Areas into ShortCode
-function show_contact_area(){
-
-	//Search for Post with Custom Post Type "HomeContact"
-	$contactArgs = array( 'post_type' => 'contact' );
-	query_posts( $contactArgs );
-
-	if(have_posts()) : while (have_posts()) : the_post();			
-
-		$thisID = get_the_ID();
+function show_contact_area( $args ){
 
 		// Parse multiple email addresses
-		$emails_array = explode("\n", trim(get_field('email')));
+		$emails_array = explode("\n", trim( $args['email'] ));
 		$emails_string = '';
 
 		foreach ($emails_array as &$email) {
@@ -933,21 +927,24 @@ function show_contact_area(){
 		$emails_array = implode("\n", $emails_array);
 
 		$contact = array(
-			'dept' => get_field('dept'),
-			'address'    => get_field('address'),
+			'title' => $args['title'],
+			'dept' => $args['dept'],
+			'address'    => $args['address'],
 			'email'      => $emails_array,
-			'fax'        => 'F: ' . get_field('fax'),
-			'phone'      => 'P: ' . get_field('phone'),
+			'fax'        => 'F: ' . $args['fax'],
+			'phone'      => 'P: ' . $args['phone'],
 		);
 
 		// Break each category into list items
 		foreach($contact as $key => &$value){
-			$value = '<li>' . str_replace("\n", "</li><li>", $value) . '</li>';
+			if( $key != 'title' ){
+				$value = '<li>' . str_replace("\n", "</li><li>", $value) . '</li>';
+			}
 		};
 
 		// Display the list items in this format:
 		echo <<<CONTACT
-			<h2><span class="contact_title">Contact Us</span></h2>
+			<h2><span class="contact_title">{$contact['title']}</span></h2>
 
 			<ul id="contact_department">
 				<span class="contactIcon"></span>
@@ -969,12 +966,76 @@ function show_contact_area(){
 			</ul>
 CONTACT;
 
-	break; // Prevent loop from displaying more than one post, just in case.
-
-	endwhile; endif; wp_reset_query();
-
 	return true;
 }
+add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
+
+/****** OLD CONTACT AREA CODE *****/
+
+// function show_contact_area(){
+
+// 	//Search for Post with Custom Post Type "HomeContact"
+// 	$contactArgs = array( 'post_type' => 'contact' );
+// 	query_posts( $contactArgs );
+
+// 	if(have_posts()) : while (have_posts()) : the_post();			
+
+// 		$thisID = get_the_ID();
+
+// 		// Parse multiple email addresses
+// 		$emails_array = explode("\n", trim(get_field('email')));
+// 		$emails_string = '';
+
+// 		foreach ($emails_array as &$email) {
+// 			$email = trim($email);
+// 			$email = '<a href="mailto:'.$email.'">'.$email.'</a>';
+// 		}
+
+// 		$emails_array = implode("\n", $emails_array);
+
+// 		$contact = array(
+// 			'dept' => get_field('dept'),
+// 			'address'    => get_field('address'),
+// 			'email'      => $emails_array,
+// 			'fax'        => 'F: ' . get_field('fax'),
+// 			'phone'      => 'P: ' . get_field('phone'),
+// 		);
+
+// 		// Break each category into list items
+// 		foreach($contact as $key => &$value){
+// 			$value = '<li>' . str_replace("\n", "</li><li>", $value) . '</li>';
+// 		};
+
+// 		// Display the list items in this format:
+// 		echo <<<CONTACT
+// 			<h2><span class="contact_title">Contact Us</span></h2>
+
+// 			<ul id="contact_department">
+// 				<span class="contactIcon"></span>
+// 				{$contact['dept']}
+// 			</ul>
+
+// 			<ul id="contact_address">
+// 				<span class="contactIcon"></span>
+// 				{$contact['address']}
+// 			</ul>
+// 			<ul id="contact_phone">
+// 				<span class="contactIcon"></span>
+// 				{$contact['phone']}
+// 				{$contact['fax']}
+// 			</ul>
+// 			<ul id="contact_email">
+// 				<span class="contactIcon"></span>
+// 				{$contact['email']}
+// 			</ul>
+// CONTACT;
+
+// 	break; // Prevent loop from displaying more than one post, just in case.
+
+// 	endwhile; endif; wp_reset_query();
+
+// 	return true;
+// }
 
 //Function to add the shortcode for the Custom Post Type- for use in editor
 function home_insert_contact($atts, $content=null){
@@ -1300,6 +1361,16 @@ function starkers_widgets_init() {
 		'after_widget' => '</li>',
 		'before_title' => '<h3>',
 		'after_title' => '</h3>',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Front Page Slider Right', 'starkers' ),
+		'id' => 'front-slider-right-widget-area',
+		'description' => __( 'The right side of the slider area on the front page', 'starkers' ),
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h1>',
+		'after_title' => '</h1>',
 	) );
 
 	register_sidebar( array(

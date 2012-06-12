@@ -102,7 +102,7 @@
 			controlNav: true
 		});
 	} catch(err) {
-		console.log('flexslider.js not loaded. shit.');
+		console.log('flexslider.js not loaded.');
 	}
 
 	// Indicate people nav link
@@ -115,28 +115,34 @@
 	$('#main_header nav>ul>li').hover(
 		function(){
 			$(this).children('ul.children').slideDown('fast').show(); 
+			$(this).children('ul.sub-menu').slideDown('fast').show(); 
 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
 				$(this).children('ul.children').slideUp('fast');
+				$(this).children('ul.sub-menu').slideUp('fast');
 				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
 				$(this).children('ul.children').slideUp('fast');
+				$(this).children('ul.sub-menu').slideUp('fast');
 			}
 		}
 	);
 	$('#main_header nav>ul>li>ul>li').hover(
 		function(){
 			$(this).find('ul.children').slideDown('fast').show();
+			$(this).find('ul.sub-menu').slideDown('fast').show();
 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
 				$(this).find('ul.children').slideUp('fast');
+				$(this).find('ul.sub-menu').slideUp('fast');
 				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
 				$(this).find('ul.children').slideUp('fast');
+				$(this).find('ul.sub-menu').slideUp('fast');
 			}
 		}
 	);
