@@ -1037,15 +1037,34 @@ add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
 // 	return true;
 // }
 
-//Function to add the shortcode for the Custom Post Type- for use in editor
-function home_insert_contact($atts, $content=null){
-	$events = home_contact_area();
-	return $events;
+// //Function to add the shortcode for the Custom Post Type- for use in editor
+// function home_insert_contact($atts, $content=null){
+// 	$events = home_contact_area();
+// 	return $events;
+// }
+// //Shortcode for adding contact area
+// add_shortcode('home_contact', 'home_contact_area');
+
+function show_dyk_area( $args ) {
+	// Grab posts from specified category
+	$dykArgs = array( 
+		'category_name' => $args['cat'],
+		'posts_per_page' => -1 
+	);
+	shuffle( query_posts( $dykArgs ) );
+
+	if(have_posts()) : while (have_posts()) : the_post();			
+
+		$thisID = get_the_ID();
+		the_content();
+
+	break; // Prevent loop from displaying more than one post, just in case.
+
+	endwhile; endif; wp_reset_query();
+
+	return true;
 }
-//Shortcode for adding contact area
-add_shortcode('home_contact', 'home_contact_area');
-
-
+add_action( 'show_dyk_area', 'show_dyk_area', 10, 1 );
 
 // Breadcrumbs
 function breadcrumbs() {

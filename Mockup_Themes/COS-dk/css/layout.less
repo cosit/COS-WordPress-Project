@@ -710,7 +710,7 @@ section {
 		margin-bottom: 5px;
 	}
 	p, li {
-		font-size: 0.750em /*12px*/;
+		// font-size: 0.750em /*12px*/;
 		color: @darkBlue;
 	}
 	a {
@@ -981,8 +981,11 @@ section {
 			margin-left: 20px;
 		}
 		li {
-			font-size: 0.750em /*12px*/;
+			// font-size: 0.750em /*12px*/;
 			line-height: 16px;
+		}
+		>article>p, >article>li {
+			font-size: 0.750em /*12px*/;
 		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
@@ -1210,11 +1213,10 @@ section {
 }
 
 #widgets {
-	min-height: @widgetsHeight;
+	max-height: @widgetsHeight;
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
-	font-size: 0.750em /*12px*/;
 	margin: 0 auto;
 
 	div.widget {
@@ -1512,19 +1514,19 @@ section {
 		>li {
 			display: block;
 			padding: 20px;
-			font-size: 0.750em /*12px*/;
 			line-height: 16px;
 			color: @darkBlue;
 			&:before {
 				content: '';
 			}
 			p {
-				font-size: 0.750em /*12px*/;
-				line-height: 16px;
+				font-size: 0.75em /*12px*/;
+				line-height: 1.5em;
 				color: @darkBlue;
 				margin-bottom: 10px;
 			}
 			li {
+				font-size: 0.75em;
 				margin-bottom: 5px;
 				margin-left: 15px;
 				&:before {
