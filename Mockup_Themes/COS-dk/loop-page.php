@@ -32,6 +32,7 @@
 		</div>
 		<div id="sidebar">
 			<?php page_nav(); ?>
+			<?php custom_menu_nav(); ?>
 			<?php get_sidebar(); ?>
 		</div>
 <?php endwhile; ?>

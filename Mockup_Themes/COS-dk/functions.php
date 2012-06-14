@@ -130,6 +130,28 @@ function excerpt( $text, $cutoff, $link='', $link_text="Read More" ){
 	return $excerptText;
 }
 
+function custom_menu_nav( $pageID = 0, $menu_name = 'primary-menu' ){
+
+	$args = array(
+		'menu'            => $menu_name, 
+		'menu_class'      => '', 
+		'menu_id'         => '',
+		'echo'            => true,
+		'fallback_cb'     => 'wp_page_menu',
+		'before'          => '',
+		'after'           => '',
+		'link_before'     => '',
+		'link_after'      => '',
+		'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+		'depth'           => 0,
+		'walker'          => '',
+	);
+
+	echo '<nav class="pageNav" id="custom_menu_nav">';
+	wp_nav_menu( $args );
+	echo '</nav>';
+}
+
 function page_nav( $pageID = 0 ){
 	$pageID = ($pageID == 0 ? get_the_ID() : $pageID);
 	$parent = get_permalink( $pageID );
@@ -1047,10 +1069,15 @@ add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
 
 function show_dyk_area( $args ) {
 	// Grab posts from specified category
-	$dykArgs = array( 
-		'category_name' => $args['cat'],
-		'posts_per_page' => -1 
-	);
+	if( get_cat_ID( $args['cat'] ) ){
+		$dykArgs = array( 
+			'category_name' => $args['cat'],
+			'posts_per_page' => -1 
+		);
+	} else {
+		echo "<em>There is nothing to know at this time.</em>";
+		return false;
+	}
 	shuffle( query_posts( $dykArgs ) );
 
 	if(have_posts()) : while (have_posts()) : the_post();			

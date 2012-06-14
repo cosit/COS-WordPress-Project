@@ -198,14 +198,31 @@
 		}
 	});
 
+	// Custom menu nav shenanigans 
+	(function(){
+		var top_level = $('#custom_menu_nav>div>ul li.current_page_item');
+		console.log( top_level.children('ul').length );
+		if( top_level.children('ul').length > 0 ){
+			console.log(1);
+			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
+			$('#custom_menu_nav>div').hide();
+		} else {
+			console.log(331);
+			top_level = top_level.parent().parent();
+			console.log(top_level);
+			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
+			$('#custom_menu_nav>div').hide();
+		}
+	})();
+
 	// Parent finding for nav li elements 
-	$('nav li').has('.children').addClass('parent');
+	$('nav li').has('.children, .sub-menu').addClass('parent');
 
 	// Page nav expand
-	$('.pageNav li.parent').prepend('<span class="expand"><a href="#">+</a></span>');
-	$('.pageNav .expand>a').click( function(){
+	$('.pageNav li.parent').prepend('<span class="expand"><div>+</div></span>');
+	$('.pageNav .expand>div').click( function(){
 		$this = $(this);
-		$children = $this.parent().parent().find('.children');
+		$children = $this.parent().parent().find('.children, .sub-menu');
 		if($children.is(':visible')){
 			$this.text('+');
 			$children.hide();
@@ -214,28 +231,8 @@
 			$children.show();
 		};
 	});
-
-
-
-	// AJAX functions for displaying full person info
-	// $.ajaxSetup ({  
- //        cache: false  
- //    });  
- 
- //    $(".person").click(function(){  
- //    	scrollToTop();
- //    	$this = $(this);
- //    	$this.addClass('mainPerson');
- //    	$('.person').hide();
- //    	$this.find('.person_research').hide();
- //        $this.find('.personDetailsLoading').show();
- //        $this.find('.personDetails').load( $this.find("h2 a").attr('href') );
- //        $this.ajaxStop(function() {
- //        	$this.find('.personDetailsLoading').slideUp('fast');
- //        	$this.find('.personDetails').slideDown('fast');
- //        })  
- //    });  
-
+	
+	
     // Hide empty list items in people display
     $('.personBasics li').filter(function(){
     	return $.trim($(this).text()) === '';
@@ -288,6 +285,8 @@
 
 		if( newTitle.length > 0 ){ oldTitle.replaceWith(newTitle); }
 	})();
+
+
 
 	/**
 	 * jQuery.fn.sortElements
