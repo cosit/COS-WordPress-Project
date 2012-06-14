@@ -53,9 +53,10 @@
 }
 html, body {
 	height: 100%;
+	font-size: 1em;
 }
 #container {
-	min-height: 400px;
+	min-height: 400px /*100%*/;
 	height: auto !important;
 	height: 100%;
 	margin-bottom: @mainFooterHeight + 25px;
@@ -105,7 +106,8 @@ section {
 	.drop-shadow(0,0,5px,0.5);
 
 	h1 {
-		.column(4);		
+		.column(4);
+		width: 265px; // added
 		.hSansSerif;
 		text-transform: uppercase;
 		display: inline-block;
@@ -115,8 +117,9 @@ section {
 		line-height: @headerLinksHeight;
 		.branding_prefix { color: @UCFGold; cursor: pointer; }
 		text-shadow: 1px 1px 15px #777;
-		width:295px;
 	}
+
+	.mobile_menu{ display:none; }
 
 	nav {
 		z-index: 3;
@@ -171,8 +174,73 @@ section {
 			z-index: 3;
 			display: none; // hide at first
 			font-size: 12px;
-			//right: 0; 
-			left: -6px; 
+			// right: 0; 
+			left: -6px;
+			background: @blueGray;
+			text-align: center;
+			top: @headerLinksHeight;
+			width: 200px;
+
+			border: 1px solid @offWhite;
+			border-top: none;
+			.drop-shadow(0,5px,7px,0.3);
+
+			>li {
+				background: @blueGray;
+				.transition(0.4s, ease-out);
+				border-bottom: 1px solid @offWhite;
+				border-top: 1px solid @darkBlue;
+				&:last-child{ 
+					border-bottom: none;
+					.border-radius(0, 8px, 8px, 0);
+				}
+				&:hover {
+					cursor: pointer;
+					background: @lightBlueGray;
+					.transition(0.4s, ease-out);
+				}
+				>a, >.unclickable {	
+					color: white !important;
+					display: block;
+					width: 90%;
+					height: 100%;
+					padding: 7px 5%;
+				}
+				&.parent:before {
+					position: absolute;
+					display: block;
+					padding: 6px;
+					right: 0;
+					content: '\00BB';
+					color: @UCFGold;
+				}
+
+			}
+		}
+
+		>ul>li>a, >ul>li>.unclickable {
+			display: block;
+			background: @darkBlue;
+			font-size: 12px;
+			padding: 5px;
+			margin-top: 16px;
+			.rounded(8px);
+			cursor: pointer;
+			// &:hover {
+			// 	color: @darkBlue;
+			// 	background: @offWhite;
+			// }
+		}
+		>ul>li:hover>ul.sub-menu {
+			// display: block; // for IE
+		}
+		>ul>li ul.sub-menu {
+			position: absolute;
+			z-index: 3;
+			display: none; // hide at first
+			font-size: 12px;
+			// right: 0; 
+			left: -6px;
 			background: @blueGray;
 			text-align: center;
 			top: @headerLinksHeight;
@@ -226,8 +294,38 @@ section {
 				}
 			}
 		}
+		>ul>li>ul.sub-menu{
+			.border-radius(0, 8px, 8px, 0);
+			>li{
+				&:first-child {
+					border-top: solid 4px darken(@blueGray, 7%);
+
+					a { 
+						padding-top: 2px + 10px;
+					}
+				}
+			}
+		}
 
 		>ul>li>ul.children>li>ul.children {
+			display:none;
+			top: 0;
+			left: 100%;
+			z-index: -2;
+			.border-radius(8px, 8px, 8px, 8px);
+			>li {
+				border-left: solid 4px darken(@blueGray, 5%);
+			}
+			>li:first-child { 					
+				.border-radius(8px, 0, 0, 0); 
+				border-top: solid 1px @offWhite;
+			}
+			>li:only-child {
+				.border-radius(8px, 8px, 0, 0);
+			}
+		}
+
+		>ul>li>ul.sub-menu>li>ul.sub-menu {
 			display:none;
 			top: 0;
 			left: 100%;
@@ -267,6 +365,30 @@ section {
 				}
 			}
 		}
+
+		// Submenu in last menu expands to left to prevent overflow to right
+		>ul>li:last-child>ul.sub-menu>li {
+			&.parent:before {
+				content: '\00AB';
+				right: auto;
+				left: 0;
+			}
+			>ul.sub-menu {
+				left: auto; // reset left alignment
+				right: 100%;
+				>li {
+					border-left:  none;
+					border-right: solid 4px darken(@blueGray, 5%);
+				}
+				>li:first-child { 					
+					.border-radius(0, 0, 0, 8px); 
+					border-top: solid 1px @offWhite;
+				}
+				>li:only-child {
+					.border-radius(0,0,8px,8px);
+				}
+			}
+		}
 	}
 
 	#socialMedia {
@@ -278,14 +400,14 @@ section {
 			display: inline-block;
 			float: right;
 			height: 25px;
-			width: 25px;
+			width: 25x;
 			margin-left: 5px;
 			margin-top: 5px;
 
 			a {
 				display: block;
 				height: 25px;
-				width: 25x;
+				width: 25px;
 				.opacity(0.6);
 				.transition(0.5s, ease-out);
 				background: center no-repeat;
@@ -327,6 +449,7 @@ section {
 	height: @sliderHeight;
 	overflow: hidden;
 	position: relative;
+	zoom:1;
 	.sliderItems.wrap { width: @sliderWidth; height: 100%; }
 
 	.flex-control-nav {
@@ -342,10 +465,10 @@ section {
 			margin: 0 5px;
 			line-height: 50px;
 			a {
-				z-index:6;
+				z-index: 6;
 				font-weight: bold;
 				color: @offWhite;
-				font-size: 10px;
+				font-size: 0.625em /*10px*/;
 				display: inline-block;
 				height: 20px;
 				width: 20px;
@@ -366,6 +489,7 @@ section {
 	}
 
 	.flex-direction-nav {
+
 		display: block;
 		display: none;
 		position: relative;
@@ -373,8 +497,8 @@ section {
 		height: 50px;
 		top: @sliderHeight - 110px;
 		margin: 0 auto;
-		a {		
-			z-index:6;	
+		a {			
+			z-index: 6;
 			width: 50px;
 			height: 0;
 			padding-top: 50px;
@@ -400,22 +524,23 @@ section {
 	}
 
 	ul.slides {
-		margin: 0 auto;
+		margin: 0 auto;	
+		zoom:1;
 		li.slide {
 			display:none;
 			h2, p {
-				z-index:6;
+				z-index: 6;
 			}
 			img {
-				width:100%;
-				max-width:1180px;
-				height:auto;
-				top:0;
+				width: 100%;
+				max-width: 1180px;
+				height: auto;
+				top: 0;
 			}
 			h2 {
 				color: @darkBlue;
-				background: lighten(@UCFGold, 10%);
-				font-size:21px;
+				background: lighten(@UCFGold, 10%) ;
+				font-size: 1.313em /*21px*/;
 				.innerText;
 				.drop-shadow(0,0,5px,0.4);
 				>a { color: @darkBlue; }
@@ -424,11 +549,11 @@ section {
 				}
 			}
 			p {
-				color:white;
-				background: darken(@darkBlue, 10%);
-				font-size:14px;
+				color: white;
+				background: darken(@darkBlue, 10%) ;
+				font-size: 0.875em /*14px*/;
 				line-height: 16px;
-				max-height:80px;
+				max-height: 80px;
 				overflow: hidden;
 				.drop-shadow(0,0,5px,0.4);
 				.hSansSerif;
@@ -451,11 +576,11 @@ section {
 		}
 		li.slideBottom {
 			h2 {top: @sliderHeight - 70px - 40px/*260px*/;}
-			p {top: @sliderHeight - 70px /*300px*/;}
+			p {top: @sliderHeight - 70px /*300px*/; }
 		}
 		li.slideSpread {
 			h2 {top: 20px;}
-			p {top: @sliderHeight - 100px;}
+			p {top: @sliderHeight - 70px;}
 		}
 		.innerText {
 			position: absolute;
@@ -477,6 +602,7 @@ section {
 		}
 	}
 }
+
 #contactContainer{
 	position: relative;
 	width: 1000px;
@@ -485,11 +611,12 @@ section {
 	margin-left: auto;
 	margin-right:auto;
 }
+
 #contact {
 	position: absolute;
 	right: 70px;
 	top: 10px;
-	width: 260px; // = 4 columns
+	width: 260px; // = not 4 columns
 	height: auto;
 	background: @blueGray;
 	.rounded(8px);
@@ -514,6 +641,7 @@ section {
 			background: @sideGray;
 			padding: 0 20px;
 			.drop-shadow(0,0,3px,0.3);
+
 		}
 	}
 
@@ -564,7 +692,7 @@ section {
 
 	>ul {
 		padding: 5px 0;
-		font-size: 14px;
+		font-size: 0.875em /*14px*/;
 		color: @offWhite;
 		min-height: 42px;
 		li {
@@ -587,8 +715,7 @@ section {
 	#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 	#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 	#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
-
-	#contact_email li {margin-top:12px;}
+	#contact_email li { margin-top: 12px; }
 
 	#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 	#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -618,27 +745,29 @@ section {
 		.opacity(1);
 		.transition(0.5s, ease-out);
 		.drop-shadow(0,0,8px,0.3);
+
 		h2 {
 			display: block;
 			position: absolute;
 			width: 100%;
 			bottom: 0;
 			text-align: center;
-			font-size: 18px;
-			height: 24px;
+			font-size: 1.125em /*18px*/;
+			height: 27px;
 			line-height: 24px;
 			color: @offWhite;
 			background: @darkBlue;
 			.opacity(0.9);
 		}
 		a {
-			z-index:2;
+			z-index: 2;
 			display: block;
 			width: 100%;
 			height: 100%;
 			box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.2);
 
 			&:before {
+				
 				display: block;
 				width: 100%;
 				height: 100%;
@@ -667,7 +796,7 @@ section {
 
 	h1 {
 		.hSerif;
-		font-size: 32px;
+		font-size: 2em /*32px*/;
 		color: @darkBlue;
 		padding: 10px 0;
 
@@ -679,7 +808,7 @@ section {
 		color: @blueGray;
 		padding: 10px 0 ;
 		.hSansSerif;
-		font-size: 21px;
+		font-size: 1.313em /*21px*/;
 		line-height: 21px;
 	}
 	h3 {
@@ -700,7 +829,7 @@ section {
 		margin-bottom: 5px;
 	}
 	p, li {
-		font-size: 12px;
+		font-size: 0.750em /*12px*/;
 		color: @darkBlue;
 	}
 	a {
@@ -735,7 +864,7 @@ section {
 				background: darken(@lighterBlueGray, 5%);
 				>a {color: @offWhite;}
 				.inner-shadow(0, 1px, 2px, 0.4);
-				border-left:none;
+				border-left: none;
 			}
 			&:first-child { border-left: none; }
 			&:last-child { border-right: none; }
@@ -761,7 +890,7 @@ section {
 			margin-bottom: 10px;
 			
 			h2 {
-				font-size: 18px;
+				font-size: 1.125em /*18px*/;
 			}
 			a:hover {
 				text-decoration: underline;
@@ -770,14 +899,14 @@ section {
 				color: lighten(@blueGray, 10%);
 			}
 			p {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				color: @blueGray;
 				margin-left: 10px;
 			}
 			aside {
 				text-transform: uppercase;
 				.hSansSerif;
-				font-size: 10px;
+				font-size: 0.625em /*10px*/;
 				color: @lightBlueGray;
 				text-align: right;
 				padding-top: 5px;
@@ -794,7 +923,7 @@ section {
 				border-bottom: 1px dashed #CCC;
 				&:hover {
 					background: none;
-					cursor: default;
+					cursor: pointer;
 				}
 			}
 		}
@@ -811,7 +940,6 @@ section {
 			width: auto;
 			&:hover {
 				background: darken(@sideGray, 5%);
-				cursor: pointer;
 				a {
 					color: lighten(@lightBlueGray, 10%);
 					text-decoration: underline;
@@ -825,7 +953,7 @@ section {
 			margin-left: 10px;
 			ul {
 				position: relative;
-				font-size: 10px;
+				//font-size: 0.625em /*10px*/;
 				background: @darkBlue;
 				width: 50px;
 				height: 65px;
@@ -833,7 +961,7 @@ section {
 				.drop-shadow(0,0,5px,0.5);
 
 				#eventMonth {
-					font-size: 12px;
+					font-size: 0.750em /*12px*/;
 					height: 16px;
 					line-height: 16px;
 					.hSerif;
@@ -846,13 +974,13 @@ section {
 				}
 				#eventDay {
 					.hSerif;
-					font-size: 36px;
+					font-size: 2.25em /*36px*/;
 					color: @offWhite;
 					top: 16px + 3px;
 				}
 				#eventYear {
 					.hSerif;
-					font-size: 10px;
+					font-size: 0.625em /*10px*/;
 					color: @lightBlueGray;
 					top: 16px;
 				}
@@ -877,7 +1005,7 @@ section {
 				display: inline-block;
 				.hSansSerif;
 				color: @darkBlue;
-				font-size: 18px;
+				font-size: 1.125em /*18px*/;
 				margin-bottom: 5px;
 				h2 {
 					padding-top: 0;
@@ -885,7 +1013,7 @@ section {
 				}
 			}
 			.eventTime, .eventLocation {
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 				color: @blueGray;
 				padding: 2px 0;
 				&:before { .icon; }
@@ -893,7 +1021,7 @@ section {
 			.eventTime:before {content: '\e079';}
 			.eventLocation:before {content: '\e068'}
 			.eventDescription {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				line-height: 16px;
 				color: @darkBlue;
 				margin: 5px 0;
@@ -904,9 +1032,10 @@ section {
 	.officeHours {
 		h2 {
 			text-transform: uppercase;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			padding: 0;
 			margin-top: -10px;
+			margin-bottom: 10px;
 		}
 
 		>div {
@@ -928,13 +1057,13 @@ section {
 				display: inline-block;
 				height: 84%;
 				position: absolute;
-				
 				padding: 0;
+
 				h3 {
 					display: block;
 					padding: 0px;
 					margin-bottom: 5px;
-					font-size: 21px;
+					font-size: 1.313em /*21px*/;
 					a:hover {
 						text-decoration: underline;
 					}
@@ -944,7 +1073,7 @@ section {
 					padding: 3px 5px;
 					strong {
 						color: @darkBlue;
-						font-size: 14px;
+						font-size: 0.875em /*14px*/;
 					}
 				}
 				&:hover>.person_toolbar {
@@ -971,13 +1100,13 @@ section {
 			margin-left: 20px;
 		}
 		li {
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			line-height: 16px;
 		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
 		}
-		li {
+		ul>li {
 			margin-left: 20px;	
 			&:before{
 				content: "\00BB \0020";
@@ -1006,7 +1135,7 @@ section {
 		}
 		table {
 			width: 100%;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			th {
 				font-size: 16px;
 				.hSansSerif;
@@ -1029,7 +1158,7 @@ section {
 		footer {
 			margin-top: 30px;
 			.post-edit-link {
-				font-size: 12px;
+				font-size: 0.750em /*12px*/;
 				border-top: 1px solid @lighterBlueGray;
 				padding: 10px;
 			}
@@ -1050,7 +1179,7 @@ section {
 
 		h2, h3 {
 			padding: 5px 10px;
-			font-size: 18px;
+			font-size: 1.125em /*18px*/;
 			.hSerif;
 			text-align: left;
 			text-transform: none;
@@ -1062,16 +1191,17 @@ section {
 			padding: 5px 5%;
 			border-top: 1px dashed @lightBlueGray;
 			border-bottom: 1px dashed @lightBlueGray;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			text-align: center;
 			color: @blueGray;
 		}
 		ul.xoxo>li, .pagenav>ul>li>a {
-			font-size: 14px;
+			font-size: 1em /*16px*/;
 		}
 		ul.officeHours {
 			margin-bottom: 5px;
 			li {
+				font-size: 0.8em;
 				padding-bottom: 3px;
 				margin-left: 11%;
 				padding-left: 5px;
@@ -1085,9 +1215,13 @@ section {
 				color: @offWhite;
 				background: @darkBlue;
 				height: auto; 
-				text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 rgba(0,0,0, 0.5);
 				margin: 5px 0;
 
+			}
+			.sidebar_widget{
+				h3{
+					font-size: 1.375em;
+				}
 			}
 			>ul>li:first-child>h3 {
 				margin-top: 0;
@@ -1120,7 +1254,7 @@ section {
 			}
 			>ul>li {
 				>a, >.unclickable {
-					font-size: 14px;
+					font-size: 1.125em /*14px*/;
 					display: block;
 					padding: 8px 5% 8px 10%;
 					width: 85%;
@@ -1139,7 +1273,7 @@ section {
 					background: @sideGray;
 				}
 				>ul.children>li>a, &.child>a {
-					font-size: 12px;
+					font-size: 1.5em /*12px*/;
 					display: block;
 					padding: 6px 5% 6px 15%;
 					width: 80%;
@@ -1155,7 +1289,7 @@ section {
 					text-align: center;
 					line-height: 30px;
 					>a {
-						font-size: 10px;
+						font-size: 0.625em /*10px*/;
 						display: inline-block;
 						height: 10px;
 						width: 10px;
@@ -1183,7 +1317,7 @@ section {
 }
 
 #widget_container {
-	min-height:@widgetsHeight;	
+	min-height: @widgetsHeight;	
 	margin: 0 auto;
 	width:960px;
 	.widget li {
@@ -1197,7 +1331,7 @@ section {
 	overflow: hidden;
 	background: @lightBlueGray url('img/blueGray_bg.png') repeat;
 	color: @offWhite;
-	font-size: 12px;
+	font-size: 0.750em /*12px*/;
 	margin: 0 auto;
 
 	div.widget {
@@ -1215,27 +1349,26 @@ section {
 		h1 {
 			color: @UCFGold;
 			.hSerif;
-			font-size: 21px;
+			font-size: 1.313em /*21px*/;
 			padding-bottom: 10px;
 			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5)
 		}
 		h2 {
 			color: @offWhite;
-			font-size: 18px;
+			font-size: 1.125em /*18px*/;
 			padding-bottom: 5px;
 		}
 		h3 {
 			padding:0;
 		}
 		p {
-			font-size: 12px;
 			line-height: 14px;
 		}
 		>ul {
 			padding: 5px 0;
 			>li {
 				padding: 3px;
-				font-size: 14px;
+				font-size: 1.125em /*14px*/;
 				color: darken(@offWhite, 20%);
 				&:hover {
 					background: @lightBlueGray;
@@ -1250,14 +1383,13 @@ section {
 			}
 		}
 		.textwidget {
-			font-size: 14px;
-			margin-bottom:14px;
+			font-size: 0.875em /*14px*/;
+			margin-bottom: 14px;
 		}
 		&:last-child {
 			border-right: none;
 		}
 	}
-
 }
 
 
@@ -1267,7 +1399,7 @@ section {
 
 	#copyright {
 		float: left;
-		font-size: 12;
+		font-size: 0.750em /*12px*/;
 		color: @blueGray;
 		width: 100%;
 		margin-top: 20px;
@@ -1291,7 +1423,7 @@ section {
 
 	a {
 		display: block;
-		height: 100%; 
+		height: 100%;
 		width: 100%;
 	}
 
@@ -1313,7 +1445,7 @@ section {
 		background: transparent url('img/search.png') 10px center no-repeat;
 		-webkit-appearance: textfield;
 		.hSansSerif;
-		font-size: 14px;
+		font-size: 1em /*16px*/;
 		border: 1px solid @lighterBlueGray;
 		padding: 6px 38px 6px 33px;
 		.rounded(5px);
@@ -1333,7 +1465,7 @@ section {
 
 	a {
 		line-height: 21px;
-		font-size: 16px;
+		font-size: 1em /*16px*/;
 		display: inline-block;
 		.transition(0.5s, ease-out);
 		&:hover {
@@ -1345,7 +1477,7 @@ section {
 	span.crumbSep {
 		color: @UCFGold;
 		text-shadow: 0px 1px 0px rgba(255, 255, 255, .3), 0px -1px 0px rgba(0, 0, 0, .3);
-		font-size: 18px;
+		font-size: 1.125em /*18px*/;
 		line-height: 21px;
 		display: inline-block;
 		padding: 0 5px;
@@ -1368,26 +1500,26 @@ section {
 	h2 { /* Person's name */
 		padding: 0;
 		margin-bottom: 5px;
-		font-size: 21px;
+		font-size: 1.313em /*21px*/;
 	}
 	ul.personBasics {
 		float: left;
 		.hSansSerif;
 		max-width: 70%;
 		>li {
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			margin: 5px 0;
 			&:before { 
 				.icon; 
 				content: '';
 			}
-			&.person_position:before { content: '\e062'; }
+			&.person_position:before { content: '\e062'; float:left; padding-bottom:5px;}
 			&.person_location:before { content: '\e068'; }
 			&.person_phone:before { content: '\e06e'; }
 			&.person_email:before { content: '\2709'; }
 
 			&.person_research { 
-				font-size: 14px;
+				font-size: 0.875em /*14px*/;
 			}
 		}
 	}
@@ -1408,7 +1540,7 @@ section {
 		float: left;
 		.hSansSerif;
 		li {
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			margin: 5px 0;
 			&:before { 
 				.icon; 
@@ -1444,7 +1576,7 @@ section {
 		>li {
 			display: inline-block;
 			line-height: 30px;
-			font-size: 16px;
+			font-size: 1em /*16px*/;
 			.hSansSerif;
 			text-transform: uppercase;
 			border-right: 1px solid @offWhite;
@@ -1494,19 +1626,20 @@ section {
 		>li {
 			display: block;
 			padding: 20px;
-			font-size: 12px;
+			font-size: 0.750em /*12px*/;
 			line-height: 16px;
 			color: @darkBlue;
 			&:before {
 				content: '';
 			}
 			p {
-				font-size: 12px;
+				font-size: 100%;
 				line-height: 16px;
 				color: @darkBlue;
 				margin-bottom: 10px;
 			}
 			li {
+				font-size: 100%;
 				margin-bottom: 5px;
 				margin-left: 15px;
 				&:before {
@@ -1517,6 +1650,16 @@ section {
 				}
 			}
 		}
+	}
+	#person_office_hrs {
+		h1 {
+			font-size:2em;
+		}
+		h2 {
+			margin-left:10px;
+			font-size:1.5em;
+		}
+
 	}
 }
 
@@ -1565,7 +1708,7 @@ section {
 		display: inline-block;
 		float: left;
 		.hSansSerif;
-		font-size: 21px;
+		font-size: 1.31em /*21px*/;
 		text-transform: uppercase;
 		margin-right: 10px;
 
@@ -1574,7 +1717,7 @@ section {
 		}
 	}
 	li {
-		font-size: 10px;
+		font-size: 0.625em /*10px*/;
 		float: left;
 		display: inline-block;
 		margin: 0 5px;

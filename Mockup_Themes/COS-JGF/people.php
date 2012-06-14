@@ -15,7 +15,7 @@ Template Name: People List
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header>
 					<h1><?php the_title(); ?></h1>
-					<a class="sort_people" href="#">Sort Alphabetically</a>
+					<!-- <a class="sort_people" href="#">Sort Alphabetically</a> -->
 				</header>				
 
 					<?php show_people(); ?>
@@ -28,6 +28,7 @@ Template Name: People List
 		
 		<div id="sidebar">
 		<?php people_nav(); ?>
+		<?php get_sidebar(); ?>
 		</div>	
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->

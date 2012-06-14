@@ -108,29 +108,35 @@
 	// Main nav links and dropdown menu
 	$('#main_header nav>ul>li').hover(
 		function(){
-			$(this).children('ul.children').slideDown('fast').show(); 
+			$(this).children('ul.children').slideDown('').show(); 
+			$(this).children('ul.sub-menu').slideDown('').show(); 
 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
-				$(this).children('ul.children').slideUp('fast');
+				$(this).children('ul.children').slideUp('');
+				$(this).children('ul.sub-menu').slideUp('');
 				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
-				$(this).children('ul.children').slideUp('fast');
+				$(this).children('ul.children').slideUp('');
+				$(this).children('ul.sub-menu').slideUp('');
 			}
 		}
 	);
 	$('#main_header nav>ul>li>ul>li').hover(
 		function(){
-			$(this).find('ul.children').slideDown('fast').show();
+			$(this).find('ul.children').slideDown('').show();
+			$(this).find('ul.sub-menu').slideDown('').show();
 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 		},
 		function(){ 
 			if( !$(this).hasClass('current_page_item') ){
-				$(this).find('ul.children').slideUp('fast');
+				$(this).find('ul.children').slideUp('');
+				$(this).find('ul.sub-menu').slideUp('');
 				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
 			} else {
-				$(this).find('ul.children').slideUp('fast');
+				$(this).find('ul.children').slideUp('');
+				$(this).find('ul.sub-menu').slideUp('');
 			}
 		}
 	);
@@ -188,12 +194,14 @@
 
 	// Parent finding for nav li elements 
 	$('nav li').has('.children').addClass('parent');
+	$('nav li').has('.sub-menu').addClass('parent');
 
 	// Page nav expand
 	$('.pageNav li.parent').prepend('<span class="expand"><a href="#">+</a></span>');
 	$('.pageNav .expand>a').click( function(){
 		$this = $(this);
 		$children = $this.parent().parent().find('.children');
+		//$children = $this.parent().parent().find('.sub-menu');
 		if($children.is(':visible')){
 			$this.text('+');
 			$children.hide();

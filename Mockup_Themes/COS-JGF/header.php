@@ -44,7 +44,7 @@
 
 
  
-<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <!--<script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>-->
 <!--<script src="<?php bloginfo('template_directory'); ?>/js/modernizr-1.6.min.js"></script>-->
 <!--<script src="<?php bloginfo('template_directory'); ?>/js/less-1.2.2.min.js"></script>-->
@@ -62,21 +62,25 @@
             <?php show_social(); ?>
 
             <hgroup>
-                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>"><span class="branding_prefix"><?php echo( $brandingPrefix ); ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>; width: 250px;"><span class="branding_prefix"><?php echo( $brandingPrefix ); ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
                     <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
             </hgroup>
 
             <?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to the 'starkers_menu' function which can be found in functions.php.  The menu assiged to the primary position is the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
-            <?php wp_nav_menu( array( 
+            <!--<?php wp_nav_menu( array( 'sort_column' => 'menu_order', 'container_class' => 'menu-header' ) ); ?>-->
+            <!--<?php wp_nav_menu( array( 
                 'container' => 'nav', 
                 'fallback_cb' => 'starkers_menu', 
                 'theme_location' => 'primary' 
-            ) ); ?>
+            ) ); ?>-->
+            <?php wp_nav_menu( array( 'theme_location' => 'primary-menu', 'container' => 'nav', 'fallback_cb' => 'starkers_menu' ) ); ?>
+
             <span id="pageID" style="display:none;"><?php echo get_query_var('page_id'); ?></span>
 
         </div>
 
     </header>
+
 
 <div id="container">
