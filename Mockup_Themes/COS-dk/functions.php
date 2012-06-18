@@ -497,10 +497,6 @@ function show_people_cats( $displayCats = true ) {
 	$subCats = array();
 	$has_subCats = false;
 
-	echo '<pre>';
-	// print_r($cats);
-	echo '</pre>';
-
 	if( !empty( $cats ) ){
 		foreach ($cats as $cat){
 			if( $cat->parent != 0 ){
@@ -762,7 +758,7 @@ function show_office_hours( $is_sidebar=true ) {
 
 	if( $is_sidebar ){
 		// echo '<h3>'.$title.'</h3>'; // Shown in widget; not necessary
-		echo '<p>'.$subtitle.'</p>';
+		echo '<p class="message">'.$subtitle.'</p>';
 		echo '<ul class="xoxo">';
 	} else {
 		echo '<div class="officeHours">';
