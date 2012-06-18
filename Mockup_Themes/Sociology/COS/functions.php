@@ -247,17 +247,31 @@ function show_slider_items() {
 
 		$slide = array(
 			'title' => get_field('title'),
-			'content' => excerpt( get_field('content'), 150, get_field('page') ),
+			'content' => '',
 			'image' => get_field('image'),
+			'page' => get_field('page'),
+			'file_link' => get_field('file_link'),
+			'external_link' => get_field('external_link'),
 			'position' => ucwords( get_field('position') ),
 			'is_disabled' => get_field('disabled') ,
 			'is_expired' => $isExpired, // TRUE if expired
 			'edit' => get_edit_post_link( $thisID ),
-			'page' => get_field('page'),
 		);
 
 		 // Skip slider item if it's expired or disabled
 		if( $slide['is_expired'] || $slide['is_disabled'] ) continue;
+
+		//Link to a file if a File Link is defined in the Custom Post 
+		if(!empty($slide['file_link'])){ $slide['page'] = $slide['file_link'];}		
+		
+		//Link to an external site if an External Link is defined in the Custom Post 
+		if(!empty($slide['external_link']) && !preg_match("^(http|https)\:\/\/^", $slide['external_link'])){
+			$slide['external_link'] = "http://".$slide['external_link'];
+		}
+		if(!empty($slide['external_link'])){ $slide['page'] = $slide['external_link'];}
+
+		//Define 'content' here to it's link at the end matches the title link
+		$slide['content'] = excerpt( get_field('content'), 150, $slide['page']);
 
 		echo <<<SLIDE
 			<li class="slide slide{$slide['position']}">
@@ -357,10 +371,20 @@ function show_main_links() {
 		$mainLink = array(
 			'title' => get_field('title'),
 			'link' => get_field('link'),
+			'file_link' => get_field('file_link'),
+			'external_link' => get_field('external_link'),
 			'image' => get_field('image'),
 			'slice' => ucwords(get_field('slice')),
 			'open' => get_field('open'),
 		);
+
+		//Link to an Internal File
+		if(!empty($mainLink['file_link'])){ $mainLink['link'] = $mainLink['file_link'];}
+		//Link to an External Site
+		if(!empty($mainLink['external_link']) && !preg_match("^(http|https)\:\/\/^", $mainLink['external_link'])){
+			$mainLink['external_link'] = "http://".$mainLink['external_link'];
+		}		
+		if(!empty($mainLink['external_link'])){ $mainLink['link'] = $mainLink['external_link'];}
 
 		echo <<<MAINLINK
 			<div style="background-image: url({$mainLink['image']})" class="slice{$mainLink['slice']}">
@@ -846,7 +870,9 @@ function parse_hrs( $hours ) {
 	// There must be an even number of elements in array
 	if( count($hrs_array) % 2 == 0 ){
 		return $hrs_array;
-	} elseif (preg_match('/private/', strtolower($hours)) ){
+	}
+	//Else if to handle if only a specific day is "Private / By Appt Only"
+	elseif (preg_match('/private/', strtolower($hours)) ){
 		return "private";
 	}else {
 		return false;
@@ -918,7 +944,10 @@ function get_hrs( $person ){
 				$parity = !$parity;
 			}
 			$hours = substr( $hours, 0, -9 ); // Remove the extra </li><li>
-		} elseif ($person[$office_hours_today] == "private") {			
+		} 
+		//If the person has a day that's by Appt Only then parse_hrs will have
+		//assigned $office_hours_today to "private"
+		elseif ($person[$office_hours_today] == "private") {			
 			$hours .= '<strong><em>By Appointment Only</em></strong>';
 		} else {
 			
