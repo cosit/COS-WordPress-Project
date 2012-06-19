@@ -205,7 +205,7 @@
 	$('.pageNav li.parent').prepend('<span class="expand"><div>+</div></span>');
 	$('.pageNav .expand>div').click( function(){
 		$this = $(this);
-		$children = $this.parent().parent().find('.children, .sub-menu');
+		$children = $this.parent().parent().children('.children, .sub-menu');
 		if($children.is(':visible')){
 			$this.text('+');
 			$children.hide();

@@ -724,7 +724,7 @@ section {
 	}
 	.person_toolbar { 
 		display: block;
-		padding: 0 8px;
+		padding: 0 10px;
 		margin-top: 5px;
 		display: none; 
 		position: absolute;
@@ -733,7 +733,8 @@ section {
 		.drop-shadow(0,0,8px,0.3);
 		.rounded(8px);
 		text-align: center;
-		width: 60%;
+		width: auto;
+		font-size: 0.75em;
 
 		li {
 			border-left: 1px solid lighten(@lighterBlueGray, 10%);
@@ -1052,6 +1053,48 @@ section {
 				padding: 10px;
 			}
 		}
+		.button {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 15%));
+			color: lighten(@lighterBlueGray, 15%);
+			border: 1px solid black;
+			text-shadow: 0 -1px 0 darken(@darkBlue, 10%);
+
+			&:hover {
+				.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 20%));
+			}
+			&:active {
+				.gradient(@darkBlue, lighten(@darkBlue, 15%), @darkBlue);
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+		}
+		.buttongold {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 10%));
+			color: @offWhite;
+			border: 1px solid @lightBlueGray;
+			text-shadow: 0 -1px 0 darken(@UCFGold, 20%);
+			text-shadow: ;
+			font-weight: bold;
+
+			&:hover {
+				.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 15%));
+			}
+			&:active {
+				.gradient(@UCFGold, lighten(@UCFGold, 10%), darken(@UCFGold, 10%));
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+		}
 	}
 	#sidebar {
 		.column(3);
@@ -1288,6 +1331,15 @@ section {
 				}
 				>ul {
 					display: none; // Temp hide subdirectories
+				}
+			}
+		}
+		>div>div {
+			font-size: 0.8em !important; // Tweet fix
+			div.tweet {
+				border-bottom: 1px solid @lightBlueGray;
+				&:hover {
+					background: @lightBlueGray;
 				}
 			}
 		}
@@ -1711,14 +1763,6 @@ section {
 			}
 		}
 	}
-}
-#main_content a.button {
-	display: inline-block;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	color: @offWhite !important;
-	.gradient( #1A1D20 , darken(#1A1D20, 20%) );
 }
 .hide {
 	display: none;

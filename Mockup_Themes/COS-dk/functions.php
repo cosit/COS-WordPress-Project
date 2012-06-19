@@ -554,7 +554,7 @@ function person_toolbar( $person ){
 	echo '<ul class="person_toolbar">';
 	echo '<li><a href="mailto:'.$person['email'].'">'.$msg['email'].'</a></li>';
 	echo '<li><a href="'.$person['link'].'">'.$msg['link'].'</a></li>';
-	echo '<li><a class="peopleModalView" title="'.$person['id'].'" href="#people_modal_person_'.$person['id'].'">'.$msg['quickview'].'</a></li>';
+	// echo '<li><a class="peopleModalView" title="'.$person['id'].'" href="#people_modal_person_'.$person['id'].'">'.$msg['quickview'].'</a></li>';
 	echo '</ul>';
 
 	
