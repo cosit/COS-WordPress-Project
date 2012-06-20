@@ -19,9 +19,9 @@ add_filter('widget_text', 'do_shortcode');
 
 function load_custom_script() {
 
-    wp_deregister_script('jquery');
-    wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
-    wp_enqueue_script('jquery');
+    // wp_deregister_script('jquery');
+    // wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
+    // wp_enqueue_script('jquery');
 
     wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
     wp_enqueue_script('jquery.flexslider');
@@ -83,21 +83,20 @@ function COS_themeoptions_page() {
             <?php $events_items = get_option('COS_events_items'); ?>
             <h4>Number of Events Items to Display </h4>
             <input type="text" name="events_items" id="events_items" value=<?php echo $events_items; ?>>
-
-<!-- All things related to news/events will not be here anymore
-	 To be put in widget options (so plugins will need to be updated) -->
   
             <p><input type="submit" name="search" value="Update Options" class="button" /></p>  
         </form>  
   
     </div>  
     <?php  
+
 }
 
 function COS_themeoptions_update() {
 	// this is where validation would go
 	update_option('COS_title_prefix', 	$_POST['title_prefix']);
 	update_option('COS_title_size', 	$_POST['title_size']);
+
 }
 
 add_action('admin_menu', 'COS_themeoptions_admin_menu');
@@ -108,14 +107,6 @@ if ( ! function_exists( 'starkers_setup' ) ):
  * Sets up theme defaults and registers support for various WordPress features.
  *
  * @since Starkers HTML5 3.0
- * @uses load_theme_textdomain() For translation/localization support.
- * @uses add_editor_style() To style the visual editor.
- * @uses add_theme_support() To add support for post thumbnails, automatic feed links, and Post Formats.
- * @uses register_nav_menus() To add support for navigation menus.
- * @uses add_custom_background() To add support for a custom background.
- * @uses add_custom_image_header() To add support for a custom header.
- * @uses register_default_headers() To register the default custom header images provided with the theme.
- * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
  */
 
 
@@ -154,14 +145,12 @@ function page_nav( $pageID = 0 ){
 	echo $children;
 	echo '</ul>';
 
-	// For Political Science Only
-	//If pageID equals the pageID for NEWS then export a list of the 
-	//News Archives
-	// if( $title == 'News' ){
-	// 	echo '<ul>';
-	// 	echo wp_list_categories('title_li=');
-	// 	echo '</ul>';
-	// }
+	// Show news categories
+	if( $title == 'News' ){
+		echo '<ul>';
+		echo wp_list_categories('title_li=');
+		echo '</ul>';
+	}
 
 	echo '</nav>';
 }
@@ -171,13 +160,13 @@ function people_nav( $pageID = '' ){
 	$pageID = $pageID || get_the_ID();
 	$term_id = get_query_var('term_id');
 	$currentPage = get_post( $pageID );
-	// Check if post/page is a child or a parent
 
 	echo '<nav class="pageNav"><h2><a href="'.get_bloginfo('url').'/people/">People</a></h2><ul>';
 	echo show_people_cats( false );
 	echo '</ul></nav>';
 }
 add_shortcode('people_nav', 'people_nav');
+
 
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
@@ -348,8 +337,9 @@ function show_main_links() {
 
 		echo <<<MAINLINK
 			<div style="background-image: url({$mainLink['image']})" class="slice{$mainLink['slice']}">
-				<a href="{$mainLink['link']}" target="_{$mainLink['open']}" title="{$mainLink['title']}"></a>
+			<a href="{$mainLink['link']}" target="_{$mainLink['open']}" title="{$mainLink['title']}"></a>
 				<h2>{$mainLink['title']}</h2>
+
 			</div>
 MAINLINK;
 	endwhile; endif; wp_reset_query();
@@ -468,7 +458,7 @@ function people_cat() {
 			'hierarchical' => true,
 			'args' => array( 'orderby' => 'term_order' ),
 			'query_var' => true,
-			'rewrite' => false //array( 'slug' => 'group' )
+			'rewrite' => false, /*array( 'slug' => 'group' )*/
 		)
 	);
 }
@@ -476,18 +466,49 @@ add_action( 'init', 'people_cat' );
 
 function show_people_cats( $displayCats = true ) {
 	$cats = get_terms( 'people_cat' );
+	$subCats = array();
+	$has_subCats = false;
+
+	echo '<pre>';
+	// print_r($cats);
+	echo '</pre>';
 
 	if( !empty( $cats ) ){
+		foreach ($cats as $cat){
+			if( $cat->parent != 0 ){
+				array_push($subCats, $cat);
+			}
+		}
 		
 		foreach ($cats as $cat){
 			if( $cat->parent != 0 ){
-				$peopleCatList .= '<li class="child">';
+				continue;
 			} else {
 				$peopleCatList .= '<li>';
 			}
 
 			$peopleCatList .= '<a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a>';
+			
+
+			// Add subcategories
+			foreach ($subCats as $subCat){
+				if( $subCat->parent == $cat->term_id ){
+					if( $has_subCats ){
+						$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
+					} else {
+						$peopleCatList .= '<ul class="children"><li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
+						$has_subCats = true;
+					}
+				}
+			}
+
+			if( $has_subCats ){
+				$peopleCatList .= '</ul>';
+				$has_subCats = false;
+			}
+
 			$peopleCatList .= '</li>';
+
 		}
 		if( $displayCats ){
 			echo '<ul id="people_cats" class="children" style="display: none;">';
@@ -509,7 +530,7 @@ function person_toolbar( $person ){
 	echo '<ul class="person_toolbar">';
 	echo '<li><a href="mailto:'.$person['email'].'">'.$msg['email'].'</a></li>';
 	echo '<li><a href="'.$person['link'].'">'.$msg['link'].'</a></li>';
-	echo '<li><a href="#">'.$msg['quickview'].'</a></li>';
+	//echo '<li><a href="#">'.$msg['quickview'].'</a></li>';
 	echo '</ul>';
 }
 
@@ -529,8 +550,7 @@ function show_person( $id, $is_ie = false ) {
 		'biography' 	=> get_field('biography'),
 		'research'  	=> get_field('research_areas'),
 		'misc'      	=> get_field('miscellaneous'),
-		'classes'		=> get_field('classes'),
-		'highlights'	=> get_field('highlights'),
+		'p_courses'     => get_field('courses'),
 
 		// Office Hours
 		'p_office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
@@ -541,6 +561,12 @@ function show_person( $id, $is_ie = false ) {
 
 		'p_office_hours_private' => get_field('office_hours_private'),
 	);
+
+	//Show a default image if there is no image defined
+	//Make sure to change when the site goes live
+	if( !$person['p_photo']){
+			$person['p_photo'] = "http://10.171.92.38/~sociolog/wp-content/uploads/2012/04/NoImagePegasusGrey.jpg";
+	}
 
 	$office_hours = get_hrs( $person );
 
@@ -556,16 +582,22 @@ function show_person( $id, $is_ie = false ) {
 		}
 		// Office Hours
 		
-		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
+		$contentTabs .= '<li><a href="#person_office_hrs">Courses & Office Hours</a></li>';
 		if( $person['p_office_hours_private'] ){
 			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
 			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
 		} else {
-			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
+			$content .= '<li id="person_office_hrs"><h1>Office Hours</h1>' . $office_hours .'';
+			if ($person['p_courses']){
+				$content .='<h1>Courses</h1>' . $person['p_courses'] . '';
+			}
+			else{
+				$content .='<h1>Courses</h1><p>Not Available</p>';
+			}
 		}
 
 		$contentTabs .= '</ul>';
-		$content .= '</ul>';
+		$content .= '</li></ul>';
 	} else {
 		$content = '<ul class="personContent">';
 		foreach  ($person as $field => $value ) {
@@ -638,7 +670,7 @@ function show_people( $catID = 0 ) {
 			'location'    => get_field('location'),
 			'position'    => get_field('position'),
 			'biography'   => get_field('biography'),
-			'research_ex' => excerpt(get_field('research_areas'), 140),
+			//'research_ex' => get_field('research_areas'),
 			'cv'          => get_field('curriculum_vitae'),
 			'link'        => get_permalink(),
 
@@ -650,21 +682,27 @@ function show_people( $catID = 0 ) {
 			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
 		);
 
+		if( !$person['photo']){
+			$person['photo'] = "http://10.171.92.38/~sociolog/wp-content/uploads/2012/04/NoImagePegasusGrey.jpg";
+		}
 
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
 		<article class="person clearfix">
 			<figure><img src="{$person['photo']}" /></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['first_name']} {$person['last_name']}</a></h2>
+				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
 				<li class="person_position">{$person['position']}</h3>
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
+				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
 PEOPLE;
+
+
 
 	endwhile; endif; wp_reset_query();
 	echo '</div>';
@@ -673,7 +711,7 @@ PEOPLE;
 //Shortcode for displaying all people
 add_shortcode('show_people', 'show_people');
 
-function show_office_hours( $is_sidebar = true ) {
+function show_office_hours( $is_sidebar=true ) {
 	if( is_home() ){
 		$is_sidebar = false;
 	}
@@ -812,7 +850,6 @@ function echo_hrs( $person, $day, $is_sidebar ) {
 		}
 		echo '</li></ul>';
 	}
-
 }
 
 function get_hrs( $person ){
@@ -932,7 +969,36 @@ function home_insert_contact($atts, $content=null){
 //Shortcode for adding contact area
 add_shortcode('home_contact', 'home_contact_area');
 
+/****Did you know Widget****/
 
+function show_dyk_area( $args ) {
+// Grab posts from specified category
+	if( get_cat_ID( $args['cat'] ) ){
+		$dykArgs = array( 
+		'category_name' => $args['cat'],
+		'posts_per_page' => -1 
+		);
+	} else {
+		echo "<em>There is nothing to know at this time.</em>";
+		return false;
+	}
+	shuffle( query_posts( $dykArgs ) );
+
+	if(have_posts()) : while (have_posts()) : the_post(); 
+
+	$thisID = get_the_ID();
+	the_content();
+
+	break; // Prevent loop from displaying more than one post, just in case.
+
+	endwhile; endif; wp_reset_query();
+
+	return true;
+}
+add_action( 'show_dyk_area', 'show_dyk_area', 10, 1 );
+
+
+/**************************/
 
 // Breadcrumbs
 function breadcrumbs() {
@@ -1036,14 +1102,14 @@ function breadcrumbs() {
     }
  
     echo '</div>';
- 
   }
 } 
 
-function show_news( $cat, $items_to_show = 3 ) { ?>
+function show_news( $cat, $items_to_show=3 ) { ?>
 	<div class="news">
  		<!-- <h1>News</h1> -->
 		<?php 
+		//echo $cat . ' - ' . $items_to_show;
 
 		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
@@ -1067,12 +1133,42 @@ function show_news( $cat, $items_to_show = 3 ) { ?>
 }
 add_action('show_news', 'show_news');
 
+function show_news_full() { ?>
+	<div class="news"> 		
+		<?php try {
+			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
+			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_option('COS_news_cat').'&feed=rss2'); // specify feed url
+			$items = array_slice($feed->items, 0, 20); // specify first and last item
+			} catch(Exception $e) {
+				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
+			}
+		?>
+
+			<?php if (!empty($items)) : ?>
+			<?php foreach ($items as $item) : ?>
+			
+			<article>
+				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
+				<p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
+				<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
+			</article>
+			<?php endforeach; ?>
+			<?php endif; ?>
+	</div> <?php
+}
+add_shortcode('show_news_full', 'show_news_full');
+
 function show_events() {?>
 	
 		<?php try {
-			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
-			$feed = fetch_rss('http://events.ucf.edu/?calendar_id=217&upcoming=upcoming&format=rss&limit=100'); // specify feed url
-			$items = array_slice($feed->items, 0, 7); // specify first and last item
+				include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
+				$feed = fetch_rss('http://events.ucf.edu/?calendar_id=292&upcoming=upcoming&format=rss&limit=10'); // specify feed url
+				$backupFeed = fetch_rss('http://events.ucf.edu/?calendar_id=719&upcoming=upcoming&format=rss&limit=10'); //Backup Feed is there are no events
+				$items = array_slice($feed->items, 0, 7); // specify first and last item
+				//Use the backup feed (College of Sciences) if the normal feed is empty
+				if(empty($items)){
+					$items = array_slice($backupFeed->items, 0, 7);
+				}
 			} catch(Exception $e) {
 				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
 			}
@@ -1095,15 +1191,21 @@ function show_events() {?>
 				</ul>
 			</article>
 		<?php endforeach; ?>
-		
+		<?php else: ?>
 		<?php endif; ?><?php
 }
 add_action('show_events', 'show_events');
 
+add_action( 'init', 'register_my_menu' );
+
+function register_my_menu() {
+	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
+}
+
 function starkers_setup() {
 
 	// Post Format support. You can also use the legacy "gallery" or "asides" (note the plural) categories.
-	add_theme_support( 'post-formats', array( 'aside', 'link', 'gallery', 'status', 'quote', 'image' ) );
+	add_theme_support( 'post-formats', array( 'aside', 'gallery' ) );
 
 	// This theme uses post thumbnails
 	add_theme_support( 'post-thumbnails' );
@@ -1120,10 +1222,6 @@ function starkers_setup() {
 	if ( is_readable( $locale_file ) )
 		require_once( $locale_file );
 
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus( array(
-		'primary' => __( 'Primary Navigation', 'starkers' ),
-	) );
 }
 endif;
 
@@ -1250,6 +1348,16 @@ function starkers_widgets_init() {
 	) );
 
 	register_sidebar( array(
+		'name' => __( 'Front Page Slider Right', 'starkers' ),
+		'id' => 'front-slider-right-widget-area',
+		'description' => __( 'The right side of the slider area on the front page', 'starkers' ),
+		'before_widget' => '',
+		'after_widget' => '',
+		'before_title' => '<h1>',
+		'after_title' => '</h1>',
+	) );
+
+	register_sidebar( array(
 		'name' => __( 'Front Page Left Column', 'starkers' ),
 		'id' => 'front-left-widget-area',
 		'description' => __( 'The left side of the home page', 'starkers' ),
@@ -1316,68 +1424,7 @@ function starkers_widgets_init() {
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
 add_action( 'widgets_init', 'starkers_widgets_init' );
 
-/**
- * Removes the default styles that are packaged with the Recent Comments widget.
- *
- * @updated Starkers HTML5 3.2
- */
-function starkers_remove_recent_comments_style() {
-	add_filter( 'show_recent_comments_widget_style', '__return_false' );
-}
-add_action( 'widgets_init', 'starkers_remove_recent_comments_style' );
-
-if ( ! function_exists( 'starkers_posted_on' ) ) :
-/**
- * Prints HTML with meta information for the current post—date/time and author.
- *
- * @since Starkers HTML5 3.0
- */
-function starkers_posted_on() {
-	printf( __( 'Posted on %2$s by %3$s', 'starkers' ),
-		'meta-prep meta-prep-author',
-		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><time datetime="%3$s" pubdate>%4$s</time></a>',
-			get_permalink(),
-			esc_attr( get_the_time() ),
-			get_the_date('Y-m-d'),
-			get_the_date()
-		),
-		sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
-			get_author_posts_url( get_the_author_meta( 'ID' ) ),
-			sprintf( esc_attr__( 'View all posts by %s', 'starkers' ), get_the_author() ),
-			get_the_author()
-		)
-	);
-}
-endif;
-
-if ( ! function_exists( 'starkers_posted_in' ) ) :
-/**
- * Prints HTML with meta information for the current post (category, tags and permalink).
- *
- * @since Starkers HTML5 3.0
- */
-function starkers_posted_in() {
-	// Retrieves tag list of current post, separated by commas.
-	$tag_list = get_the_tag_list( '', ', ' );
-	if ( $tag_list ) {
-		$posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
-	} elseif ( is_object_in_taxonomy( get_post_type(), 'category' ) ) {
-		$posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
-	} else {
-		$posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
-	}
-	// Prints the string, replacing the placeholders.
-	printf(
-		$posted_in,
-		get_the_category_list( ', ' ),
-		$tag_list,
-		get_permalink(),
-		the_title_attribute( 'echo=0' )
-	);
-}
-
-
-//////////// User Role Customization ////////////
+// User Role Customization
 
 	// get the the role object
 	$role_object = get_role('editor');
@@ -1385,92 +1432,90 @@ function starkers_posted_in() {
 	// add $cap capability to this role object
 	$role_object->add_cap( 'edit_theme_options' );
 
-//////////// Dashboard Cusomtization ////////////
+// Dashboard Customization 
 
 // Change Log-In Screen Logo
-	function my_custom_login_logo() {
-	    echo '<style type="text/css">
-	        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
-	    </style>';
-	}
-
+function my_custom_login_logo() {
+    echo '<style type="text/css">
+        h1 a { background-image:url('.get_bloginfo('template_directory').'/images/logo.png) !important; }
+    </style>';
+}
 add_action('login_head', 'my_custom_login_logo');
 
 // Change Log-In Screen Logo URL
-    function put_my_url(){
-    return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
-    }
-    add_filter('login_headerurl', 'put_my_url');
+function put_my_url(){
+	return ('http://www.cos.ucf.edu/it'); // putting my URL in place of the WordPress one
+}
+add_filter('login_headerurl', 'put_my_url');
 
 // Change Log-In Screen Logo Hover State
-    function put_my_title(){
+function put_my_title(){
     return ('College of Sciences Information Technology'); // Change the title from "Powered by WordPress"
-    }
-    add_filter('login_headertitle', 'put_my_title');
+}
+add_filter('login_headertitle', 'put_my_title');
 
 // Add error/info message box to top of the Dashboard
-	function showMessage($message, $errormsg)
-	{
-	    if ($errormsg) {
-	        echo '<div id="message" class="error">';
-	    }
-	    else {
-	        echo '<div id="message" class="updated fade">';
-	    }
-	    echo "<p><strong>$message</strong></p></div>";
-	} 
+function showMessage($message, $errormsg){
+    if ($errormsg) {
+        echo '<div id="message" class="error">';
+    }
+    else {
+        echo '<div id="message" class="updated fade">';
+    }
+    echo "<p><strong>$message</strong></p></div>";
+} 
 
 // Write message to show in the error/info box
 	// Set boolean to True for red error box, False for yellow info box
-	function showAdminMessages()
-	{
-	    showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
-	}
-	add_action('admin_notices', 'showAdminMessages');
+function showAdminMessages(){
+	showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
+}
+add_action('admin_notices', 'showAdminMessages');
 
 // Customize WordPress Dashboard Footer
-	function remove_footer_admin () {
-		echo "&copy; ".date('Y')." - UCF College of Sciences Information Technology";
-	}
-	add_filter('admin_footer_text', 'remove_footer_admin');
+function remove_footer_admin () {
+	echo "&copy; ".date('Y')." - UCF College of Sciences Information Technology";
+}
+add_filter('admin_footer_text', 'remove_footer_admin');
 
 // Adding a custom widget in WordPress Dashboard
-	function wpc_dashboard_widget_function() {
-		// Entering the text between the quotes
-		echo "<ul>
-		<li><strong>Release Date:</strong> July 2012</li>
-		<li><strong>Author:</strong> College of Sciences Information Technology</li>
-		<li><strong>Support E-Mail:</strong> <a href='mailto:costech@ucf.edu'>costech@ucf.edu</a></li>
-		<li><strong>Support Phone:</strong> 407-823-2793</li>
-		</ul>";
-	}
-	function wpc_add_dashboard_widgets() {
-		wp_add_dashboard_widget('wp_dashboard_widget', 'Support Contact Information', 'wpc_dashboard_widget_function');
-	}
-	add_action('wp_dashboard_setup', 'wpc_add_dashboard_widgets' );
+function wpc_dashboard_widget_function() {
+	// Entering the text between the quotes
+	echo "<ul>
+	<li><strong>Release Date:</strong> July 2012</li>
+	<li><strong>Author:</strong> College of Sciences Information Technology</li>
+	<li><strong>Support E-Mail:</strong> <a href='mailto:costech@ucf.edu'>costech@ucf.edu</a></li>
+	<li><strong>Support Phone:</strong> 407-823-2793</li>
+	</ul>";
+}
+function wpc_add_dashboard_widgets() {
+	//wp_add_dashboard_widget('wp_dashboard_widget', 'Support Contact Information', 'wpc_dashboard_widget_function');
+	add_meta_box( 'wp_dashboard_widget', 'Support Contact Information', 'wpc_dashboard_widget_function', 'dashboard', 'side', 'high' );
+}
+add_action('wp_dashboard_setup', 'wpc_add_dashboard_widgets' );
 
 //Hiding Default Dashboard Widgets
-	add_action('wp_dashboard_setup', 'wpc_dashboard_widgets');
-	function wpc_dashboard_widgets() {
-		global $wp_meta_boxes;
-		//Main Column Widgets
-			// Today widget
-			//unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);
-			// Last comments
-			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']);
-			// Incoming links
-			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
-			// Plugins
-			unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
-		//Side Column Widgets
-			//Quick Press
-			//unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
-			//Recent Drafts
-			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']);
-			//WordPress Blog
-			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
-			//Other WordPress News
-			unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
-	}
+add_action('wp_dashboard_setup', 'wpc_dashboard_widgets');
+function wpc_dashboard_widgets() {
+	global $wp_meta_boxes;
+	//Main Column Widgets
+		// Today widget
+		//unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);
+		// Last comments
+		unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']);
+		// Incoming links
+		unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
+		// Plugins
+		unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
+	//Side Column Widgets
+		//Quick Press
+		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
+		//Recent Drafts
+		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']);
+		//WordPress Blog
+		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
+		//Other WordPress News
+		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
+}
 
-endif;
+

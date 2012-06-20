@@ -11,8 +11,9 @@
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 <?php if ( $wp_query->max_num_pages > 1 ) : ?>
     <nav>
-        <?php next_posts_link( __( '&larr; Older posts', 'starkers' ) ); ?>
-        <?php previous_posts_link( __( 'Newer posts &rarr;', 'starkers' ) ); ?>
+        <div style="float:left;"><h2><?php next_posts_link( __( '&larr; Older posts', 'starkers' ) ); ?></h2></div>
+        <div style="float:right;"><h2><?php previous_posts_link( __( 'Newer posts &rarr;', 'starkers' ) ); ?></h2></div>
+        <div style="clear:both;"></div>
     </nav>
 <?php endif; ?>
  
@@ -49,27 +50,27 @@
          
         <p><?php printf( _n( 'This gallery contains <a %1$s>%2$s photo</a>.', 'This gallery contains <a %1$s>%2$s photos</a>.', $total_images, 'starkers' ), 'href="' . get_permalink() . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark"', number_format_i18n( $total_images )); ?></p>
 
-	<?php endif; ?>
+    <?php endif; ?>
      
     <?php the_excerpt(); ?>
  
 <?php endif; ?>
  
             <footer>
-	            <?php if ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) : ?>
-	            <a href="<?php echo get_post_format_link( 'gallery' ); ?>" title="<?php esc_attr_e( 'View Galleries', 'starkers' ); ?>"><?php _e( 'More Galleries', 'starkers' ); ?></a> | 
-	            
-	            <?php elseif ( in_category( _x( 'gallery', 'gallery category slug', 'starkers' ) ) ) : ?>
-	            <a href="<?php echo get_term_link( _x( 'gallery', 'gallery category slug', 'starkers' ), 'category' ); ?>" title="<?php esc_attr_e( 'View posts in the Gallery category', 'starkers' ); ?>"><?php _e( 'More Galleries', 'twentyten' ); ?></a> | 
-	            
-	            <?php endif; ?>
-	            
-	            <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?>
-	            <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
+                <?php if ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) : ?>
+                <a href="<?php echo get_post_format_link( 'gallery' ); ?>" title="<?php esc_attr_e( 'View Galleries', 'starkers' ); ?>"><?php _e( 'More Galleries', 'starkers' ); ?></a> | 
+                
+                <?php elseif ( in_category( _x( 'gallery', 'gallery category slug', 'starkers' ) ) ) : ?>
+                <a href="<?php echo get_term_link( _x( 'gallery', 'gallery category slug', 'starkers' ), 'category' ); ?>" title="<?php esc_attr_e( 'View posts in the Gallery category', 'starkers' ); ?>"><?php _e( 'More Galleries', 'twentyten' ); ?></a> | 
+                
+                <?php endif; ?>
+                
+                <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?>
+                <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
             </footer>
         </article>
  
-<?php /* How to display posts of the Aside format. The asides category is the old way. */ ?>
+<?php /* How to display posts of the Aside format. The asides category is the old way. */ ?> 
     
     <?php elseif ( ( function_exists( 'get_post_format' ) && 'aside' == get_post_format( $post->ID ) ) || in_category( _x( 'asides', 'asides category slug', 'starkers' ) )  ) : ?>
      
@@ -86,16 +87,19 @@
             </footer>
         </article>
  
-<?php /* How to display all other posts. */ ?>
+<?php   /***********************************/
+        /* How to display all other posts. */
+        /***********************************/
+ ?>
  
     <?php else : ?>
      
         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
          
-			<header>
+            <header>
                 <h2><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'starkers' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
  
-                <?php starkers_posted_on(); ?>
+                <?php //starkers_posted_on(); ?>
             </header>
  
     <?php if ( is_archive() || is_search() ) : // Only display excerpts for archives and search. ?>
@@ -109,19 +113,19 @@
             <footer>
  
                 <?php if ( count( get_the_category() ) ) : ?>
-                        <?php printf( __( 'Posted in %2$s', 'starkers' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?> |
+                       <div style="padding-left:10px; margin-bottom:16px;"> <?php printf( __( 'Posted in %2$s', 'starkers' ), 'entry-utility-prep entry-utility-prep-cat-links', get_the_category_list( ', ' ) ); ?></div>
                 <?php endif; ?>
                 <?php
                     $tags_list = get_the_tag_list( '', ', ' );
                     if ( $tags_list ):
                 ?>
-                        <?php printf( __( 'Tagged %2$s', 'starkers' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?> |
+                        <?php printf( __( 'Tagged %2$s', 'starkers' ), 'entry-utility-prep entry-utility-prep-tag-links', $tags_list ); ?>
                 <?php endif; ?>
-                <?php comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?>
-                <?php edit_post_link( __( 'Edit', 'starkers' ), '| ', '' ); ?>
+                <?php //comments_popup_link( __( 'Leave a comment', 'starkers' ), __( '1 Comment', 'starkers' ), __( '% Comments', 'starkers' ) ); ?>
+                <?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
                  
             </footer>
-		</article>
+        </article>
  
             <?php comments_template( '', true ); ?>
  
@@ -132,7 +136,8 @@
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 <?php if (  $wp_query->max_num_pages > 1 ) : ?>
     <nav>
-        <?php next_posts_link( __( '&larr; Older posts', 'starkers' ) ); ?>
-        <?php previous_posts_link( __( 'Newer posts &rarr;', 'starkers' ) ); ?>
+        <div style="float:left;"><h2><?php next_posts_link( __( '&larr; Older posts', 'starkers' ) ); ?></h2></div>
+        <div style="float:right;"><h2><?php previous_posts_link( __( 'Newer posts &rarr;', 'starkers' ) ); ?></h2></div>
+        <div style="clear:both;"></div>
     </nav>
 <?php endif; ?>

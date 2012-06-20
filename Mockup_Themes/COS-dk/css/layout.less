@@ -231,7 +231,9 @@ section {
 		}
 
 		>ul>li>ul.children>li>ul.children,
-		>ul>li>ul.sub-menu>li>ul.sub-menu {
+		>ul>li>ul.sub-menu>li>ul.sub-menu,
+		>ul>li>ul.children>li>ul.children>li>ul.children,
+		>ul>li>ul.sub-menu>li>ul.sub-menu>li>ul.sub-menu {
 			display:none;
 			top: 0;
 			left: 100%;
@@ -1078,13 +1080,33 @@ section {
 			.drop-shadow(0,0,8px,0.3);
 		}
 		p {
-			width: 90%;
-			padding: 5px 5%;
+			width: 80%;
+			padding: 5px 10%;
 			border-top: 1px dashed @lightBlueGray;
 			border-bottom: 1px dashed @lightBlueGray;
 			font-size: 0.750em /*12px*/;
 			text-align: center;
 			color: @blueGray;
+
+			&.message {
+				margin-left: -10px;
+				margin-top: 15px;
+				background: @offWhite;
+				border: none;
+				color: @lightBlueGray;
+				// text-shadow: 0 -1px 0 @lightBlueGray;
+				.drop-shadow(0,0,8px,0.3);
+
+				&:after {
+					content: "";
+					position: absolute;
+					top: -10px;
+					left: 0px;
+					border-width: 10px 10px 0 0;
+					border-style: solid;
+					border-color: transparent @lighterBlueGray;
+				}
+			}
 		}
 		ul.xoxo>li, .pagenav>ul>li>a {
 			font-size: 1em /*16px*/;

@@ -18,7 +18,7 @@ html#ie {
 	#container {
 		min-height: 400px;
 		height: auto !important;
-		height: 100%;
+		//height: 100%;
 		margin-bottom: @mainFooterHeight + 25px;
 	}
 
@@ -47,7 +47,7 @@ html#ie {
 		height: @sliderHeight;
 		overflow: hidden;
 		position: relative;
-		.sliderItems.wrap { width: @sliderWidth; height: 100%; }
+		.sliderItems.wrap { width: @sliderWidth; height: 100%; background: url('img/slider/ieslider.jpg') top center; }
 
 		.flex-control-nav {
 			z-index: 5;
@@ -120,11 +120,11 @@ html#ie {
 
 		ul.slides {
 			margin: 0 auto;
-			//li {display:none;}
+			li {display:inline !important;}
 			li img {
 				width: 100%;
 				max-width: 1180px;
-				height: auto;
+				height: 350px;	
 			}
 			li h2 {
 				color: @darkBlue;
@@ -132,6 +132,7 @@ html#ie {
 				font-size: 21px;
 				.innerText;
 				.drop-shadow(0,0,5px,0.4);
+				
 			}
 			li p {
 				color: white;
@@ -143,22 +144,23 @@ html#ie {
 				.drop-shadow(0,0,5px,0.4);
 				.hSansSerif;
 				.innerText;
+				
 			}
 			li.slideTop {
-				h2 {top: 20px;}
-				p {top: 60px;}
+				h2 {top: 20px; }
+				p {top: 60px; }
 			}
 			li.slideCenter {
-				h2 {top: 100px;}
-				p {top: 140px;}
+				h2 {top: 100px; }
+				p {top: 140px; }
 			}
 			li.slideBottom {
-				h2 {top: 235px;}
-				p {top: 275px; }
+				h2 {top: 235px; }
+				p {top: 275px;  }
 			}
 			li.slideSpread {
-				h2 {top: 20px;}
-				p {top: 270px;}
+				h2 {top: 20px; }
+				p {top: 270px; }
 			}
 			.innerText {
 				position: absolute;
@@ -189,7 +191,6 @@ html#ie {
 		margin-left: auto;
 		margin-right:auto;
 	}
-
 	#contact {
 		position: absolute;
 		right: 70px;
@@ -287,15 +288,13 @@ html#ie {
 			height: 32px;
 		}
 
-		#contact_department { background: @lightBlueGray; }
-		#contact_phone    { background: @lightBlueGray; }	
+  		#contact_department { background: @lightBlueGray; }
+		#contact_phone    { background: @lightBlueGray; } 
 
 		#contact_department span { background: url('img/contact_icons.png') 0 0; }
 		#contact_address span  { background: url('img/contact_icons.png') 0 -40px; }
 		#contact_phone span    { background: url('img/contact_icons.png') 0 -80px; }
 		#contact_email span    { background: url('img/contact_icons.png') 0 -120px; }
-
-		#contact_email li {margin-top:12px;}
 
 		#contact_department:hover span { background: url('img/contact_icons_hover.png') 0 0; }
 		#contact_address:hover span  { background: url('img/contact_icons_hover.png') 0 -40px; }
@@ -385,7 +384,7 @@ html#ie {
 		}
 		p, li {
 			font-size: 12px;
-			color: @darkBlue;
+			color: @darkBlue;			
 		}
 		a {
 			color: @lightBlueGray;
@@ -501,8 +500,8 @@ html#ie {
 				}
 			}
 			.eventDate {
-				max-width:50px;
-				text-align:center;
+				max-width: 50px;
+				text-align: center;
 				display: inline-block;
 				position: absolute;
 				top: 5px;
@@ -745,9 +744,12 @@ html#ie {
 		}
 	}
 
-
+	body.home #main_footer {
+		margin-top: 20px !important;
+	}
 	#main_footer {
 		height: @mainFooterHeight + 100%;
+		margin-top: -@mainFooterHeight;
 	}
 
 	#widget_container {
@@ -819,7 +821,7 @@ html#ie {
 			}
 			.textwidget {
 				font-size: 14px;
-				margin-bottom:14px;
+				margin-bottom: 14px;
 			}
 			.edit_footer_widget {
 				position: absolute;
@@ -977,6 +979,7 @@ html#ie {
 		}
 		figure {
 			float: left;
+			max-width: 220px;
 		}
 		img {
 			max-width: 200px;
