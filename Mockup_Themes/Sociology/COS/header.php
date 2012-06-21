@@ -15,10 +15,6 @@
 <!--[if !IE]><!--> <html>             <!--<![endif]-->
 <head>
 
-<!-- ADD UCF HEADER -->
-<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
-<!-- END UCF HEADER -->
-
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title><?php
  
@@ -51,7 +47,9 @@
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>-->
 <?php wp_head(); ?>
 
-
+<!-- ADD UCF HEADER -->
+<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
+<!-- END UCF HEADER -->
 
 </head>
  
@@ -67,13 +65,6 @@
                 </a></h1>
             </hgroup>
 
-            <?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to the 'starkers_menu' function which can be found in functions.php.  The menu assiged to the primary position is the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
-            <!--<?php wp_nav_menu( array( 'sort_column' => 'menu_order', 'container_class' => 'menu-header' ) ); ?>-->
-            <!--<?php wp_nav_menu( array( 
-                'container' => 'nav', 
-                'fallback_cb' => 'starkers_menu', 
-                'theme_location' => 'primary' 
-            ) ); ?>-->
             <?php wp_nav_menu( array( 'theme_location' => 'primary-menu', 'container' => 'nav', 'fallback_cb' => 'starkers_menu' ) ); ?>
 
             <span id="pageID" style="display:none;"><?php echo get_query_var('page_id'); ?></span>
