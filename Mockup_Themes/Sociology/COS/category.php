@@ -26,14 +26,15 @@ get_header(); ?>
 						echo '<h3>' . $category_description . '</h3>';
 
 				get_template_part( 'loop', 'category' ); 
+
 				?>
 			
 	</div>
 	<div id="sidebar" style="float:right;">
 			<nav class="pageNav"><h2>News Archives</h2>
-				<ul><?php wp_list_categories('title_li='); ?></ul>
+				<ul><?php /*Exclude the 'Did You Know' category #18*/ wp_list_categories('exclude=18&title_li='); ?></ul>
 			</nav>
-			<?php custom_menu_nav(); ?>
+			<!--<?php custom_menu_nav(); ?>-->
 			<?php get_sidebar(); ?>
 
 	</div>

@@ -258,10 +258,7 @@ function show_slider_items() {
 			'edit' => get_edit_post_link( $thisID ),
 		);
 
-		 // Skip slider item if it's expired or disabled
-		if( $slide['is_expired'] || $slide['is_disabled'] ) continue;
-
-		//Link to a file if a File Link is defined in the Custom Post 
+		 //Link to a file if a File Link is defined in the Custom Post 
 		if(!empty($slide['file_link'])){ $slide['page'] = $slide['file_link'];}		
 		
 		//Link to an external site if an External Link is defined in the Custom Post 
@@ -633,43 +630,53 @@ function show_person( $id, $is_ie = false ) {
 	$office_hours = get_hrs( $person );
 
 	// Create array of tabs to display (and populate them), only if content exists
-	if( !$is_ie ){
-		$contentTabs = '<ul class="personTabs">';
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
-			}
-		}
-		// Office Hours
-		
-		$contentTabs .= '<li><a href="#person_office_hrs">Courses & Office Hours</a></li>';
-		if( $person['p_office_hours_private'] ){
-			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
-		} else {
-			$content .= '<li id="person_office_hrs"><h1>Office Hours</h1>' . $office_hours .'';
-			if ($person['p_courses']){
-				$content .='<h1>Courses</h1>' . $person['p_courses'] . '';
-			}
-			else{
-				$content .='<h1>Courses</h1><p>Not Available</p>';
-			}
-		}
 
-		$contentTabs .= '</ul>';
-		$content .= '</li></ul>';
-	} else {
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
-			}
+	$contentTabs = '<ul class="tabNavigation">';
+	$content = '';
+	$contentCounter = '0';
+
+	foreach  ($person as $field => $value ) {
+		if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+			$contentTabs .= '<li><a href="#' . $field . '">' . $field . '</a></li>';
+			$content     .= '<div id="'. $field . '" class="tabcontentstyle">' . $value . '</div>';
 		}
 	}
+	// Office Hours
+	
+	$contentTabs .= '<li><a href="#person_office_hrs">Courses &amp; Office Hours</a></li>';
+	if( $person['p_office_hours_private'] ){
+		$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
+		$content .= '<div id="person_office_hrs" class="tabcontentstyle"><h2>' . $office_hours_private_msg . '</h2></div>';
+	} else {
+		$content .= '<div id="person_office_hrs" class="tabcontentstyle"><h1>Office Hours</h1>' . $office_hours .'';
+		if ($person['p_courses']){
+			$content .='<h1>Courses</h1>' . $person['p_courses'] . '';
+		}
+		else{
+			$content .='<h1>Courses</h1><p>Not Available</p>';
+		}
+		$content .= "</div>";
+	}
+
+	$contentTabs .= '</ul>';
+	
+	
 
 	echo <<<PERSON
+	<script type="text/javascript" charset="utf-8">
+		$(function () {
+			var tabContainers = $('div.tabs > div');
+			tabContainers.hide().filter(':first').show();
+			
+			$('div.tabs ul.tabNavigation a').click(function () {
+				tabContainers.hide();
+				tabContainers.filter(this.hash).show();
+				$('div.tabs ul.tabNavigation a').removeClass('selected');
+				$(this).addClass('selected');
+				return false;
+			}).filter(':first').click();
+		});
+	</script>
 	<article class="person clearfix">
 		<figure><img src="{$person['p_photo']}"/></figure>
 		<ul class="personBasics">
@@ -682,8 +689,11 @@ function show_person( $id, $is_ie = false ) {
 		</ul>
 	</article>
 
-	{$contentTabs}
-	{$content}
+	<div class="tabs">		
+		{$contentTabs}
+		<br style="clear:left;" />
+		{$content}		
+	</div>	
 PERSON;
 }
 
@@ -758,7 +768,6 @@ function show_people( $catID = 0 ) {
 				<li class="person_location">{$person['location']}</h3>
 				<li class="person_phone">{$person['phone']}</h3>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
-				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
 		</article>
@@ -867,12 +876,11 @@ function parse_hrs( $hours ) {
 	}
 	unset( $value );
 
+
 	// There must be an even number of elements in array
 	if( count($hrs_array) % 2 == 0 ){
 		return $hrs_array;
-	}
-	//Else if to handle if only a specific day is "Private / By Appt Only"
-	elseif (preg_match('/private/', strtolower($hours)) ){
+	} elseif (preg_match('/private/', strtolower($hours)) ){
 		return "private";
 	}else {
 		return false;
@@ -922,7 +930,7 @@ function echo_hrs( $person, $day, $is_sidebar ) {
 
 function get_hrs( $person ){
 	$parity = true;
-	$absent_msg = 'Not Available';
+	$absent_msg = '';
 	$connector = "&nbsp;to&nbsp;";
 	$separator = "</li><li>";
 	$days = array('mon'=>'Monday', 'tue'=>'Tuesday', 'wed'=>'Wednesday', 'thu'=>'Thursday', 'fri'=>'Friday',);
@@ -944,10 +952,7 @@ function get_hrs( $person ){
 				$parity = !$parity;
 			}
 			$hours = substr( $hours, 0, -9 ); // Remove the extra </li><li>
-		} 
-		//If the person has a day that's by Appt Only then parse_hrs will have
-		//assigned $office_hours_today to "private"
-		elseif ($person[$office_hours_today] == "private") {			
+		} elseif ($person[$office_hours_today] == "private") {			
 			$hours .= '<strong><em>By Appointment Only</em></strong>';
 		} else {
 			
@@ -1166,7 +1171,7 @@ function breadcrumbs() {
       if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
     }
  
-    echo '<a class="mobile_menu" href="#page_nav">=</a></div>';
+    echo '</div>';
   }
 } 
 
@@ -1229,12 +1234,12 @@ function show_events() {?>
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
 			$feed = fetch_rss('http://events.ucf.edu/?calendar_id=292&upcoming=upcoming&format=rss&limit=10'); // specify feed url
 			$items = array_slice($feed->items, 0, 6); // specify first and last item
-			$calTitle = "Sociology Callendar";
+			$calTitle = "";
 
 			if(empty($items)){
-				$feed = fetch_rss('http://events.ucf.edu/?calendar_id=719&upcoming=upcoming&format=rss&limit=10'); 
+				$feed = fetch_rss('http://events.ucf.edu/?calendar_id=1&upcoming=upcoming&format=rss&limit=10'); 
 				$items = array_slice($feed->items, 0, 6); 
-				$calTitle = "College of Sciences Calendar";
+				$calTitle = "UCF Calendar";
 			}
 			} catch(Exception $e) {
 				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
@@ -1242,7 +1247,7 @@ function show_events() {?>
 		?>
 
 		<?php if (!empty($items)) : ?>
-		<h3><?php echo $calTitle; ?></h3>		
+		<?php if (!empty($calTitle)) echo "<h3>".$calTitle."</h3>";?>
 		<?php foreach ($items as $item) : ?>
 			<article>
 
@@ -1282,11 +1287,6 @@ function starkers_setup() {
 	$locale_file = TEMPLATEPATH . "/languages/$locale.php";
 	if ( is_readable( $locale_file ) )
 		require_once( $locale_file );
-
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus( array(
-		'primary' => __( 'Primary Navigation', 'starkers' ),
-	) );
 }
 endif;
 
@@ -1491,7 +1491,68 @@ function starkers_widgets_init() {
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
 add_action( 'widgets_init', 'starkers_widgets_init' );
 
-// User Role Customization
+/**
+ * Removes the default styles that are packaged with the Recent Comments widget.
+ *
+ * @updated Starkers HTML5 3.2
+ */
+function starkers_remove_recent_comments_style() {
+	add_filter( 'show_recent_comments_widget_style', '__return_false' );
+}
+add_action( 'widgets_init', 'starkers_remove_recent_comments_style' );
+
+if ( ! function_exists( 'starkers_posted_on' ) ) :
+/**
+ * Prints HTML with meta information for the current post—date/time and author.
+ *
+ * @since Starkers HTML5 3.0
+ */
+function starkers_posted_on() {
+	printf( __( 'Posted on %2$s by %3$s', 'starkers' ),
+		'meta-prep meta-prep-author',
+		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><time datetime="%3$s" pubdate>%4$s</time></a>',
+			get_permalink(),
+			esc_attr( get_the_time() ),
+			get_the_date('Y-m-d'),
+			get_the_date()
+		),
+		sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+			get_author_posts_url( get_the_author_meta( 'ID' ) ),
+			sprintf( esc_attr__( 'View all posts by %s', 'starkers' ), get_the_author() ),
+			get_the_author()
+		)
+	);
+}
+endif;
+
+if ( ! function_exists( 'starkers_posted_in' ) ) :
+/**
+ * Prints HTML with meta information for the current post (category, tags and permalink).
+ *
+ * @since Starkers HTML5 3.0
+ */
+function starkers_posted_in() {
+	// Retrieves tag list of current post, separated by commas.
+	$tag_list = get_the_tag_list( '', ', ' );
+	if ( $tag_list ) {
+		$posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	} elseif ( is_object_in_taxonomy( get_post_type(), 'category' ) ) {
+		$posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	} else {
+		$posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	}
+	// Prints the string, replacing the placeholders.
+	printf(
+		$posted_in,
+		get_the_category_list( ', ' ),
+		$tag_list,
+		get_permalink(),
+		the_title_attribute( 'echo=0' )
+	);
+}
+
+
+//////////// User Role Customization ////////////
 
 	// get the the role object
 	$role_object = get_role('editor');
@@ -1499,7 +1560,7 @@ add_action( 'widgets_init', 'starkers_widgets_init' );
 	// add $cap capability to this role object
 	$role_object->add_cap( 'edit_theme_options' );
 
-// Dashboard Customization 
+//////////// Dashboard Cusomtization ////////////
 
 // Change Log-In Screen Logo
 function my_custom_login_logo() {
@@ -1586,3 +1647,4 @@ function wpc_dashboard_widgets() {
 }
 
 
+endif;

@@ -31,8 +31,9 @@
 			</article>
 		</div>
 		<div id="sidebar">
-			<?php //page_nav(); ?>
-			<?php custom_menu_nav(); ?>
+			<!--[if IE 7]> <?php page_nav(); ?> <![endif]-->
+			<!--[if gt IE 7]><?php custom_menu_nav(); ?><![endif]-->
+			<![if !IE]><?php custom_menu_nav(); ?><![endif]>
 			<?php get_sidebar(); ?>
 		</div>
 <?php endwhile; ?>
