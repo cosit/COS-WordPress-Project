@@ -258,10 +258,7 @@ function show_slider_items() {
 			'edit' => get_edit_post_link( $thisID ),
 		);
 
-		 // Skip slider item if it's expired or disabled
-		if( $slide['is_expired'] || $slide['is_disabled'] ) continue;
-
-		//Link to a file if a File Link is defined in the Custom Post 
+		 //Link to a file if a File Link is defined in the Custom Post 
 		if(!empty($slide['file_link'])){ $slide['page'] = $slide['file_link'];}		
 		
 		//Link to an external site if an External Link is defined in the Custom Post 
@@ -883,8 +880,7 @@ function parse_hrs( $hours ) {
 	// There must be an even number of elements in array
 	if( count($hrs_array) % 2 == 0 ){
 		return $hrs_array;
-	} //Else if to handle if only a specific day is "Private / By Appt Only"
-	elseif (preg_match('/private/', strtolower($hours)) ){
+	} elseif (preg_match('/private/', strtolower($hours)) ){
 		return "private";
 	}else {
 		return false;
@@ -956,9 +952,7 @@ function get_hrs( $person ){
 				$parity = !$parity;
 			}
 			$hours = substr( $hours, 0, -9 ); // Remove the extra </li><li>
-		} //If the person has a day that's by Appt Only then parse_hrs will have
-		//assigned $office_hours_today to "private"
-		elseif ($person[$office_hours_today] == "private") {			
+		} elseif ($person[$office_hours_today] == "private") {			
 			$hours .= '<strong><em>By Appointment Only</em></strong>';
 		} else {
 			
@@ -1497,7 +1491,68 @@ function starkers_widgets_init() {
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
 add_action( 'widgets_init', 'starkers_widgets_init' );
 
-// User Role Customization
+/**
+ * Removes the default styles that are packaged with the Recent Comments widget.
+ *
+ * @updated Starkers HTML5 3.2
+ */
+function starkers_remove_recent_comments_style() {
+	add_filter( 'show_recent_comments_widget_style', '__return_false' );
+}
+add_action( 'widgets_init', 'starkers_remove_recent_comments_style' );
+
+if ( ! function_exists( 'starkers_posted_on' ) ) :
+/**
+ * Prints HTML with meta information for the current post—date/time and author.
+ *
+ * @since Starkers HTML5 3.0
+ */
+function starkers_posted_on() {
+	printf( __( 'Posted on %2$s by %3$s', 'starkers' ),
+		'meta-prep meta-prep-author',
+		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><time datetime="%3$s" pubdate>%4$s</time></a>',
+			get_permalink(),
+			esc_attr( get_the_time() ),
+			get_the_date('Y-m-d'),
+			get_the_date()
+		),
+		sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+			get_author_posts_url( get_the_author_meta( 'ID' ) ),
+			sprintf( esc_attr__( 'View all posts by %s', 'starkers' ), get_the_author() ),
+			get_the_author()
+		)
+	);
+}
+endif;
+
+if ( ! function_exists( 'starkers_posted_in' ) ) :
+/**
+ * Prints HTML with meta information for the current post (category, tags and permalink).
+ *
+ * @since Starkers HTML5 3.0
+ */
+function starkers_posted_in() {
+	// Retrieves tag list of current post, separated by commas.
+	$tag_list = get_the_tag_list( '', ', ' );
+	if ( $tag_list ) {
+		$posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	} elseif ( is_object_in_taxonomy( get_post_type(), 'category' ) ) {
+		$posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	} else {
+		$posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+	}
+	// Prints the string, replacing the placeholders.
+	printf(
+		$posted_in,
+		get_the_category_list( ', ' ),
+		$tag_list,
+		get_permalink(),
+		the_title_attribute( 'echo=0' )
+	);
+}
+
+
+//////////// User Role Customization ////////////
 
 	// get the the role object
 	$role_object = get_role('editor');
@@ -1505,7 +1560,7 @@ add_action( 'widgets_init', 'starkers_widgets_init' );
 	// add $cap capability to this role object
 	$role_object->add_cap( 'edit_theme_options' );
 
-// Dashboard Customization 
+//////////// Dashboard Cusomtization ////////////
 
 // Change Log-In Screen Logo
 function my_custom_login_logo() {
@@ -1592,3 +1647,4 @@ function wpc_dashboard_widgets() {
 }
 
 
+endif;
