@@ -1287,13 +1287,13 @@ if ( ! function_exists( 'starkers_menu' ) ):
  *
  * @since Starkers HTML5 3.0
  */
-function starkers_menu() {
-	echo '<nav id="main_menu">';
+	function starkers_menu() {
+		echo '<nav id="main_menu">';
 
-	echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
-	wp_list_pages('title_li=');
-	echo '</ul></nav>';
-}
+		echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
+		wp_list_pages('title_li=');
+		echo '</ul></nav>';
+	}
 endif;
 
 /**

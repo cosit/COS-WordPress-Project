@@ -46,7 +46,9 @@
 .linkLight { color: @blueGray; &:hover{ color: darken(@blueGray, 10%) } }
 
 /* MAIN ELEMENTS */
-
+.activeMenu {
+	background: purple !important;
+}
 * {
 	position: relative; /* Relative position ALL THE THINGS! */
 	background-repeat: no-repeat;
@@ -285,7 +287,7 @@ section {
 			display: inline-block;
 			float: right;
 			height: 25px;
-			width: 25x;
+			width: 25px;
 			margin-left: 5px;
 			margin-top: 10px;
 
@@ -987,8 +989,9 @@ section {
 			// font-size: 0.750em /*12px*/;
 			line-height: 16px;
 		}
-		>article>p, >article>li {
+		>article>p, >article>ul>li {
 			font-size: 0.750em /*12px*/;
+			line-height: 1.5em;
 		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
@@ -1102,7 +1105,6 @@ section {
 			font-size: 0.9em;
 		}
 
-
 		aside, .pageNav {
 			width: 100%;
 			float: right;
@@ -1163,7 +1165,6 @@ section {
 				padding-left: 5px;
 				border-left: solid 2px @lighterBlueGray;
 			}
-
 		}
 
 		aside {
@@ -1205,7 +1206,7 @@ section {
 			}
 			>ul>li, >div>ul>li {
 				>a, >.unclickable {
-					font-size: 0.875em /*14px*/;
+					// font-size: 0.875em /*14px*/;
 					display: block;
 					padding: 8px 5% 8px 10%;
 					width: 85%;
@@ -1224,7 +1225,6 @@ section {
 					background: @sideGray;
 				}
 				>ul.children>li>a, >ul.sub-menu>li>a, &.child>a {
-					font-size: 0.750em /*12px*/;
 					display: block;
 					padding: 6px 5% 6px 15%;
 					width: 80%;
@@ -1494,20 +1494,34 @@ section {
 	}
 	figure {
 		float: left;
+		z-index: 2;
+
 	}
 	img {
 		max-width: 200px;
 		margin-right: 20px;
+		
 	}
 	ul.personBasics {
-		float: left;
 		.hSansSerif;
+		position: relative;
+		top: 20px;
+		width: 70%;
+		padding: 10px 0;
+		background: @blueGray;
+		.drop-shadow(0,0,8px,0.3);
+
 		li {
-			font-size: 1em /*16px*/;
+			font-size: 0.95em /*16px*/;
 			margin: 5px 0;
+			width: auto;
+			color: @offWhite;
 			&:before { 
 				.icon; 
 				content: '';
+				color: @lighterBlueGray;
+				font-size: 0.875em;
+				text-shadow: -1px -1px 0 @darkBlue;
 			}
 			&.person_position:before { content: '\e062'; }
 			&.person_location:before { content: '\e068'; }
@@ -1515,8 +1529,11 @@ section {
 			&.person_email:before { content: '\2709'; }
 			&.person_cv:before { content: '\e06a'; }
 
-			>a:before {
-				content: '';
+			>a{
+				color: @UCFGold;
+				&:before {
+					content: '';
+				}
 			}
 		}
 	}
@@ -1527,7 +1544,7 @@ section {
 		clear: both;
 	}
 	ul.personTabs {
-		font-size: 1 em !important;
+		// font-size: 1 em !important;
 		display: block;
 		background: @sideGray;
 		color: @darkBlue;
@@ -1538,14 +1555,14 @@ section {
 		border-bottom: 3px solid darken(@sideGray, 10%);
 		>li {
 			display: inline-block;
-			line-height: 30px;
-			font-size: 1em /*16px*/;
 			.hSansSerif;
 			text-transform: uppercase;
 			border-right: 1px solid @offWhite;
 			border-left: 1px solid darken(@sideGray, 10%);
 			margin: 0px;
 			>a {
+				font-size: 1em;
+				line-height: 30px;
 				display: inline-block;
 				height: 100%;
 				width: 100%;
@@ -1595,13 +1612,11 @@ section {
 				content: '';
 			}
 			p {
-				font-size: 0.75em /*12px*/;
 				line-height: 1.5em;
 				color: @darkBlue;
 				margin-bottom: 10px;
 			}
 			li {
-				font-size: 0.75em;
 				margin-bottom: 5px;
 				margin-left: 15px;
 				&:before {

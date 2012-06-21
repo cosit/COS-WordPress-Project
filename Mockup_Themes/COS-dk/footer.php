@@ -112,23 +112,19 @@
 	$('.peopleNav').append( $('#people_cats') );
 
 	// Main nav links and dropdown menu
-	$('#main_header nav>ul>li, #main_header nav>ul>li>ul>li, #main_header nav>ul>li>ul>li>ul>li').hover(
-		function(){
-			$(this).children('ul.children').slideDown('fast').show(); 
-			$(this).children('ul.sub-menu').slideDown('fast').show(); 
-			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
-		},
-		function(){ 
-			if( !$(this).hasClass('current_page_item') ){
-				$(this).children('ul.children').slideUp('fast');
-				$(this).children('ul.sub-menu').slideUp('fast');
-				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
-			} else {
+	(function(){
+		$('#main_header nav>ul>li, #main_header nav>ul>li>ul>li, #main_header nav>ul>li>ul>li>ul>li').hover(
+			function(){
+				$(this).children('ul.children').slideDown('fast').show(); 
+				$(this).children('ul.sub-menu').slideDown('fast').show(); 
+				// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+			},
+			function(){ 
 				$(this).children('ul.children').slideUp('fast');
 				$(this).children('ul.sub-menu').slideUp('fast');
 			}
-		}
-	);
+		);
+	})();
 
 	// Submenu links
 	// $('#main_header nav ul.children>li').hover(
@@ -252,14 +248,6 @@
 
 	// Disable same-page clicking
 	$('.current_page_item>a').contents().unwrap().wrap('<span class="unclickable"></span>');
-
-	// Dropdown for top dept links
-	$('#top_dept_links').hide();
-	$('.branding_prefix').click(function(){
-		$('#top_dept_links').toggle();
-		console.log('clocked');
-	});
-
 
 	// Replace title of page if longer one already exists in post
 	(function(){
