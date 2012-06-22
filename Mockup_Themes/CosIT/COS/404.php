@@ -8,14 +8,29 @@
  */
 
 get_header(); ?>
+<section id="main_content">
+	<div class="wrap clearfix">
 
-	<h1><?php _e( 'Not Found', 'starkers' ); ?></h1>
-		<p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'starkers' ); ?></p>
-		<?php get_search_form(); ?>
+	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
+	<?php get_search_form(); ?>
+		<div class="innerContent">
+			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+				<header>
+				<h1><?php _e( 'Not Found', 'starkers' ); ?></h1>
+				</header>	
+				<p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'starkers' ); ?></p>
+				
 
-	<script type="text/javascript">
-		// focus on search field after it has loaded
-		document.getElementById('s') && document.getElementById('s').focus();
-	</script>
+				<script type="text/javascript">
+					// focus on search field after it has loaded
+					document.getElementById('s') && document.getElementById('s').focus();
+				</script>
+				<footer>
+					<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+				</footer>
+			</article>
+		</div>
+	</div>
+</section>
 
 <?php get_footer(); ?>
