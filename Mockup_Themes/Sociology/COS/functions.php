@@ -644,18 +644,19 @@ function show_person( $id, $is_ie = false ) {
 	}
 	// Office Hours
 	
-	$contentTabs .= '<li><a href="#office_hrs">Office Hours &amp; Courses</a></li>';
-	$content .= '<div id="office_hrs" class="tabcontentstyle">';
+	if( $person['p_officehours'] || $person['p_courses']){
+		$contentTabs .= '<li><a href="#office_hrs">Office Hours &amp; Courses</a></li>';
+		$content .= '<div id="office_hrs" class="tabcontentstyle">';
 
-	if( $person['p_officehours'] ){	
-		$content .= '<h2>Office Hours</h2>' . $person['p_officehours'] .'';
+		if( $person['p_officehours'] ){	
+			$content .= '<h2>Office Hours</h2>' . $person['p_officehours'] .'';
+		}
+		if ($person['p_courses']){
+			$content .='<h2>Courses</h2>' . $person['p_courses'] . '';
+		}
+		
+		$content .= "</div>";
 	}
-	if ($person['p_courses']){
-		$content .='<h2>Courses</h2>' . $person['p_courses'] . '';
-	}
-	
-	$content .= "</div>";
-	
 
 	$contentTabs .= '</ul>';
 	
