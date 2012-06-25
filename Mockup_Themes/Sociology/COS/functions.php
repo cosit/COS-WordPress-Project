@@ -610,6 +610,7 @@ function show_person( $id, $is_ie = false ) {
 		'research'  	=> get_field('research_areas'),
 		'misc'      	=> get_field('miscellaneous'),
 		'p_courses'     => get_field('courses'),
+		'p_officehours' => get_field('office_hours'),
 
 		// Office Hours
 		'p_office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
@@ -627,7 +628,7 @@ function show_person( $id, $is_ie = false ) {
 			$person['p_photo'] = "http://10.171.92.38/~sociolog/wp-content/uploads/2012/04/NoImagePegasusGrey.jpg";
 	}
 
-	$office_hours = get_hrs( $person );
+	//$office_hours = get_hrs( $person );	
 
 	// Create array of tabs to display (and populate them), only if content exists
 
@@ -643,20 +644,18 @@ function show_person( $id, $is_ie = false ) {
 	}
 	// Office Hours
 	
-	$contentTabs .= '<li><a href="#person_office_hrs">Courses &amp; Office Hours</a></li>';
-	if( $person['p_office_hours_private'] ){
-		$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-		$content .= '<div id="person_office_hrs" class="tabcontentstyle"><h2>' . $office_hours_private_msg . '</h2></div>';
-	} else {
-		$content .= '<div id="person_office_hrs" class="tabcontentstyle"><h1>Office Hours</h1>' . $office_hours .'';
-		if ($person['p_courses']){
-			$content .='<h1>Courses</h1>' . $person['p_courses'] . '';
-		}
-		else{
-			$content .='<h1>Courses</h1><p>Not Available</p>';
-		}
-		$content .= "</div>";
+	$contentTabs .= '<li><a href="#office_hrs">Office Hours &amp; Courses</a></li>';
+	$content .= '<div id="office_hrs" class="tabcontentstyle">';
+
+	if( $person['p_officehours'] ){	
+		$content .= '<h2>Office Hours</h2>' . $person['p_officehours'] .'';
 	}
+	if ($person['p_courses']){
+		$content .='<h2>Courses</h2>' . $person['p_courses'] . '';
+	}
+	
+	$content .= "</div>";
+	
 
 	$contentTabs .= '</ul>';
 	
