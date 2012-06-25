@@ -10,11 +10,11 @@
  */
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 9]>     <html id="ie"> <![endif]-->
+<!--[if lt IE 9]>  <html id="ie"> <![endif]-->
 <!--[if IE 9]>     <html> <![endif]-->
-<!--[if !IE]><!--> <html>             <!--<![endif]-->
+<!--[if !IE]><!--> <html> <!--<![endif]-->
 <head>
-
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title><?php
  
@@ -22,6 +22,12 @@
 
     $thisDept = get_bloginfo('name');
     $brandingPrefix = get_option('COS_title_prefix');
+    $brandingLink = '';
+
+    if($brandingPrefix == "COS")
+        $brandingLink = "http://www.cos.ucf.edu/";
+    elseif($brandingPrefix == "UCF")
+        $brandingLink = "http://www.ucf.edu";    
 
    // echo $brandingPrefix . ' ' . $thisDept;
 
@@ -31,14 +37,9 @@
 
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
-
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
-
-
-
  
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <!--<script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>-->
@@ -60,7 +61,7 @@
             <?php show_social(); ?>
 
             <hgroup>
-                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>; width: 250px;"><span class="branding_prefix"><?php echo( $brandingPrefix ); ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>; width: 250px;"><span class="branding_prefix"><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
                     <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
             </hgroup>

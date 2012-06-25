@@ -34,7 +34,7 @@ get_header(); ?>
 			<nav class="pageNav"><h2>News Archives</h2>
 				<ul><?php /*Exclude the 'Did You Know' category #18*/ wp_list_categories('exclude=18&title_li='); ?></ul>
 			</nav>
-			<!--<?php custom_menu_nav(); ?>-->
+			<!--<?php //custom_menu_nav(); ?>-->
 			<?php get_sidebar(); ?>
 
 	</div>

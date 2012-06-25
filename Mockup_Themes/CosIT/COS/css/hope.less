@@ -1,0 +1,163 @@
+html#ie {
+	/* LAYOUT */
+	/* ----------------------------------------- */
+
+	/* MAIN ELEMENTS */
+
+	body {	background: url('img/bg.png') repeat;	}	
+
+	#main_header {
+		h1 {	font-size: @titleHeight - 3px;		}
+
+		nav {
+			>ul>li:hover>ul.children {
+				display: block; // for IE
+			}
+			>ul>li>ul.children>li:hover>ul.children {
+				display: block !important; // for IE
+			}
+			>ul>li>ul.children>li>ul.children {
+				display: none;
+			}
+		}
+	}
+
+	#slider {
+		.flex-control-nav {	z-index: 5;	}	
+	}
+
+	#dept_links {
+		display: none;
+	}
+
+	#main_content {
+		p, li {
+			font-size: 12px;
+			color: @darkBlue;
+			//list-style: disc;
+		}
+		.news {			
+			article {
+				margin-bottom: 20px;				
+			}
+		}
+		.events {							
+			.eventDate {
+				max-width: 50px;
+				text-align: center;
+			}
+		}
+		#sidebar {
+			.pageNav {
+
+				>ul>li {
+					>ul.children {
+						display: block; // IE
+					}
+					.expand{
+						top:10px;
+					}
+					>ul.children>li>.expand, >ul.sub-menu>li>.expand {
+						margin-left:10px;
+						position: absolute;
+						text-align: center;
+						margin-top:0; padding-top:0;
+						top:6px;
+						display: block;							
+
+					}
+				}
+				aside h3 {
+						color: @offWhite !important;
+					}
+			}
+		}
+	}
+
+	#widgets {
+		height: @widgetsHeight;
+		overflow: hidden;
+		background: @blueGray url('img/blueGray_bg.png') repeat;
+		color: @offWhite;
+		font-size: 12px;
+		margin: 0 auto;
+
+		div.widget {			
+						
+			.textwidget {
+				font-size: 14px;
+			}
+			.edit_footer_widget {
+				position: absolute;
+				visibility: hidden;
+				display: block;
+				height: 30px;
+				top: @widgetsHeight - 30px;
+				background: @lightBlueGray;
+				font-size: 10px;
+				border-top: 1px solid @lightBlueGray;
+				a {
+					top: 0;
+					display: block;
+					line-height: 30px;
+					padding: 0 10px;
+					.drop-shadow(0,1px,8px,0.2);
+					text-shadow: 0 1px 1px rgba(0,0,0,0.5);  
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+				&:hover {
+					background: @lighterBlueGray;
+				}
+			}
+			&:hover .edit_footer_widget {
+				visibility: visible;
+			}
+		}
+
+	}
+
+	.sort_people { display: none; }
+	#people_list {
+		ul.personBasics {
+			h3 { // why the hell does IE add empty h3 tags???
+				display: none;
+			}
+			>li {
+				font-weight: bold;
+				font-size: 14px;
+				&.person_research {
+					font-weight: normal;
+				}
+				&:before {
+					content: '';
+				}
+					&.person_position:before { content: ''; }
+					&.person_location:before { content: ''; }
+					&.person_phone:before { content: ''; }
+					&.person_email:before { content: ''; }
+			}
+		}
+
+	}
+	#single_person {
+
+		ul.personBasics {
+			h3 { // why the hell does IE add empty h3 tags???
+				display: none;
+			}
+			li {
+				font-size: 16px;
+				margin: 5px 0;
+				&:before { 
+				}
+				&.person_position:before { content: ''; }
+				&.person_location:before { content: ''; }
+				&.person_phone:before { content: ''; }
+				&.person_email:before { content: ''; }
+				&.person_cv:before { content: ''; }			
+			}
+		}		
+	}	
+}
