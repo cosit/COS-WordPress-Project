@@ -115,7 +115,7 @@ section {
 		overflow: hidden;
 		height: @headerLinksHeight;
 		line-height: @headerLinksHeight;
-		.branding_prefix { color: @UCFGold; cursor: pointer; }
+		.branding_prefix { color: @UCFGold; cursor: pointer; >a{ color: @UCFGold;}}
 		text-shadow: 1px 1px 15px #777;
 	}
 
@@ -981,7 +981,6 @@ section {
 		}
 		ol {
 			margin-left: 40px;
-			list-style: decimal;
 		}
 		ul {
 			margin-left: 20px;
@@ -1003,6 +1002,12 @@ section {
 				position: absolute;
 				margin-left: -15px;
 				color: @blueGray;
+			}
+		}
+		ol.cf-ol li {
+			&:before {
+				list-style:none !important;
+				content: none !important;
 			}
 		}
 
@@ -1646,25 +1651,26 @@ section {
 	.rounded(5px);
 	text-align: center;
 	text-decoration: none !important;
-	.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 10%));
-	color: @offWhite;
-	border: 1px solid @lightBlueGray;
-	text-shadow: 0 -1px 0 darken(@UCFGold, 20%);
+	.gradient(top, #fbe6bc, #fefcf6);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcf6', endColorstr='#fbe6bc',GradientType=0 );
+	color: #e8b80f;
+	border: 1px solid @UCFGold;
+	//text-shadow: 0 -1px 0 darken(@UCFGold, 20%);
 	font-weight: bold;
 	font-size:1.5em;
 	text-transform:uppercase;
 
 	&:hover {
 		cursor:pointer;	
-		.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 15%));
-		color: @offWhite;
+		.gradient(@UCFGold, darken(#fbe6bc, 15%), lighten(#fefcf6, 15%));
+		color: @UCFGold;
 	}
 	&:active {
 		.gradient(@UCFGold, lighten(@UCFGold, 10%), darken(@UCFGold, 10%));
 		padding: 8px 0 8px 0;
 	}
 	&:link, &:visited {
-		color: @offWhite !important;
+		color: #e8b80f !important;
 	}
 } 
 
