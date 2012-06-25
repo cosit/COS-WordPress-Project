@@ -15,7 +15,7 @@ get_header(); ?>
 	<?php get_search_form(); ?>
 
 		<div class="innerContent">
-			<h1>People <span>&raquo;</span> <?php echo ucwords( $_GET['people_cat'] ); ?> </h1>
+			<h1>People <span>&raquo;</span> <?php echo ucwords( preg_replace("/-/", " ", $_GET['people_cat'] ) ); ?> </h1>
 			<?php show_people( $_GET['people_cat'] ); ?>
 		</div>
 

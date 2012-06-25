@@ -29,6 +29,9 @@ function load_custom_script() {
     // wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
     // wp_enqueue_script('jquery');
 
+    wp_register_script('cos_js', get_bloginfo('template_directory').'/js/cos.js');
+    wp_enqueue_script('cos_js');
+
     wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
     wp_enqueue_script('jquery.flexslider');
 
@@ -554,7 +557,7 @@ function person_toolbar( $person ){
 	echo '<ul class="person_toolbar">';
 	echo '<li><a href="mailto:'.$person['email'].'">'.$msg['email'].'</a></li>';
 	echo '<li><a href="'.$person['link'].'">'.$msg['link'].'</a></li>';
-	echo '<li><a class="peopleModalView" title="'.$person['id'].'" href="#people_modal_person_'.$person['id'].'">'.$msg['quickview'].'</a></li>';
+	// echo '<li><a class="peopleModalView" title="'.$person['id'].'" href="#people_modal_person_'.$person['id'].'">'.$msg['quickview'].'</a></li>';
 	echo '</ul>';
 
 	
@@ -1287,13 +1290,13 @@ if ( ! function_exists( 'starkers_menu' ) ):
  *
  * @since Starkers HTML5 3.0
  */
-function starkers_menu() {
-	echo '<nav id="main_menu">';
+	function starkers_menu() {
+		echo '<nav id="main_menu">';
 
-	echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
-	wp_list_pages('title_li=');
-	echo '</ul></nav>';
-}
+		echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
+		wp_list_pages('title_li=');
+		echo '</ul></nav>';
+	}
 endif;
 
 /**
@@ -1401,8 +1404,8 @@ function starkers_widgets_init() {
 		'description' => __( 'The primary sidebar widget area', 'starkers' ),
 		'before_widget' => '<li class="sidebar_widget">',
 		'after_widget' => '</li>',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'before_title' => '<h2>',
+		'after_title' => '</h2>',
 	) );
 
 	register_sidebar( array(

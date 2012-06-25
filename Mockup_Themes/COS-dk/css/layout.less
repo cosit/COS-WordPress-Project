@@ -46,7 +46,9 @@
 .linkLight { color: @blueGray; &:hover{ color: darken(@blueGray, 10%) } }
 
 /* MAIN ELEMENTS */
-
+.activeMenu {
+	background: purple !important;
+}
 * {
 	position: relative; /* Relative position ALL THE THINGS! */
 	background-repeat: no-repeat;
@@ -115,7 +117,7 @@ section {
 		overflow: hidden;
 		height: @headerLinksHeight;
 		line-height: @headerLinksHeight;
-		.branding_prefix { color: @UCFGold; cursor: pointer; }
+		.branding_prefix { color: @UCFGold; cursor: pointer; >a{ color: @UCFGold; } }
 		text-shadow: 1px 1px 15px #777;
 	}
 
@@ -285,7 +287,7 @@ section {
 			display: inline-block;
 			float: right;
 			height: 25px;
-			width: 25x;
+			width: 25px;
 			margin-left: 5px;
 			margin-top: 10px;
 
@@ -724,7 +726,7 @@ section {
 	}
 	.person_toolbar { 
 		display: block;
-		padding: 0 8px;
+		padding: 0 10px;
 		margin-top: 5px;
 		display: none; 
 		position: absolute;
@@ -733,7 +735,8 @@ section {
 		.drop-shadow(0,0,8px,0.3);
 		.rounded(8px);
 		text-align: center;
-		width: 60%;
+		width: auto;
+		font-size: 0.75em;
 
 		li {
 			border-left: 1px solid lighten(@lighterBlueGray, 10%);
@@ -986,8 +989,9 @@ section {
 			// font-size: 0.750em /*12px*/;
 			line-height: 16px;
 		}
-		>article>p, >article>li {
+		>article>p, >article>ul>li {
 			font-size: 0.750em /*12px*/;
+			line-height: 1.5em;
 		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
@@ -1052,13 +1056,79 @@ section {
 				padding: 10px;
 			}
 		}
+		.button {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 15%));
+			color: lighten(@lighterBlueGray, 15%);
+			border: 1px solid black;
+			text-shadow: 0 -1px 0 darken(@darkBlue, 10%);
+
+			&:hover {
+				.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 20%));
+			}
+			&:active {
+				.gradient(@darkBlue, lighten(@darkBlue, 15%), @darkBlue);
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+		}
+		.buttongold {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 10%));
+			color: @offWhite;
+			border: 1px solid @lightBlueGray;
+			text-shadow: 0 -1px 0 darken(@UCFGold, 20%);
+			text-shadow: ;
+			font-weight: bold;
+
+			&:hover {
+				.gradient(@UCFGold, darken(@UCFGold, 10%), lighten(@UCFGold, 15%));
+			}
+			&:active {
+				.gradient(@UCFGold, lighten(@UCFGold, 10%), darken(@UCFGold, 10%));
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+		}
+
+		.buttonwhite {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 10%));
+			color: @lightBlueGray;
+			border: 1px solid @lightBlueGray;
+			text-shadow: 0 -1px 0 white;
+			text-shadow: ;
+			font-weight: bold;
+			.box-shadow(0 0 7px @UCFGold);
+
+			&:hover {
+				.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 5%));
+			}
+			&:active {
+				.gradient(@sideGray, lighten(@offWhite, 10%), darken(@offWhite, 10%));
+				padding-top: 6px;
+				padding-bottom: 4px;
+				.inner-shadow(0, 1px, 2px, 0.4);
+			}
+		}
 	}
 	#sidebar {
 		.column(3);
 		ul>li {
 			font-size: 0.9em;
 		}
-
 
 		aside, .pageNav {
 			width: 100%;
@@ -1120,15 +1190,14 @@ section {
 				padding-left: 5px;
 				border-left: solid 2px @lighterBlueGray;
 			}
-
 		}
 
 		aside {
-			h3 { 
+			h2, h3 { 
 				color: @offWhite;
 				background: @darkBlue;
 				height: auto; 
-				margin: 5px 0;
+				margin-bottom: 5px;
 
 			}
 			>ul>li:first-child>h3 {
@@ -1162,7 +1231,7 @@ section {
 			}
 			>ul>li, >div>ul>li {
 				>a, >.unclickable {
-					font-size: 0.875em /*14px*/;
+					// font-size: 0.875em /*14px*/;
 					display: block;
 					padding: 8px 5% 8px 10%;
 					width: 85%;
@@ -1181,7 +1250,6 @@ section {
 					background: @sideGray;
 				}
 				>ul.children>li>a, >ul.sub-menu>li>a, &.child>a {
-					font-size: 0.750em /*12px*/;
 					display: block;
 					padding: 6px 5% 6px 15%;
 					width: 80%;
@@ -1288,6 +1356,15 @@ section {
 				}
 				>ul {
 					display: none; // Temp hide subdirectories
+				}
+			}
+		}
+		>div>div {
+			font-size: 0.8em !important; // Tweet fix
+			div.tweet {
+				border-bottom: 1px solid @lightBlueGray;
+				&:hover {
+					background: @lightBlueGray;
 				}
 			}
 		}
@@ -1442,20 +1519,36 @@ section {
 	}
 	figure {
 		float: left;
+		z-index: 2;
+
 	}
 	img {
 		max-width: 200px;
 		margin-right: 20px;
+		
 	}
 	ul.personBasics {
-		float: left;
 		.hSansSerif;
+		position: relative;
+		top: 20px;
+		width: 70%;
+		padding: 10px 0;
+		background: @blueGray;
+		.drop-shadow(0,0,8px,0.3);
+		border-top: 1px solid @lighterBlueGray;
+		border-bottom: 1px solid @darkBlue;
+
 		li {
-			font-size: 1em /*16px*/;
+			font-size: 0.95em /*16px*/;
 			margin: 5px 0;
+			width: auto;
+			color: @offWhite;
 			&:before { 
 				.icon; 
 				content: '';
+				color: @lighterBlueGray;
+				font-size: 0.875em;
+				text-shadow: -1px -1px 0 @darkBlue;
 			}
 			&.person_position:before { content: '\e062'; }
 			&.person_location:before { content: '\e068'; }
@@ -1463,8 +1556,11 @@ section {
 			&.person_email:before { content: '\2709'; }
 			&.person_cv:before { content: '\e06a'; }
 
-			>a:before {
-				content: '';
+			>a{
+				color: @UCFGold;
+				&:before {
+					content: '';
+				}
 			}
 		}
 	}
@@ -1475,7 +1571,7 @@ section {
 		clear: both;
 	}
 	ul.personTabs {
-		font-size: 1 em !important;
+		// font-size: 1 em !important;
 		display: block;
 		background: @sideGray;
 		color: @darkBlue;
@@ -1486,14 +1582,14 @@ section {
 		border-bottom: 3px solid darken(@sideGray, 10%);
 		>li {
 			display: inline-block;
-			line-height: 30px;
-			font-size: 1em /*16px*/;
 			.hSansSerif;
 			text-transform: uppercase;
 			border-right: 1px solid @offWhite;
 			border-left: 1px solid darken(@sideGray, 10%);
 			margin: 0px;
 			>a {
+				font-size: 1em;
+				line-height: 30px;
 				display: inline-block;
 				height: 100%;
 				width: 100%;
@@ -1543,13 +1639,11 @@ section {
 				content: '';
 			}
 			p {
-				font-size: 0.75em /*12px*/;
 				line-height: 1.5em;
 				color: @darkBlue;
 				margin-bottom: 10px;
 			}
 			li {
-				font-size: 0.75em;
 				margin-bottom: 5px;
 				margin-left: 15px;
 				&:before {
@@ -1711,14 +1805,6 @@ section {
 			}
 		}
 	}
-}
-#main_content a.button {
-	display: inline-block;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	color: @offWhite !important;
-	.gradient( #1A1D20 , darken(#1A1D20, 20%) );
 }
 .hide {
 	display: none;
