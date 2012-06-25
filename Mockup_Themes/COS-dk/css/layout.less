@@ -117,7 +117,7 @@ section {
 		overflow: hidden;
 		height: @headerLinksHeight;
 		line-height: @headerLinksHeight;
-		.branding_prefix { color: @UCFGold; cursor: pointer; }
+		.branding_prefix { color: @UCFGold; cursor: pointer; >a{ color: @UCFGold; } }
 		text-shadow: 1px 1px 15px #777;
 	}
 
@@ -1098,6 +1098,31 @@ section {
 				padding-bottom: 4px;
 			}
 		}
+
+		.buttonwhite {
+			display: inline-block;
+			padding: 5px 10px;
+			.rounded(8px);
+			text-align: center;
+			text-decoration: none !important;
+			.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 10%));
+			color: @lightBlueGray;
+			border: 1px solid @lightBlueGray;
+			text-shadow: 0 -1px 0 white;
+			text-shadow: ;
+			font-weight: bold;
+			.box-shadow(0 0 7px @UCFGold);
+
+			&:hover {
+				.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 5%));
+			}
+			&:active {
+				.gradient(@sideGray, lighten(@offWhite, 10%), darken(@offWhite, 10%));
+				padding-top: 6px;
+				padding-bottom: 4px;
+				.inner-shadow(0, 1px, 2px, 0.4);
+			}
+		}
 	}
 	#sidebar {
 		.column(3);
@@ -1168,11 +1193,11 @@ section {
 		}
 
 		aside {
-			h3 { 
+			h2, h3 { 
 				color: @offWhite;
 				background: @darkBlue;
 				height: auto; 
-				margin: 5px 0;
+				margin-bottom: 5px;
 
 			}
 			>ul>li:first-child>h3 {
@@ -1510,6 +1535,8 @@ section {
 		padding: 10px 0;
 		background: @blueGray;
 		.drop-shadow(0,0,8px,0.3);
+		border-top: 1px solid @lighterBlueGray;
+		border-bottom: 1px solid @darkBlue;
 
 		li {
 			font-size: 0.95em /*16px*/;
