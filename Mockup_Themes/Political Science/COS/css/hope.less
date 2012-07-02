@@ -1,0 +1,131 @@
+html#ie {
+
+	/* LAYOUT */
+	/* ----------------------------------------- */
+
+	/* MAIN ELEMENTS */
+
+
+	#main_header {
+		h1 {
+			font-size: @titleHeight - 3px;
+		}
+
+		nav {
+			>ul>li:hover>ul.children {
+				display: block; // for IE
+			}
+			>ul>li>ul.children>li:hover>ul.children {
+				display: block !important; // for IE
+			}
+			>ul>li>ul.children>li>ul.children {
+				display: none;
+			}
+		}
+
+	}
+
+	#main_content {
+		.events {
+			.eventDate {
+				max-width: 50px;
+				text-align: center;
+			}
+		}
+
+		.innerContent{
+			.tabcontentstyle{ /*style of tab content oontainer*/
+				p{	font-size: 12px; }
+				border-top: 1px solid #ECECEC; 
+				border-left: 2px solid #ECECEC; 
+				border-bottom: 2px solid #C8C8C8; 
+				border-right: 2px solid #C8C8C8; 
+
+			}
+		}
+		#sidebar {
+			.pageNav {
+				>ul>li {
+					>ul.children {
+						display: block; // IE
+					}
+				}
+				aside h3 {
+					color: @offWhite !important;
+				}
+			}
+		}
+	}
+
+
+	#widgets {
+		background: @blueGray url('img/blueGray_bg.png') repeat;
+	}
+
+	.sort_people { display: none; }
+
+	#people_list {
+		ul.personBasics {
+			margin-bottom:5px;
+
+			h2 {margin-top: 0; padding-top:0;}
+
+			h3 { // why the hell does IE add empty h3 tags???
+				display: none;
+			}
+			>li {
+				list-style: disc;
+				font-weight: bold;
+				font-size: 14px;
+				&.person_research {
+					font-weight: normal;
+				}
+				&:before {
+					content: '';
+				}
+					&.person_position:before { content: ''; }
+					&.person_location:before { content: ''; }
+					&.person_phone:before { content: ''; }
+					&.person_email:before { content: ''; }
+			}
+		}
+
+	}
+	#single_person {
+		figure {
+			max-width: 220px;
+
+		}
+		#office_hrs {
+			>ul {
+				>li {						
+					width: 19%;
+					margin: 10px 2px;
+					padding: 0;
+					
+					/* For IE 7 */						
+					zoom: 1;
+					*display: inline;
+
+				}
+			}
+		}
+		ul.personBasics {
+			h3 { // why the hell does IE add empty h3 tags???
+				display: none;
+			}
+			li {
+				font-size: 16px;
+				margin: 5px 0;
+				&:before { 
+				}
+				&.person_position:before { content: ''; }
+				&.person_location:before { content: ''; }
+				&.person_phone:before { content: ''; }
+				&.person_email:before { content: ''; }
+				&.person_cv:before { content: ''; }
+
+			}
+		}		
+	}
+}
