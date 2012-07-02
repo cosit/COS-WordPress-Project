@@ -19,7 +19,7 @@ $(function() {
 	}
 
 	// Indicate people nav link
-	$('#main_header nav>ul>li>a:contains("People")').parent().addClass('peopleNav');
+	$('#main_header nav>ul>li>a:contains("People")').attr("id", "peopleLink").parent().addClass('peopleNav');
 
     // Display people categories in nav menu
 	$('.peopleNav').append( $('#people_cats') );
@@ -33,8 +33,8 @@ $(function() {
 				// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
 			},
 			function(){ 
-				$(this).children('ul.children').slideUp('fast');
-				$(this).children('ul.sub-menu').slideUp('fast');
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
 			}
 		);
 	})();
@@ -170,66 +170,4 @@ $(function() {
 		if( newTitle.length > 0 ){ oldTitle.replaceWith(newTitle); }
 	})();
 
-
-
-	/**
-	 * jQuery.fn.sortElements
-	 * --------------
-	 * @param Function comparator:
-	 *   Exactly the same behaviour as [1,2,3].sort(comparator)
-	 *   
-	 * @param Function getSortable
-	 *   A function that should return the element that is
-	 *   to be sorted. The comparator will run on the
-	 *   current collection, but you may want the actual
-	 *   resulting sort to occur on a parent or another
-	 *   associated element.
-	 *   
-	 *   E.g. $('td').sortElements(comparator, function(){
-	 *      return this.parentNode; 
-	 *   })
-	 *   
-	 *   The <td>'s parent (<tr>) will be sorted instead
-	 *   of the <td> itself.
-	 */
-	jQuery.fn.sortElements = (function(){
-	    var sort = [].sort;
-	    return function(comparator, getSortable) {
-	        getSortable = getSortable || function(){return this;};
-	        var placements = this.map(function(){
-	            var sortElement = getSortable.call(this),
-	                parentNode = sortElement.parentNode,
-	 
-	                // Since the element itself will change position, we have
-	                // to have some way of storing its original position in
-	                // the DOM. The easiest way is to have a 'flag' node:
-	                nextSibling = parentNode.insertBefore(
-	                    document.createTextNode(''),
-	                    sortElement.nextSibling
-	                );
-	 
-	            return function() {
-	                if (parentNode === this) {
-	                    throw new Error(
-	                        "You can't sort elements if any one is a descendant of another."
-	                    );
-	                }
-	 
-	                // Insert before flag:
-	                parentNode.insertBefore(this, nextSibling);
-	                // Remove flag:
-	                parentNode.removeChild(nextSibling);
-	            };
-	        });
-	        return sort.call(this, comparator).each(function(i){
-	            placements[i].call(getSortable.call(this));
-	        });
-	    };
-	})();
-
-	$('.sort_people').click(function(){
-		$('#people_list>.person').sortElements(function(a, b){
-	    	return $(a).find('ul.personBasics>h2>a').text() > $(b).find('ul.personBasics>h2>a').text() ? 1 : -1;
-		});
-	});
 });

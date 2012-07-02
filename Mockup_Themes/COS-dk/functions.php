@@ -719,8 +719,11 @@ function show_people( $catID = 0 ) {
 
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
-		<article class="person clearfix">
-			<figure><img src="{$person['photo']}" /></figure>
+		<article class="person clearfix {$cats}">
+			<figure>
+				<img src="{$person['photo']}" alt="{$person['last_name']}, {$person['first_name']}"/>
+				<a href="{$person['link']}" class="personLink" title="{$person['last_name']}, {$person['first_name']}"></a>
+			</figure>
 			<ul class="personBasics">
 				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
 				<li class="person_position">{$person['position']}</h3>
@@ -736,6 +739,7 @@ PEOPLE;
 
 
 	endwhile; endif; wp_reset_query();
+	echo '<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>';
 	echo '</div>';
 }
 
@@ -1104,6 +1108,7 @@ function breadcrumbs() {
  
   global $post;
   $homeLink = get_bloginfo('url');
+
  
   if (is_home() || is_front_page()) {
   	if ($showOnHome == 1) echo '<div id="breadcrumbs"><a href="' . $homeLink . '">' . $home . '</a></div>';
@@ -1135,12 +1140,14 @@ function breadcrumbs() {
  
     } elseif ( is_single() && !is_attachment() ) {
       if ( get_post_type() != 'post' ) {
+
         $post_type = get_post_type_object(get_post_type());
 
         $slug = $post_type->rewrite;
         echo '<a href="' . $homeLink . '/' . $slug['slug'] . '/">' . $post_type->labels->name . '</a> ' . $delimiter . ' ';
         if ($showCurrent == 1) echo $before . get_the_title() . $after;
       } else {
+
         $cat = get_the_category(); $cat = $cat[0];
         echo get_category_parents($cat, TRUE, ' ' . $delimiter . ' ');
         if ($showCurrent == 1) echo $before . get_the_title() . $after;
