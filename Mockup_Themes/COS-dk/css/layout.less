@@ -24,6 +24,7 @@
 
 @sideGray: #E6E6E6;
 @UCFGold: #FFC904;
+@UCFMetallicGold: #CC9900;
 @offWhite: #F2F2F2;
 @BGWhite: #FFFFFF;
 
@@ -254,7 +255,9 @@ section {
 		}
 		// Submenu in last menu expands to left to prevent overflow to right
 		>ul>li:last-child>ul.children>li,
-		>ul>li:last-child>ul.sub-menu>li {
+		>ul>li:last-child>ul.sub-menu>li, 
+		>ul>li:nth-last-child(2)>ul.children>li,
+		>ul>li:nth-last-child(2)>ul.sub-menu>li {
 			&.parent:before {
 				content: '\00AB';
 				right: auto;
@@ -1056,24 +1059,27 @@ section {
 				padding: 10px;
 			}
 		}
-		.button {
+		
+		.button (@color: white, @textcolor: black, @padding: 10px) {
 			display: inline-block;
-			padding: 5px 10px;
+			padding: @padding;
 			.rounded(8px);
 			text-align: center;
 			text-decoration: none !important;
-			.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 15%));
-			color: lighten(@lighterBlueGray, 15%);
-			border: 1px solid black;
-			text-shadow: 0 -1px 0 darken(@darkBlue, 10%);
+			.gradient(@color, darken(@color, 10%), lighten(@color, 10%));
+			color: @textcolor;
+			border: 1px solid darken(@color, 20%);
+			text-shadow: 0 -1px 0 darken(@color, 25%);
+			font-weight: bold;
 
 			&:hover {
-				.gradient(@darkBlue, @darkBlue, lighten(@darkBlue, 20%));
+				.gradient(@color, darken(@color, 10%), lighten(@color, 15%));
 			}
 			&:active {
-				.gradient(@darkBlue, lighten(@darkBlue, 15%), @darkBlue);
-				padding-top: 6px;
-				padding-bottom: 4px;
+				.gradient(@color, lighten(@color, 10%), darken(@color, 10%));
+				padding-top: @padding + 1;
+				padding-bottom: @padding - 1;
+				.inner-shadow(0, 1px, 3px, 0.4);
 			}
 		}
 		.buttongold {
@@ -1096,32 +1102,12 @@ section {
 				.gradient(@UCFGold, lighten(@UCFGold, 10%), darken(@UCFGold, 10%));
 				padding-top: 6px;
 				padding-bottom: 4px;
+				.box-shadow(0 1px 2px #999);
 			}
 		}
 
 		.buttonwhite {
-			display: inline-block;
-			padding: 5px 10px;
-			.rounded(8px);
-			text-align: center;
-			text-decoration: none !important;
-			.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 10%));
-			color: @lightBlueGray;
-			border: 1px solid @lightBlueGray;
-			text-shadow: 0 -1px 0 white;
-			text-shadow: ;
-			font-weight: bold;
-			.box-shadow(0 0 7px @UCFGold);
-
-			&:hover {
-				.gradient(@sideGray, darken(@offWhite, 10%), lighten(@offWhite, 5%));
-			}
-			&:active {
-				.gradient(@sideGray, lighten(@offWhite, 10%), darken(@offWhite, 10%));
-				padding-top: 6px;
-				padding-bottom: 4px;
-				.inner-shadow(0, 1px, 2px, 0.4);
-			}
+			.button(@offWhite, @UCFGold);
 		}
 	}
 	#sidebar {
@@ -1498,46 +1484,134 @@ section {
 
 #people_list {
 	article.person {
-		border-bottom: 1px dashed #CCC;
-		margin: 10px 0;
-	}
-	figure {
-		float: left;
-	}
-	img { /* Headshot */
-		width: 100px;
-		min-height: 50px;
-		margin: 0 20px 10px 0;
-	}
-	
-	ul.personBasics {
-		float: left;
-		max-width: 70%;
-		h2 { /* Person's name */
-			padding: 0;
-			margin-bottom: 10px;
-			font-size: 1.313em /*21px*/;
-		}
-		>li {
-			font-size: 1em /*16px*/;
-			margin: 5px 0 5px 25px;
-			&:before { 
-				.icon; 
-				content: '';
-				margin-left: -25px;
-				position: absolute;
-				font-size: 10px;
-			}
-			&.person_position:before { content: '\e062'; }
-			&.person_location:before { content: '\e068'; }
-			&.person_phone:before { content: '\e06e'; }
-			&.person_email:before { content: '\2709'; }
+		
+		margin: 20px 0;
+		margin-right: 20px;
 
-			&.person_research { 
-				font-size: 0.875em /*14px*/;
+
+		// Experimental stuff
+		width: 30%;
+		float: left;
+		height: 320px;
+		background: @darkBlue;
+		.drop-shadow(0,0,8px,0.3);
+
+		>figure {
+			max-height: 200px;
+			width: 100%;
+			img {
+				width: 100%;
+				padding: 0;
+				border: none;
+				max-height: 300px;
+			}
+		}
+
+		ul.personBasics {
+			position: relative;
+			display: block;
+			width: 100%;
+			max-width: 100%;
+			padding: 0;
+			margin: 0;
+			padding-bottom: 15px;
+			background: @darkBlue;
+			border-top: 5px solid @UCFGold;
+
+			h2 {
+				font-size: 1.2em;
+				text-align: center;
+				padding: 10px 5%;
+				color: @blueGray;
+				>a {color: @blueGray;}
+				// text-shadow: 0px -1px 0 @darkBlue;
+
+				margin-left: -10px;
+				margin-top: -20px;
+				margin-bottom: 10px;
+				background: @sideGray;
+				width: 90%;
+				// text-shadow: 0 -1px 0 @lightBlueGray;
+				.drop-shadow(0,0,8px,0.3);
+
+				&:after {
+					content: "";
+					position: absolute;
+					top: -10px;
+					left: 0px;
+					border-width: 10px 10px 0 0;
+					border-style: solid;
+					border-color: transparent @lighterBlueGray;
+				}
+			}
+			>li {
+				font-size: 0.75em;
+				margin: 0;
+				padding: 0;
+				margin-left: 20%;
+				margin-right: 10%;
+				width: 70%;
+				color: @sideGray;
+				>a { 
+					color: @UCFGold; 
+				}
+
+				&.person_research {
+					display: none;
+				}
+				&:before { 
+					.icon; 
+					content: '';
+					margin-left: -25px;
+					position: absolute;
+					font-size: 10px;
+					color: lighten(@darkBlue, 10%);
+					text-shadow: 0px -1px 0 black, 0px 1px 0 @lightBlueGray;
+				}
+				&.person_position:before { content: '\e062'; }
+				&.person_location:before { content: '\e068'; }
+				&.person_phone:before { content: '\e06e'; }
+				&.person_email:before { content: '\2709'; }
 			}
 		}
 	}
+	// figure {
+	// 	float: left;
+	// }
+	// img { /* Headshot */
+	// 	width: 100px;
+	// 	min-height: 50px;
+	// 	margin: 0 20px 10px 0;
+	// }
+	
+	// ul.personBasics {
+	// 	float: left;
+	// 	max-width: 70%;
+	// 	h2 { /* Person's name */
+	// 		padding: 0;
+	// 		margin-bottom: 10px;
+	// 		font-size: 1.313em /*21px*/;
+	// 	}
+	// 	>li {
+	// 		font-size: 1em /*16px*/;
+	// 		margin: 5px 0 5px 25px;
+	// 		&:before { 
+	// 			.icon; 
+	// 			content: '';
+	// 			margin-left: -25px;
+	// 			position: absolute;
+	// 			font-size: 10px;
+	// 		}
+	// 		&.person_position:before { content: '\e062'; }
+	// 		&.person_location:before { content: '\e068'; }
+	// 		&.person_phone:before { content: '\e06e'; }
+	// 		&.person_email:before { content: '\2709'; }
+
+	// 		&.person_research { 
+	// 			font-size: 0.875em /*14px*/;
+	// 		}
+	// 	}
+	// }
 
 }
 #single_person {
