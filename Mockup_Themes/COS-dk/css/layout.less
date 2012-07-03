@@ -1435,10 +1435,11 @@ section {
 	position: relative; 
 
 	input#s {
-		color: @blueGray;
+		color: @lighterBlueGray;
+
 		width: 75%;
 		outline: 0;
-		background: transparent url('img/search.png') 10px center no-repeat;
+		background: @offWhite url('img/search.png') 10px center no-repeat;
 		-webkit-appearance: textfield;
 		.hSansSerif;
 		font-size: 1em /*16px*/;
@@ -1446,6 +1447,11 @@ section {
 		padding: 6px 38px 6px 33px;
 		.rounded(5px);
 		margin-bottom: 20px;
+
+		&:focus {
+			.box-shadow(0 0 5px @UCFGold);
+			color: @blueGray;
+		}
 	}
 }
 
