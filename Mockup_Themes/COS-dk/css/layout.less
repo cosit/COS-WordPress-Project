@@ -822,7 +822,34 @@ section {
 		margin-bottom: 20px; 
 		.drop-shadow(0,0,8px,0.3);
 
-		h1 { margin-left: 10px;}
+		h1 { margin-left: 10px; display: inline-block;}
+		h1 + a {
+			display: inline-block;
+			text-align: right;
+			float: right;
+			height: 100%;
+			padding: 10px 20px;
+			font-size: 0.75em;
+			line-height: 2em;
+			background: @lighterBlueGray;
+			color: @offWhite;
+			.transition(0.5s, ease-out);
+
+			&:after {
+				content:"";
+			   	position:absolute;
+			   	bottom:0;
+			   	left:0;
+			   	border-width:0 12px 12px 0;
+			   	border-style:solid;
+			   	border-color: @sideGray @blueGray;
+			}
+
+			&:hover {
+				background: @lightBlueGray;
+				.transition(0.5s, ease-out);
+			}
+		}
 		article {
 			// max-height: 65px;
 			padding: 5px 0;
@@ -996,6 +1023,13 @@ section {
 			font-size: 0.750em /*12px*/;
 			line-height: 1.5em;
 		}
+		>article p>a {
+			border-bottom: 1px dotted @lightBlueGray;
+			&:hover {
+				text-decoration: none;
+				border-bottom: 1px solid @lightBlueGray;
+			}
+		}
 		ul>li, ol>li {
 			margin-bottom: 5px;
 		}
@@ -1134,6 +1168,7 @@ section {
 			text-transform: none;
 			display: block;
 			.drop-shadow(0,0,8px,0.3);
+			border-bottom: 4px solid @UCFGold;
 		}
 		p {
 			width: 80%;
@@ -1298,7 +1333,7 @@ section {
 	background: @darkBlue;
 	margin-top: -@mainFooterHeight ;
 }
--
+
 #widget_container {
 	min-height: @widgetsHeight;	
 	margin: 0 auto;
@@ -1327,6 +1362,7 @@ section {
 		border-right: 1px dashed @lightBlueGray;
 		padding: 10px;
 		text-align:left;
+		color: darken(@offWhite, 10%);
 
 		.title {
 		text-align:center;
@@ -1370,16 +1406,28 @@ section {
 			}
 		}
 		>div>div {
-			font-size: 0.8em !important; // Tweet fix
+			font-size: 0.7em !important; // Tweet fix
 			div.tweet {
 				border-bottom: 1px solid @lightBlueGray;
 				&:hover {
 					background: @lightBlueGray;
 				}
+				.avatar img{
+					.border-radius(0);
+				}
+				.mt_header>a {
+					font-size: 1.3em;
+					.hSansSerif;
+				}
+				.mt_text {
+					line-height: 1.2em;
+				}
 			}
 		}
 		.textwidget {
-			font-size: 0.875em /*14px*/;
+			font-size: 0.75em /*14px*/;
+			line-height: 1.3em;
+
 			margin-bottom: 14px;
 		}
 		&:last-child {
@@ -1559,6 +1607,7 @@ section {
 				margin-top: -20px;
 				margin-bottom: 10px;
 				background: @sideGray;
+				.gradient(@sideGray, darken(@sideGray, 10%), @sideGray);
 				width: 90%;
 				// text-shadow: 0 -1px 0 @lightBlueGray;
 				.drop-shadow(0,0,8px,0.3);

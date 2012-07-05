@@ -31,9 +31,14 @@
 			</article>
 		</div>
 		<div id="sidebar">
-			<?php page_nav(); ?>
-			<?php custom_menu_nav(); ?>
-			<?php get_sidebar(); ?>
+			<?php if(get_option('COS_pagenav_type')=='custom') {
+				custom_menu_nav();
+			} else {
+				page_nav(); 
+			}?>
+			<?php if(get_option('COS_show_sidebar')=='show') {
+				get_sidebar();
+			}?>
 		</div>
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->

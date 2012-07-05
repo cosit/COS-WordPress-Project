@@ -46,9 +46,6 @@ $(function() {
 	// );
 
 	// Contact Box and Search Form
-	$('#searchform #s, #inner_searchform #s').focusin(function(){
-		$(this).addClass('searchFocus').val('');
-	});
 	$('#contact h2').wrapInner('<span />');
 	$('#contact ul:nth-child(odd)').addClass('contactOdd');
 

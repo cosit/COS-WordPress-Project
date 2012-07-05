@@ -89,9 +89,15 @@ function COS_themeoptions_page() {
             <p><input type="text" name="title_size" id="title_size" value="<?php echo $title_size; ?>"></p>
 
 
-            <?php $events_items = get_option('COS_events_items'); ?>
-            <h4>Number of Events Items to Display </h4>
-            <input type="text" name="events_items" id="events_items" value=<?php echo $events_items; ?>>
+            <?php $pagenav_type = get_option('COS_pagenav_type'); ?>
+            <h4>Show navigation for custom menus in page sidebar?</h4>
+            <input type="checkbox" name="pagenav_type" id="pagenav_type" value="custom" <?php if($pagenav_type=="custom"){echo "checked";}?>/>
+            <span style="padding-left: 10px;">Yes (only check if this theme uses <em>custom</em> menus)</span><br />
+
+            <?php $show_sidebar = get_option('COS_show_sidebar'); ?>
+            <h4>Show extra sidebar widgets?</h4>
+            <input type="checkbox" name="show_sidebar" id="show_sidebar" value="show" <?php if($show_sidebar=="show"){echo "checked";}?>/>
+            <span style="padding-left: 10px;">Yes, show sidebar</span><br />
   
             <p><input type="submit" name="search" value="Update Options" class="button" /></p>  
         </form>  
@@ -105,6 +111,8 @@ function COS_themeoptions_update() {
 	// this is where validation would go
 	update_option('COS_title_prefix', 	$_POST['title_prefix']);
 	update_option('COS_title_size', 	$_POST['title_size']);
+	update_option('COS_pagenav_type', 	$_POST['pagenav_type']);
+	update_option('COS_show_sidebar', 	$_POST['show_sidebar']);
 
 }
 
@@ -154,6 +162,7 @@ function custom_menu_nav( $pageID = 0, $menu_name = 'primary-menu' ){
 	wp_nav_menu( $args );
 	echo '</nav>';
 }
+add_action( 'custom_menu_nav', 'custom_menu_nav', 10, 1 );
 
 function page_nav( $pageID = 0 ){
 	$pageID = ($pageID == 0 ? get_the_ID() : $pageID);
@@ -185,7 +194,8 @@ function page_nav( $pageID = 0 ){
 
 	echo '</nav>';
 }
-add_shortcode('page_nav', 'page_nav');
+add_action( 'page_nav', 'page_nav', 10, 1 );
+// add_shortcode('page_nav', 'page_nav');
 
 function people_nav( $pageID = '' ){
 	$pageID = $pageID || get_the_ID();
@@ -660,7 +670,78 @@ PERSON;
 
 }
 
+// // Displays list of people based on category (default: all)
+// function show_people( $catID = 0 ) { 
+// 	// Search for Post with Custom Post Type "people"
+// 	// if( $catID == 0){
+// 	// 	$facultyArgs = array( 
+// 	// 		'post_type' => 'people',
+// 	// 	);
+// 	// 	query_posts( $facultyArgs );
+// 	// } else {
+// 	if( $catID ){
+// 		$facultyArgs = array( 
+// 			'post_type' => 'people',
+// 			'people_cat' => $catID,
+// 			'posts_per_page' => -1,
+// 			'orderby' => 'title',
+// 			'order' => 'ASC',
+// 		);
+// 	} else {
+// 		$facultyArgs = array( 
+// 			'post_type' => 'people',
+// 			'posts_per_page' => -1,
+// 			'orderby' => 'title',
+// 			'order' => 'ASC',
+// 		);
+// 	}
+
+// 	query_posts( $facultyArgs );
+
+// 	echo '<div id="people_list">';
+
+
+
+// 	if(have_posts()) : while (have_posts()) : the_post();			
+// 		// Grab the Post ID for the Custom Fields Function			
+// 		$thisID = get_the_ID();
+
+// 		$personPhoto = get_field('headshot');
+// 		$personLink =  get_permalink();
+// 		$personFirstName = get_field('first_name');
+// 		$personLastName = get_field('last_name');
+
+// 		$person = array(
+// 			'position'    => get_field('position'),
+// 			'location'    => get_field('location'),
+// 			'phone'       => get_field('phone'),
+// 			'email'       => get_field('email'),			
+// 		);
+
+// 		// display person if person is in category, or category is 'all'
+// 		echo <<<PEOPLE
+// 		<article class="person clearfix">
+// 			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
+// 			<ul class="personBasics">
+// 				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
+// PEOPLE;
+// 			foreach( $person as $personKey => $personValue){
+// 				if(!empty($personValue))
+// 					if($personKey != "email")
+// 						echo "<li class='person_".$personKey."'>$personValue</li>";
+// 					else
+// 						echo "<li class='person_".$personKey."'><a href='mailto:$personValue'>$personValue</a></li>";
+// 			}
+// 			echo '</ul>
+// 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
+// 		</article>';
+
+// 	endwhile; endif; wp_reset_query();
+// 	echo '</div>';
+// }
+
 // Displays list of people based on category (default: all)
+// OLD FUNCTION
 function show_people( $catID = 0 ) { 
 	// Search for Post with Custom Post Type "people"
 	// if( $catID == 0){
@@ -726,9 +807,9 @@ function show_people( $catID = 0 ) {
 			</figure>
 			<ul class="personBasics">
 				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
-				<li class="person_position">{$person['position']}</h3>
-				<li class="person_location">{$person['location']}</h3>
-				<li class="person_phone">{$person['phone']}</h3>
+				<li class="person_position">{$person['position']}</li>
+				<li class="person_location">{$person['location']}</li>
+				<li class="person_phone">{$person['phone']}</li>
 				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
 				<li class="person_research">{$person['research_ex']}</li>
 			</ul>
@@ -1231,17 +1312,24 @@ function show_news( $cat, $items_to_show ) { ?>
 }
 add_action( 'show_news', 'show_news', 10, 2 );
 
-function show_events() {?>
+function show_events( $calendar_id=1, $num_events=5) {
+	$calendar_link = 'http://events.ucf.edu/?calendar_id='.$calendar_id.'&upcoming=upcoming';
+
+	echo('<a href="'.$calendar_link.'" target="_blank">View Full Calendar</a>');
 	
-		<?php try {
+	// if(!$calendar_id){
+	// 	echo '<span class="error">Error: unable to retrieve events (no calendar ID specified)</span>';
+	// 	return false;
+	// } 
+
+		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
-			$feed = fetch_rss('http://events.ucf.edu/?calendar_id=217&upcoming=upcoming&format=rss&limit=100'); // specify feed url
-			$items = array_slice($feed->items, 0, 7); // specify first and last item
+			$feed = fetch_rss('http://events.ucf.edu/?calendar_id='.$calendar_id.'&upcoming=upcoming&format=rss&limit=100'); // specify feed url
+			$items = array_slice($feed->items, 0, $num_events); // specify first and last item
 			} catch(Exception $e) {
 				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
 			}
 		?>
-
 		<?php if (!empty($items)) : ?>
 
 		<?php foreach ($items as $item) : ?>
@@ -1259,10 +1347,15 @@ function show_events() {?>
 				</ul>
 			</article>
 		<?php endforeach; ?>
+
+		<?php else : ?>
+			<article>
+				<h3>There are currently no events to show.</h3>
+			</article>
 		
 		<?php endif; ?><?php
 }
-add_action('show_events', 'show_events');
+add_action('show_events', 'show_events', 10, 2);
 
 function starkers_setup() {
 
@@ -1443,6 +1536,16 @@ function starkers_widgets_init() {
 		'after_widget' => '</div>',
 		'before_title' => '<h1>',
 		'after_title' => '</h1>',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Inner Page Sidebar', 'starkers' ),
+		'id' => 'sidebar-widget-area',
+		'description' => __( 'The sidebar for all inner pages', 'starkers' ),
+		'before_widget' => '<div id="sidebar">',
+		'after_widget' => '</div>',
+		'before_title' => '<h2>',
+		'after_title' => '</h2>',
 	) );
 
 	// Area 3, located in the footer. Empty by default.
