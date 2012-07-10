@@ -85,7 +85,9 @@
 </script>
 
 <!-- All of our jQuery scripts go here -->
-
+<!-- ADD UCF HEADER -->
+<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
+<!-- END UCF HEADER -->
 
 </body>
 </html>

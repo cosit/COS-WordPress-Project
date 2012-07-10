@@ -15,9 +15,7 @@
 <!--[if !IE]><!--> <html>             <!--<![endif]-->
 <head>
 
-<!-- ADD UCF HEADER -->
-<!-- <script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script> -->
-<!-- END UCF HEADER -->
+
 
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title><?php
@@ -37,6 +35,9 @@
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
+
+<!-- Stylesheet for printing -->
+<link rel="stylesheet/less" type="text/css" media="print" href="<?php bloginfo('template_directory'); ?>/css/print.less" media="all">
 
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/responsive.less" media="all">
 

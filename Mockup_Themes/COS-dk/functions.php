@@ -44,6 +44,9 @@ function load_custom_script() {
     wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
     wp_enqueue_script('jquery.ui');
 
+    wp_register_script('sticky', get_bloginfo('template_directory').'/js/sticky.jquery.min.js');
+    wp_enqueue_script('sticky');
+
 }
 
 function load_custom_style() {

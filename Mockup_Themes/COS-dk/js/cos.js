@@ -167,4 +167,6 @@ $(function() {
 		if( newTitle.length > 0 ){ oldTitle.replaceWith(newTitle); }
 	})();
 
+	// Make sidebar sticky
+	$('#sidebar').stickySidebar({speed: 0, padding: 0, constrain: true});
 });
