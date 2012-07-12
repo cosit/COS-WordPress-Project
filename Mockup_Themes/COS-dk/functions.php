@@ -205,7 +205,7 @@ function people_nav( $pageID = '' ){
 	$term_id = get_query_var('term_id');
 	$currentPage = get_post( $pageID );
 
-	echo '<nav class="pageNav sidebar"><h2>People</h2><ul>';
+	echo '<nav class="pageNav sidebar"><h2><a href="'.get_bloginfo('url').'/people/">People</a></h2><ul>';
 	echo show_people_cats( false );
 	echo '</ul></nav>';
 }
@@ -624,37 +624,43 @@ function show_person( $id, $is_ie = false ) {
 	$office_hours = get_hrs( $person );
 
 	// Create array of tabs to display (and populate them), only if content exists
-	if( !$is_ie ){
-		$contentTabs = '<ul class="personTabs">';
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
-			}
-		}
-		// Office Hours
-		
-		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
-		if( $person['p_office_hours_private'] ){
-			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
-		} else {
-			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
-		}
+$contentTabs = '<ul class="tabNavigation">';
+	$content = '';
+	$contentCounter = '0';
+	$office_hours_private_msg ='';
 
-		$contentTabs .= '</ul>';
-		$content .= '</ul>';
-	} else {
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
-			}
+	foreach  ($person as $field => $value ) {
+		if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+			$contentTabs .= '<li><a href="#' . $field . '">' . $field . '</a></li>';
+			$content     .= '<div id="'. $field . '" class="tabcontentstyle">' . $value . '</div>';
 		}
 	}
+	// Office Hours
+	
+	if( $office_hours ){
+		$contentTabs .= '<li><a href="#office_hrs">Office Hours</a></li>';
+		$content .= '<div id="office_hrs" class="tabcontentstyle">';		
+		$content .= '<h2>Office Hours</h2>' . $office_hours .'';				
+		$content .= "</div>";
+	}
+
+	$contentTabs .= '</ul>';
 
 	echo <<<PERSON
+	<script type="text/javascript" charset="utf-8">
+		$(function () {
+			var tabContainers = $('div.tabs > div');
+			tabContainers.hide().filter(':first').show();
+			
+			$('div.tabs ul.tabNavigation a').click(function () {
+				tabContainers.hide();
+				tabContainers.filter(this.hash).show();
+				$('div.tabs ul.tabNavigation a').removeClass('selected');
+				$(this).addClass('selected');
+				return false;
+			}).filter(':first').click();
+		});
+	</script>
 	<article class="person clearfix">
 		<figure><img src="{$person['p_photo']}"/></figure>
 		<ul class="personBasics">
@@ -666,85 +672,19 @@ function show_person( $id, $is_ie = false ) {
 
 		</ul>
 	</article>
-
-	{$contentTabs}
-	{$content}
 PERSON;
-
+	if(!empty($content)){
+		echo "
+		<div class='tabs'>		
+			{$contentTabs}
+			<br style='clear:left;'' />
+			{$content}		
+		</div>	
+		";
+	}
 }
 
-// // Displays list of people based on category (default: all)
-// function show_people( $catID = 0 ) { 
-// 	// Search for Post with Custom Post Type "people"
-// 	// if( $catID == 0){
-// 	// 	$facultyArgs = array( 
-// 	// 		'post_type' => 'people',
-// 	// 	);
-// 	// 	query_posts( $facultyArgs );
-// 	// } else {
-// 	if( $catID ){
-// 		$facultyArgs = array( 
-// 			'post_type' => 'people',
-// 			'people_cat' => $catID,
-// 			'posts_per_page' => -1,
-// 			'orderby' => 'title',
-// 			'order' => 'ASC',
-// 		);
-// 	} else {
-// 		$facultyArgs = array( 
-// 			'post_type' => 'people',
-// 			'posts_per_page' => -1,
-// 			'orderby' => 'title',
-// 			'order' => 'ASC',
-// 		);
-// 	}
-
-// 	query_posts( $facultyArgs );
-
-// 	echo '<div id="people_list">';
-
-
-
-// 	if(have_posts()) : while (have_posts()) : the_post();			
-// 		// Grab the Post ID for the Custom Fields Function			
-// 		$thisID = get_the_ID();
-
-// 		$personPhoto = get_field('headshot');
-// 		$personLink =  get_permalink();
-// 		$personFirstName = get_field('first_name');
-// 		$personLastName = get_field('last_name');
-
-// 		$person = array(
-// 			'position'    => get_field('position'),
-// 			'location'    => get_field('location'),
-// 			'phone'       => get_field('phone'),
-// 			'email'       => get_field('email'),			
-// 		);
-
-// 		// display person if person is in category, or category is 'all'
-// 		echo <<<PEOPLE
-// 		<article class="person clearfix">
-// 			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
-// 			<ul class="personBasics">
-// 				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
-// PEOPLE;
-// 			foreach( $person as $personKey => $personValue){
-// 				if(!empty($personValue))
-// 					if($personKey != "email")
-// 						echo "<li class='person_".$personKey."'>$personValue</li>";
-// 					else
-// 						echo "<li class='person_".$personKey."'><a href='mailto:$personValue'>$personValue</a></li>";
-// 			}
-// 			echo '</ul>
-// 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
-// 		</article>';
-
-// 	endwhile; endif; wp_reset_query();
-// 	echo '</div>';
-// }
-
 // Displays list of people based on category (default: all)
-// OLD FUNCTION
 function show_people( $catID = 0 ) { 
 	// Search for Post with Custom Post Type "people"
 	// if( $catID == 0){
@@ -780,50 +720,45 @@ function show_people( $catID = 0 ) {
 		// Grab the Post ID for the Custom Fields Function			
 		$thisID = get_the_ID();
 
-		$person = array(
-			'first_name'  => get_field('first_name'),
-			'last_name'   => get_field('last_name'),
-			'photo'       => get_field('headshot'),
-			'phone'       => get_field('phone'),
-			'email'       => get_field('email'),
-			'location'    => get_field('location'),
-			'position'    => get_field('position'),
-			'biography'   => get_field('biography'),
-			'research_ex' => excerpt(get_field('research_areas'), 140),
-			'cv'          => get_field('curriculum_vitae'),
-			'link'        => get_permalink(),
+		$personPhoto = get_field('headshot');
+		$personLink =  get_permalink();
+		$personFirstName = get_field('first_name');
+		$personLastName = get_field('last_name');
 
-		// Office Hours
-			'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
-			'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
-			'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
-			'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
-			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
+		$person = array(
+			'position'    => get_field('position'),
+			'location'    => get_field('location'),
+			'phone'       => get_field('phone'),
+			'email'       => get_field('email'),	
+
+			// Office Hours
+			// 'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
+			// 'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
+			// 'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
+			// 'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
+			// 'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
 		);
 
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
-		<article class="person clearfix {$cats}">
-			<figure>
-				<img src="{$person['photo']}" alt="{$person['last_name']}, {$person['first_name']}"/>
-				<a href="{$person['link']}" class="personLink" title="{$person['last_name']}, {$person['first_name']}"></a>
-			</figure>
+		<article class="person clearfix">
+			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
-				<li class="person_position">{$person['position']}</li>
-				<li class="person_location">{$person['location']}</li>
-				<li class="person_phone">{$person['phone']}</li>
-				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
-				<li class="person_research">{$person['research_ex']}</li>
-			</ul>
-			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
-		</article>
+				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
 PEOPLE;
-
-
+			//Loop through the people array only printing if there is a value
+			foreach( $person as $personKey => $personValue){
+				if(!empty($personValue))
+					if($personKey != "email")
+						echo "<li class='person_".$personKey."'>$personValue</li>";
+					else
+						echo "<li class='person_".$personKey."'><a href='mailto:$personValue'>$personValue</a></li>";
+			}
+			echo '</ul>
+			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
+		</article>';
 
 	endwhile; endif; wp_reset_query();
-	echo '<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>';
 	echo '</div>';
 }
 
@@ -838,6 +773,9 @@ function show_office_hours( $is_sidebar=true ) {
 		'post_type' => 'people',
 		'people_cat' => 0,
 		'posts_per_page' => -1,
+		//Order the office hours results
+		'orderby' => 'title', 
+		'order' => 'ASC',
 	);
 	query_posts( $officeHoursArgs );
 
@@ -845,15 +783,14 @@ function show_office_hours( $is_sidebar=true ) {
 	$title = "Office Hours";
 	$subtitle = "Faculty with office hours today (<strong>".date("l")."</strong>):";
 	$today = date( "w" ); // Don't change
-	$no_office_hrs = "Sorry, we couldn't find any faculty with office hours today.";
+	$no_office_count = '0';
+	$no_office_hrs = "<p><em>Sorry, we couldn't find any faculty with office hours today.</em></p>";
 
-	if( $is_sidebar ){
-		// echo '<h3>'.$title.'</h3>'; // Shown in widget; not necessary
+	if( $is_sidebar ){		
 		echo '<p class="message">'.$subtitle.'</p>';
 		echo '<ul class="xoxo">';
 	} else {
-		echo '<div class="officeHours">';
-		// echo '<h1>'.$title.'</h1>'; // Shown in widget; not necessary
+		echo '<div class="officeHours">';		
 		echo '<h2>'.$subtitle.'</h2>';
 	}
 
@@ -889,23 +826,25 @@ function show_office_hours( $is_sidebar=true ) {
 
 		switch ($today){
 			case 1: // Monday
-				if($person['office_hours_mon']) echo_hrs( $person, "mon", $is_sidebar );
+				if($person['office_hours_mon']) echo_hrs( $person, "mon", $is_sidebar ); $no_office_count++;
 				break;
 			case 2: // Tuesday	
-				if($person['office_hours_tue']) echo_hrs( $person, "tue", $is_sidebar );
+				if($person['office_hours_tue']) echo_hrs( $person, "tue", $is_sidebar ); $no_office_count++;
 				break;
 			case 3: // Wednesday
-				if($person['office_hours_wed']) echo_hrs( $person, "wed", $is_sidebar );
+				if($person['office_hours_wed']) echo_hrs( $person, "wed", $is_sidebar ); $no_office_count++;
 				break;
 			case 4: // Thursday
-				if($person['office_hours_thu']) echo_hrs( $person, "thu", $is_sidebar );
+				if($person['office_hours_thu']) echo_hrs( $person, "thu", $is_sidebar ); $no_office_count++;
 				break;
 			case 5: // Friday
-				if($person['office_hours_fri']) echo_hrs( $person, "fri", $is_sidebar );
+				if($person['office_hours_fri']) echo_hrs( $person, "fri", $is_sidebar ); $no_office_count++;
 				break;
 		}
 
 	endwhile; endif; wp_reset_query();
+
+	if($no_office_count == '0') echo "$no_office_hrs";
 
 	if( $is_sidebar ){
 		echo '</ul>';
@@ -977,6 +916,7 @@ function get_hrs( $person ){
 	$absent_msg = 'Not Available';
 	$connector = "&nbsp;to&nbsp;";
 	$separator = "</li><li>";
+	$emptyHours = "";
 	$days = array('mon'=>'Monday', 'tue'=>'Tuesday', 'wed'=>'Wednesday', 'thu'=>'Thursday', 'fri'=>'Friday',);
 	$hours = '<ul>';
 
@@ -994,6 +934,7 @@ function get_hrs( $person ){
 				$parity = !$parity;
 			}
 			$hours = substr( $hours, 0, -9 ); // Remove the extra </li><li>
+			$emptyHours = "Have Office Hours";
 		} else {
 			$hours .= '<em>' . $absent_msg . '</em>';
 		}
@@ -1003,24 +944,11 @@ function get_hrs( $person ){
 
 	$hours .= '</ul>';
 
-	return $hours;
+	if(empty($emptyHours))
+		return "";
+	else
+		return $hours;
 }
-
-// Custom Post Type for Contact information
-function contact() {
-	$args = array(
-	'label'           => __('Contact Info'),
-	'singular_label'  => __('Contact Info'),
-	'public'          => true,
-	'show_ui'         => true,
-	'capability_type' => 'post',
-	'hierarchical'    => true,
-	'rewrite'         => true,
-	'supports'        => array('custom-fields')
-	);
-	register_post_type( 'contact' , $args );
-}
-add_action('init', 'contact');
 
 function show_contact_area( $args ){
 
@@ -1079,80 +1007,6 @@ CONTACT;
 }
 add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
 
-/****** OLD CONTACT AREA CODE *****/
-
-// function show_contact_area(){
-
-// 	//Search for Post with Custom Post Type "HomeContact"
-// 	$contactArgs = array( 'post_type' => 'contact' );
-// 	query_posts( $contactArgs );
-
-// 	if(have_posts()) : while (have_posts()) : the_post();			
-
-// 		$thisID = get_the_ID();
-
-// 		// Parse multiple email addresses
-// 		$emails_array = explode("\n", trim(get_field('email')));
-// 		$emails_string = '';
-
-// 		foreach ($emails_array as &$email) {
-// 			$email = trim($email);
-// 			$email = '<a href="mailto:'.$email.'">'.$email.'</a>';
-// 		}
-
-// 		$emails_array = implode("\n", $emails_array);
-
-// 		$contact = array(
-// 			'dept' => get_field('dept'),
-// 			'address'    => get_field('address'),
-// 			'email'      => $emails_array,
-// 			'fax'        => 'F: ' . get_field('fax'),
-// 			'phone'      => 'P: ' . get_field('phone'),
-// 		);
-
-// 		// Break each category into list items
-// 		foreach($contact as $key => &$value){
-// 			$value = '<li>' . str_replace("\n", "</li><li>", $value) . '</li>';
-// 		};
-
-// 		// Display the list items in this format:
-// 		echo <<<CONTACT
-// 			<h2><span class="contact_title">Contact Us</span></h2>
-
-// 			<ul id="contact_department">
-// 				<span class="contactIcon"></span>
-// 				{$contact['dept']}
-// 			</ul>
-
-// 			<ul id="contact_address">
-// 				<span class="contactIcon"></span>
-// 				{$contact['address']}
-// 			</ul>
-// 			<ul id="contact_phone">
-// 				<span class="contactIcon"></span>
-// 				{$contact['phone']}
-// 				{$contact['fax']}
-// 			</ul>
-// 			<ul id="contact_email">
-// 				<span class="contactIcon"></span>
-// 				{$contact['email']}
-// 			</ul>
-// CONTACT;
-
-// 	break; // Prevent loop from displaying more than one post, just in case.
-
-// 	endwhile; endif; wp_reset_query();
-
-// 	return true;
-// }
-
-// //Function to add the shortcode for the Custom Post Type- for use in editor
-// function home_insert_contact($atts, $content=null){
-// 	$events = home_contact_area();
-// 	return $events;
-// }
-// //Shortcode for adding contact area
-// add_shortcode('home_contact', 'home_contact_area');
 
 function show_dyk_area( $args ) {
 	// Grab posts from specified category
@@ -1193,7 +1047,6 @@ function breadcrumbs() {
   global $post;
   $homeLink = get_bloginfo('url');
 
- 
   if (is_home() || is_front_page()) {
   	if ($showOnHome == 1) echo '<div id="breadcrumbs"><a href="' . $homeLink . '">' . $home . '</a></div>';
  
@@ -1289,10 +1142,8 @@ function breadcrumbs() {
 } 
 
 function show_news( $cat, $items_to_show ) { ?>
-	<div class="news">
- 		<!-- <h1>News</h1> -->
+	<div class="news"> 		
 		<?php 
-
 		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
 			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.$cat.'&feed=rss2'); // specify feed url
@@ -1314,6 +1165,30 @@ function show_news( $cat, $items_to_show ) { ?>
 	</div> <?php
 }
 add_action( 'show_news', 'show_news', 10, 2 );
+
+function show_news_full() { ?>
+	<div class="news"> 		
+		<?php try {
+			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
+			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_option('COS_news_cat').'&feed=rss2'); // specify feed url
+			$items = array_slice($feed->items, 0, 25); // specify first and last item
+			} catch(Exception $e) {
+				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
+			}
+		?>
+
+			<?php if (!empty($items)) : ?>
+			<?php foreach ($items as $item) : ?>			
+			<article>
+				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
+				<p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
+				<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
+			</article>
+			<?php endforeach; ?>
+			<?php endif; ?>
+	</div> <?php
+}
+add_shortcode('show_news_full', 'show_news_full');
 
 function show_events( $calendar_id=1, $num_events=5) {
 	$calendar_link = 'http://events.ucf.edu/?calendar_id='.$calendar_id.'&upcoming=upcoming';
@@ -1395,7 +1270,6 @@ if ( ! function_exists( 'starkers_menu' ) ):
  */
 	function starkers_menu() {
 		echo '<nav id="main_menu">';
-
 		echo '<ul><li><a href="'.get_bloginfo('url').'">Home</a></li>';
 		wp_list_pages('title_li=');
 		echo '</ul></nav>';
@@ -1510,7 +1384,6 @@ function starkers_widgets_init() {
 		'before_title' => '<h2>',
 		'after_title' => '</h2>',
 	) );
-
 	register_sidebar( array(
 		'name' => __( 'Front Page Slider Right', 'starkers' ),
 		'id' => 'front-slider-right-widget-area',
@@ -1520,7 +1393,6 @@ function starkers_widgets_init() {
 		'before_title' => '<h1>',
 		'after_title' => '</h1>',
 	) );
-
 	register_sidebar( array(
 		'name' => __( 'Front Page Left Column', 'starkers' ),
 		'id' => 'front-left-widget-area',
@@ -1530,7 +1402,6 @@ function starkers_widgets_init() {
 		'before_title' => '<h1>',
 		'after_title' => '</h1>',
 	) );
-
 	register_sidebar( array(
 		'name' => __( 'Front Page Right Column', 'starkers' ),
 		'id' => 'front-right-widget-area',
@@ -1540,7 +1411,6 @@ function starkers_widgets_init() {
 		'before_title' => '<h1>',
 		'after_title' => '</h1>',
 	) );
-
 	register_sidebar( array(
 		'name' => __( 'Inner Page Sidebar', 'starkers' ),
 		'id' => 'sidebar-widget-area',
@@ -1599,13 +1469,11 @@ function starkers_widgets_init() {
 add_action( 'widgets_init', 'starkers_widgets_init' );
 
 // User Role Customization
-
 	// get the the role object
 	$role_object = get_role('editor');
 
 	// add $cap capability to this role object
 	$role_object->add_cap( 'edit_theme_options' );
-
 // Dashboard Customization 
 
 // Change Log-In Screen Logo
@@ -1642,7 +1510,7 @@ function showMessage($message, $errormsg){
 // Write message to show in the error/info box
 	// Set boolean to True for red error box, False for yellow info box
 function showAdminMessages(){
-	showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:costech@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>costech@ucf.edu</a>", false);
+	showMessage("Please do not update any WordPress software.  If prompted for an update, please contact COSIT at <a href='mailto:cosit@ucf.edu?subject=WordPress Site Update For: ".get_bloginfo('name')."&body=This site (".site_url().") is due for a WordPress update, please forward on to COS Web.'>cosit@ucf.edu</a>", false);
 }
 add_action('admin_notices', 'showAdminMessages');
 
@@ -1658,7 +1526,7 @@ function wpc_dashboard_widget_function() {
 	echo "<ul>
 	<li><strong>Release Date:</strong> July 2012</li>
 	<li><strong>Author:</strong> College of Sciences Information Technology</li>
-	<li><strong>Support E-Mail:</strong> <a href='mailto:costech@ucf.edu'>costech@ucf.edu</a></li>
+	<li><strong>Support E-Mail:</strong> <a href='mailto:cosit@ucf.edu'>cosit@ucf.edu</a></li>
 	<li><strong>Support Phone:</strong> 407-823-2793</li>
 	</ul>";
 }
