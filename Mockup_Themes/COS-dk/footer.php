@@ -12,7 +12,6 @@
 	</div>
 </div> <!-- /container -->
 
-
 <footer id="main_footer">
 	<!-- Bottom widgets -->
 
@@ -21,8 +20,7 @@
 			<div id="first-footer-widget-area" class="widget">
 				<?php if ( is_active_sidebar( 'first-footer-widget-area' ) ) : ?>
 					<?php dynamic_sidebar( 'first-footer-widget-area' ); ?>
-				<?php endif; ?>
-				
+				<?php endif; ?>				
 			</div>
 
 			<div id="second-footer-widget-area" class="widget">
@@ -48,7 +46,7 @@
 		?>
 
 			<div class="dept_list">
-				<h1><span>UCF</span> College of Sciences</h1>
+				<h1><span><a href="http://www.ucf.edu">UCF</a></span><a href="http://www.cos.ucf.edu"> College of Sciences</a></h1>
 				<ul>
 					<li><a href="http://anthropology.cos.ucf.edu" target="_new">Anthropology</a></li>
 					<li><a href="http://biology.cos.ucf.edu" target="_new">Biology</a></li>
@@ -66,10 +64,7 @@
 
 		<h3 id="copyright">© <?php echo date(Y);?> University of Central Florida, College of Sciences, All Rights Reserved</h3>
 	</section>
-
 </footer>
-
-
 
 <?php
 	/* Always have wp_footer() just before the closing </body>
@@ -80,9 +75,6 @@
 	wp_footer();
 ?>
 
-<script type="text/javascript">
-
-</script>
 
 <!-- All of our jQuery scripts go here -->
 <!-- ADD UCF HEADER -->
