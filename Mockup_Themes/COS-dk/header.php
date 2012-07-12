@@ -43,9 +43,6 @@
 
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
-
-
-
  
 <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
 <!--<script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>-->
@@ -57,7 +54,7 @@
 
 </head>
  
-<body name="top" <?php body_class(); ?>>
+<body id="top" <?php body_class(); ?>>
  
     <header id="main_header">
         <div class="wrap clearfix">
@@ -81,6 +78,5 @@
         </div>
 
     </header>
-
 
 <div id="container">
