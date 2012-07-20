@@ -78,7 +78,7 @@ class cos_dyk_widget extends WP_Widget {
  		</p>
 
  		<p>
- 			<label for="<?php echo $this->get_field_id('cat'); ?>"><em>(Advanced) Category to retrieve posts from (default: "dyk"):</label>
+ 			<label for="<?php echo $this->get_field_id('cat'); ?>"><em>(Advanced) Category to retrieve posts from (default: "dyk"):</em></label>
  			<input class="widefat" id="<?php echo $this->get_field_id('cat'); ?>" name="<?php echo $this->get_field_name('cat'); ?>'" type="text" value="<?php echo $instance['cat']; ?>" />
  		</p>
  		<?php 
