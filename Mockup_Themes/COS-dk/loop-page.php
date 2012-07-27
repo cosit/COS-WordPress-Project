@@ -30,7 +30,7 @@
 				</footer>
 			</article>
 		</div>
-		<div id="sidebar">
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
 			<?php if(get_option('COS_pagenav_type')=='custom') {
 				custom_menu_nav();
 			} else {
