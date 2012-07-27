@@ -26,7 +26,7 @@ get_header(); ?>
 				</article>
 		</div>
 
-	<div id="sidebar">
+	<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
 		<?php people_nav(); ?>
 		<?php get_sidebar(); ?>
 	</div>
