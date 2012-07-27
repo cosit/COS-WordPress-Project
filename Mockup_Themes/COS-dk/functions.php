@@ -83,14 +83,20 @@ function COS_themeoptions_page() {
             <?php $title_prefix = get_option('COS_title_prefix'); ?>
             <h3>Title Prefix: <em><?php echo $title_prefix; ?></em></h3>
             <select name="title_prefix" id="">
-            	<option value="UCF" <?php if($title_prefix='UCF') echo 'selected';?>>UCF</option>
-            	<option value="COS" <?php if($title_prefix='COS') echo 'selected';?>>COS</option>
+            	<option value="UCF" <?php if($title_prefix =='UCF') echo 'selected';?>>UCF</option>
+            	<option value="COS" <?php if($title_prefix =='COS') echo 'selected';?>>COS</option>
             </select>
 
             <h4>Title Size</h4>
             <?php $title_size = get_option('COS_title_size') ?>
             <p><input type="text" name="title_size" id="title_size" value="<?php echo $title_size; ?>"></p>
 
+	    <h4>Sidebar Location</h4>
+            <?php $sidebar_location = get_option('COS_sidebar_location') ?>
+			<select name="sidebar_location" id="">
+            	<option value="left" <?php if($sidebar_location =='left') echo 'selected';?>>Left</option>
+            	<option value="right" <?php if($sidebar_location =='right') echo 'selected';?>>Right</option>
+            </select>
 
             <?php $pagenav_type = get_option('COS_pagenav_type'); ?>
             <h4>Show navigation for custom menus in page sidebar?</h4>
@@ -114,6 +120,7 @@ function COS_themeoptions_update() {
 	// this is where validation would go
 	update_option('COS_title_prefix', 	$_POST['title_prefix']);
 	update_option('COS_title_size', 	$_POST['title_size']);
+	update_option('COS_sidebar_location',   $_POST['sidebar_location']);
 	update_option('COS_pagenav_type', 	$_POST['pagenav_type']);
 	update_option('COS_show_sidebar', 	$_POST['show_sidebar']);
 
