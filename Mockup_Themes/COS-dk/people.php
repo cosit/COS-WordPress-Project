@@ -25,7 +25,7 @@ Template Name: People List
 			</article>
 		</div>
 		
-		<div id="sidebar">
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
 		<?php people_nav(); ?>
 		</div>	
 <?php endwhile; ?>
