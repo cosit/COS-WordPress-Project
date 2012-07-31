@@ -60,6 +60,7 @@ class cos_dyk_widget extends WP_Widget {
 
 	function update($new_instance, $old_instance) {
 			$instance['title'] = strip_tags($new_instance['title']);
+			$instance['cat'] = strip_tags($new_instance['cat']);
 			return $instance;
 	}
 
