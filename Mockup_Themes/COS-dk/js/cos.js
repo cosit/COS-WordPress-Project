@@ -141,25 +141,6 @@ $(function() {
     // Display page/people nav correctly
     $('#main_content>div.wrap').append( $('.innerContent .pageNav, .innerContent .peopleNav').remove() );
 
-    // Single Person Tabs
-	$('.personTabs>li>a').click(function(){
-		var $this = $(this);
-		console.log($this.parent().hasClass('personTabSelected'));
-		if( ! $this.parent().hasClass('personTabSelected') ){
-			var target = $this.attr('href').substring(1);
-			var newHeight = $('.personContent #' + target).outerHeight();
-			console.log(target);
-			$('.personTabs>li').removeClass('personTabSelected'); // deselect all tabs
-			$this.parent().addClass('personTabSelected');
-			$('.personContent>li').hide();
-			$('.personContent #' + target).fadeIn('fast');
-			$('.personContent').animate({
-				height: newHeight,
-			});
-		};
-		return false;
-	})
-	$('.personTabs li:first-child a').trigger('click');
 
 	// Link Icons 
 	$('.innerContent a').parent('li').addClass('link www');
