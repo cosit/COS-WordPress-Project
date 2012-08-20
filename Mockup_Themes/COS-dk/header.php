@@ -10,9 +10,9 @@
  */
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 9]>     <html id="ie"> <![endif]-->
+<!--[if lt IE 9]>  <html id="ie"> <![endif]-->
 <!--[if IE 9]>     <html> <![endif]-->
-<!--[if !IE]><!--> <html>             <!--<![endif]-->
+<!--[if !IE]><!--> <html> <!--<![endif]-->
 <head>
 
 
@@ -24,6 +24,12 @@
 
     $thisDept = get_bloginfo('name');
     $brandingPrefix = get_option('COS_title_prefix');
+    $brandingLink = '';
+
+    if($brandingPrefix == "COS")
+        $brandingLink = "http://www.cos.ucf.edu/";
+    elseif($brandingPrefix == "UCF")
+        $brandingLink = "http://www.ucf.edu"; 
 
     echo $brandingPrefix . ' ' . $thisDept;
 
@@ -61,7 +67,7 @@
             <?php show_social(); ?>
 
             <hgroup>
-                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>"><span class="branding_prefix"><?php echo( $brandingPrefix ); ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+                <h1 style="font-size: <?php get_option('COS_title_prefix'); ?>"><span class="branding_prefix"><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?></span><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
                     <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
                 <a class="mobile_menu" href="#main_menu">=</a>
