@@ -273,15 +273,25 @@ function show_slider_items() {
 			'title' => get_field('title'),
 			'content' => excerpt( get_field('content'), 150, get_field('page') ),
 			'image' => get_field('image'),
+			'page' => get_field('page'),
+			'file_link' => get_field('file_link'),
+			'external_link' => get_field('external_link'),
 			'position' => ucwords( get_field('position') ),
 			'is_disabled' => get_field('disabled') ,
 			'is_expired' => $isExpired, // TRUE if expired
-			'edit' => get_edit_post_link( $thisID ),
-			'page' => get_field('page'),
+			'edit' => get_edit_post_link( $thisID ),			
 		);
 
 		 // Skip slider item if it's expired or disabled
 		if( $slide['is_expired'] || $slide['is_disabled'] ) continue;
+
+		//Link to an Internal File
+		if(!empty($slide['file_link'])){ $slide['page'] = $slide['file_link'];}
+		//Link to an External Site
+		if(!empty($slide['external_link']) && !preg_match("^(http|https)\:\/\/^", $slide['external_link'])){
+			$slide['external_link'] = "http://".$slide['external_link'];
+		}		
+		if(!empty($slide['external_link'])){ $slide['page'] = $slide['external_link'];}
 
 		echo <<<SLIDE
 			<li class="slide slide{$slide['position']}">
@@ -367,9 +377,10 @@ add_action('init', 'mainLink');
 
 function show_main_links() {
 	$mainLinkArgs = array( 
-		'post_type' => 'mainlink',
-		'orderby' => 'modified',
+		'post_type' => 'mainlink',		
 		'order' => 'ASC',
+		'meta_key' => 'order',
+		'orderby' => 'meta_value',
 	);
 
 	query_posts( $mainLinkArgs );
@@ -381,10 +392,20 @@ function show_main_links() {
 		$mainLink = array(
 			'title' => get_field('title'),
 			'link' => get_field('link'),
+			'file_link' => get_field('file_link'),
+			'external_link' => get_field('external_link'),
 			'image' => get_field('image'),
 			'slice' => ucwords(get_field('slice')),
 			'open' => get_field('open'),
 		);
+
+		//Link to an Internal File
+		if(!empty($mainLink['file_link'])){ $mainLink['link'] = $mainLink['file_link'];}
+		//Link to an External Site
+		if(!empty($mainLink['external_link']) && !preg_match("^(http|https)\:\/\/^", $mainLink['external_link'])){
+			$mainLink['external_link'] = "http://".$mainLink['external_link'];
+		}		
+		if(!empty($mainLink['external_link'])){ $mainLink['link'] = $mainLink['external_link'];}
 
 		echo <<<MAINLINK
 			<div style="background-image: url({$mainLink['image']})" class="slice{$mainLink['slice']}">
