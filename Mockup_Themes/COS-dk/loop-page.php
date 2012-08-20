@@ -14,7 +14,16 @@
 
 	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 	<?php get_search_form(); ?>
-			
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
+			<?php if(get_option('COS_pagenav_type')=='custom') {
+				custom_menu_nav();
+			} else {
+				page_nav(); 
+			}?>
+			<?php if(get_option('COS_show_sidebar')=='show') {
+				get_sidebar();
+			}?>
+		</div>
 		<div class="innerContent">
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header>
@@ -30,16 +39,7 @@
 				</footer>
 			</article>
 		</div>
-		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
-			<?php if(get_option('COS_pagenav_type')=='custom') {
-				custom_menu_nav();
-			} else {
-				page_nav(); 
-			}?>
-			<?php if(get_option('COS_show_sidebar')=='show') {
-				get_sidebar();
-			}?>
-		</div>
+
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
