@@ -616,13 +616,20 @@ function people_modal( $person ) {
 }
 
 function show_person( $id, $is_ie = false ) {
-
 	
+	//PersonBasics array used to only show info if entered
+	$personBasics = array(
+		'person_position' => get_field('position'),
+		'person_location' => get_field('location'),
+		'person_phone' => get_field('phone'),
+		'person_email' => get_field('email'),
+		'person_cv' => get_field('curriculum_vitae'),
+	);
+
+	// All fields beginning with 'p_' are default fields that don't appear as tabular data
 	$person = array(
-		// All fields beginning with 'p_' are default fields that don't appear as tabular data
 		'p_first_name'  => get_field('first_name'),
 		'p_last_name'   => get_field('last_name'),
-		'p_subheader' => get_field('subheader'),
 		'p_photo'       => get_field('headshot'),
 		'p_phone'       => get_field('phone'),
 		'p_email'       => get_field('email'),
@@ -630,15 +637,13 @@ function show_person( $id, $is_ie = false ) {
 		'p_position'    => get_field('position'),
 		'p_cv'          => get_field('curriculum_vitae'),
 		'p_link'        => get_permalink(),
-
-		// Tabular data - do not delete any, even if they do not exist
-		'biography' => get_field('biography'),
-		'research'  => get_field('research_areas'),
-		'misc'      => get_field('miscellaneous'),
-		'highlights' => get_field('highlights'),
-		'publications' => get_field('publications'),
-		'syllabi' => get_field('syllabi'),
-		'courses' => get_field('courses'),
+		'biography' 	=> get_field('biography'),
+		'research'  	=> get_field('research_areas'),
+		'publications'  => get_field('publications'),
+		'highlights' 	=> get_field('highlights'),
+		'syllabi'		=> get_field('syllabi'),
+		'outreach'		=> get_field('outreach'),
+		'misc'      	=> get_field('miscellaneous'),		
 
 		// Office Hours
 		'p_office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
@@ -652,56 +657,72 @@ function show_person( $id, $is_ie = false ) {
 
 	$office_hours = get_hrs( $person );
 
+	$contentTabs = '<ul class="tabNavigation">';
+	$content = '';
+	$contentCounter = '0';
+	$office_hours_private_msg ='';
+	$personBasicsContent = '';
 
-	// Create array of tabs to display (and populate them), only if content exists
-	if( !$is_ie ){
-		$contentTabs = '<ul class="personTabs">';
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$contentTabs .= '<li><a href="#person_' . $field . '">' . $field . '</a>';
-				$content     .= '<li id="person_' . $field . '">' . $value . '</li>';
-			}
-		}
-		// Office Hours
-		
-		$contentTabs .= '<li><a href="#person_office_hrs">Office Hours</a></li>';
-		if( $person['p_office_hours_private'] ){
-			$office_hours_private_msg = 'Office Hours are Online and/or by Appointment Only.';
-			$content .= '<li id="person_office_hrs"><h2>' . $office_hours_private_msg . '</h2></li>';
-		} else {
-			$content .= '<li id="person_office_hrs">' . $office_hours . '</li>';
-		}
-
-		$contentTabs .= '</ul>';
-		$content .= '</ul>';
-	} else {
-		$content = '<ul class="personContent">';
-		foreach  ($person as $field => $value ) {
-			if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
-				$content     .= '<li id="person_' . $field . '"><h2>' . $field . '</h2>' . $value . '</li>';
-			}
+	foreach  ($person as $field => $value ) {
+		if( substr( $field, 0, 2 ) != 'p_' && !empty($value) ){
+			$contentTabs .= '<li><a href="#' . $field . '">' . $field . '</a></li>';
+			$content     .= '<div id="'. $field . '" class="tabcontentstyle">' . $value . '</div>';
 		}
 	}
+	foreach	($personBasics as $field => $value ){
+		if($field == "person_email" && !empty($value))	
+			$personBasicsContent .= '<li class="'.$field.'"><a href="mailto:'.$value.'">'.$value.'</a></li>';
+		elseif($field == "person_cv" && !empty($value))
+			$personBasicsContent .= '<li class="'.$field.'"><a href="'.$value.'">Curriculum Vitae</a></li>';			
+		elseif(!empty($value))
+			$personBasicsContent .= '<li class="'.$field.'">'.$value.'</li>';			
+	} 
 
+	// Office Hours	
+	if( $person['p_officehours'] || $person['p_courses']){
+		$contentTabs .= '<li><a href="#office_hrs">Office Hours &amp; Courses</a></li>';
+		$content .= '<div id="office_hrs" class="tabcontentstyle">';
+
+		if( $person['p_officehours'] ){	
+			$content .= '<h2>Office Hours</h2>' . $person['p_officehours'] .'';
+		}
+		if ($person['p_courses']){
+			$content .='<h2>Courses</h2>' . $person['p_courses'] . '';
+		}		
+		$content .= "</div>";
+	}
+	$contentTabs .= '</ul>';
+	
 	echo <<<PERSON
+	<script type="text/javascript" charset="utf-8">
+		$(function () {
+			var tabContainers = $('div.tabs > div');
+			tabContainers.hide().filter(':first').show();			
+			$('div.tabs ul.tabNavigation a').click(function () {
+				tabContainers.hide();
+				tabContainers.filter(this.hash).show();
+				$('div.tabs ul.tabNavigation a').removeClass('selected');
+				$(this).addClass('selected');
+				return false;
+			}).filter(':first').click();
+		});
+	</script>
 	<article class="person clearfix">
-		<h2>{$person['p_subheader']}</h2>
 		<figure><img src="{$person['p_photo']}"/></figure>
 		<ul class="personBasics">
-			<li class="person_position">{$person['p_position']}
-			<li class="person_location">{$person['p_location']}
-			<li class="person_phone">{$person['p_phone']}
-			<li class="person_email"><a href="mailto:{$person['p_email']}">{$person['p_email']}</a>
-			<li class="person_cv"><a href="{$person['p_cv']}">Curriculum Vitae</a></li>
-
-		</ul>
+        	{$personBasicsContent}
+        </ul>
 	</article>
-
-	{$contentTabs}
-	{$content}
 PERSON;
-
+	if(!empty($content)){
+		echo "
+		<div class='tabs'>		
+			{$contentTabs}
+			<br style='clear:left;'' />
+			{$content}		
+		</div>	
+		";
+	}
 }
 
 // // Displays list of people based on category (default: all)
