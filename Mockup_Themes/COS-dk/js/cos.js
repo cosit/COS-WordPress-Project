@@ -160,5 +160,5 @@ $(function() {
 	})();
 
 	// Make sidebar sticky
-	$('#sidebar').stickySidebar({speed: 0, padding: 0, constrain: true});
+	//$('#sidebar').stickySidebar({speed: 0, padding: 0, constrain: true});
 });
