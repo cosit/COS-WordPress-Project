@@ -11,6 +11,10 @@ Template Name: People List
 
 	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 	<?php get_search_form(); ?>
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
+			<?php people_nav(); ?>
+			<?php get_sidebar(); ?>
+		</div>	
 		<div class="innerContent">
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header>
@@ -25,9 +29,7 @@ Template Name: People List
 			</article>
 		</div>
 		
-		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
-		<?php people_nav(); ?>
-		</div>	
+
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
