@@ -13,6 +13,10 @@ get_header(); ?>
 	<div class="wrap clearfix">
 	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 	<?php get_search_form(); ?>
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
+			<?php people_nav(); ?>
+			<?php get_sidebar(); ?>
+		</div>		
 		<div id="single_person" class="innerContent">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
@@ -25,11 +29,6 @@ get_header(); ?>
 					</footer>
 				</article>
 		</div>
-
-	<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
-		<?php people_nav(); ?>
-		<?php get_sidebar(); ?>
-	</div>
 	
 <?php endwhile; ?>
 	</div>
