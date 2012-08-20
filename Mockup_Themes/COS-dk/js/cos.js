@@ -15,7 +15,7 @@ $(function() {
 			controlNav: true
 		});
 	} catch(err) {
-		console.log('flexslider.js not loaded.');
+		//console.log('flexslider.js not loaded.');
 	}
 
 	// Indicate people nav link
