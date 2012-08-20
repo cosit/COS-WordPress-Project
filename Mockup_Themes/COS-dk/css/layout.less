@@ -1056,6 +1056,82 @@ section {
 			}
 		}
 
+		ol.cf-ol li {
+			&:before {
+				list-style:none !important;
+				content: none !important;
+			}
+		}
+
+		/*Tabs on Individual Person Page*/
+		ul.tabNavigation li:before{ content:'' !important;}
+		.tabNavigation{
+			font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+			width: 100%; /*leave this value as is in most cases*/
+		}
+		ul.tabNavigation {
+			background: @sideGray;
+			.gradient(@sideGray, darken(@sideGray, 10%), @sideGray);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=@sideGray, endColorstr=darken(@sideGray, 10%));
+			border-right: 1px solid #F2F2F2;
+			border-left: 1px solid #CDCDCD;
+			border-bottom: 3px solid #CDCDCD;
+			color: #22282D;
+			margin: 10px 0 0 0 !important;
+			padding: 0;
+			float: left;			
+			font-style: normal !important;
+			text-decoration: none;
+			text-transform: uppercase;
+			width: 100%;
+			z-index:10;
+			font-size: 0.85em;
+
+			li {
+				display: inline;
+				color: #6C747A;
+				line-height: 30px;
+				z-index: 15;
+				a {
+					float:left;
+					color: #6C747A;
+					padding: 10px 11px;			
+					text-decoration: none;
+					border-left: 1px solid #CDCDCD;
+					border-right: 1px solid #F2F2F2; 
+					
+				}
+				a.selected,
+				a:hover {
+					background: #CDCDCD;			
+					color: #6C747A;
+					padding: 10px 11px;
+					text-decoration: none;
+					border-left: 1px solid #CDCDCD;
+					border-right: 1px solid #F2F2F2; 
+					box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);			
+				}
+			}
+		}
+				
+		.tabcontentstyle{ /*style of tab content oontainer*/
+			margin-bottom: 1em;
+			background: #F2F2F2;
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+			border: 1px solid #ECECEC; 
+			padding: 20px;
+			font-size: 100%;
+			line-height: 16px;
+			color: #22282D;	
+			h1{ font-size: 1.5em;}	
+			p{	font-size: 90%;}
+		}	
+		
+		@media print {
+			.tabcontent {
+			display:block !important;
+			}
+		}
 
 		/* LINK ICON CLASSES */
 		ul>li.link:before {
@@ -1674,157 +1750,80 @@ section {
 
 }
 #single_person {
-	h1 {
-		padding-top: 0;
-	}
-
 	article.person {
 		padding-bottom: 10px;
-		>h2 {
-			margin: 0;
-			padding: 0;
-			top: -7px;
-			font-variant: small-caps;
-			letter-spacing: 2px;
-			color: @lightBlueGray;
-		}
 	}
 	figure {
 		float: left;
-		z-index: 2;
-
 	}
 	img {
 		max-width: 200px;
 		margin-right: 20px;
-		
 	}
 	ul.personBasics {
-		position: relative;
-		top: 0;
-		width: 70%;
-		padding: 0;
-
+		float: left;
+		.hSansSerif;
+		width: 60%;
+		margin: 0 !important;
 		li {
-			font-size: 0.95em /*16px*/;
+			font-size: 1em /*16px*/;
 			margin: 5px 0;
-			width: auto;
-			color: @darkBlue;
 			&:before { 
 				.icon; 
 				content: '';
-				color: @lighterBlueGray;
-				font-size: 0.85em;
 			}
-			&.person_position:before { content: '\e062'; }
+			&.person_position:before { content: '\e062'; float:left; padding-bottom:5px; }
 			&.person_location:before { content: '\e068'; }
 			&.person_phone:before { content: '\e06e'; }
 			&.person_email:before { content: '\2709'; }
 			&.person_cv:before { content: '\e06a'; }
 
-			>a{
-				&:before {
-					content: '';
-				}
+			>a:before {
+				content: '';
 			}
 		}
 	}
-	footer {
-		display: block;
-	}
-	h2 {
-		clear: both;
-	}
-	ul.personTabs {
-		// font-size: 1 em !important;
-		display: block;
-		background: @sideGray;
-		color: @darkBlue;
-		height: 30px;
-		width: 100%;
-		margin-top: 20px;
-		margin-left: 0;
-		border-bottom: 3px solid darken(@sideGray, 10%);
-		>li {
-			display: inline-block;
-			.hSansSerif;
-			text-transform: uppercase;
-			border-right: 1px solid @offWhite;
-			border-left: 1px solid darken(@sideGray, 10%);
-			margin: 0px;
-			>a {
-				font-size: 1em;
-				line-height: 30px;
+	footer {	display: block;	}
+	h2 {	clear: both;	}
+	
+	#person_office_hrs {
+		padding: 0;
+		margin: 0;
+		font-size:100%;
+		>ul {
+			margin: 0;
+			>li {
+				margin: 10px 0.5%;
 				display: inline-block;
-				height: 100%;
-				width: 100%;
-				padding: 0 10px;
-				color: @lightBlueGray;
-				text-decoration: none;
-				&:hover {
-					text-decoration: none;
+				width: 19%;
+				height: 200px;
+				&:before { content: ""; margin: 0;}
+				vertical-align: text-top;
+				text-align: center;
+				background: darken(@offWhite, 10%);
+					h2 {
+					text-transform: uppercase;
+					.hSerif;
+					
+					background: @darkBlue;
+					padding: 5px 0;
+					color: @offWhite;
 				}
-			}
-			&:hover, &.personTabSelected {
-				background: darken(@sideGray, 10%);
-				border-right: 1px solid darken(@sideGray, 10%);
-				// .drop-shadow(0,-2px,7px,0.2);
-				// .border-radius(8px, 0, 0, 8px);
-				.inner-shadow(0, 2px, 5px, 0.1);
-				&:before {
-					content: '';
+				ul {
+					margin: 0;
+					padding: 5px;
 				}
-			}
-			&:first-child {
-				border-left: none;
-			}
-			&:last-child {
-				border-right: none;
-			}
-			&:before {
-				content: '';
-			}
-		}
-	}
-	ul.personContent {
-		display: block;
-		background: @offWhite;
-		width: 100%;
-		margin-bottom: 10px;
-		margin-left: 0;
-		clear: both;
-		.drop-shadow(0,0,8px,0.2);
-
-		>li {
-			display: block;
-			padding: 20px;
-			line-height: 16px;
-			color: @darkBlue;
-			&:before {
-				content: '';
-			}
-			p {
-				line-height: 1.5em;
-				color: @darkBlue;
-				margin-bottom: 10px;
-			}
-			li {
-				margin-bottom: 5px;
-				margin-left: 15px;
-				&:before {
-					content: "\00BB \0020";
-					position: absolute;
-					margin-left: -15px;
-					color: @blueGray;
+				li {
+					margin: 0;
+					padding: 0;
+					&:before { content: ""; margin: 0;}
+					text-align: center;
+					width: 100%;
+					margin-bottom: 5px;
 				}
 			}
 		}
-		li#person_office_hrs {
-			&:before {
-				content: "" !important;
-			}
-		}
-	}
+	}		
 }
 
 .people_modal_person {
