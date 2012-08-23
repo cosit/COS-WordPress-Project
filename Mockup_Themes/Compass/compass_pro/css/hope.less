@@ -1,0 +1,176 @@
+html#ie {
+
+	/* LAYOUT */
+	/* ----------------------------------------- */
+	/* MAIN ELEMENTS */
+
+	#main_header {
+		h1 {	font-size: @titleHeight - 3px;		}
+		nav {
+			>ul>li:hover>ul.children {
+				display: block; // for IE
+			}
+			>ul>li>ul.children>li:hover>ul.children {
+				display: block !important; // for IE
+			}
+			>ul>li>ul.children>li>ul.children {
+				display: none;
+			}
+		} 
+	}
+
+	#slider {	.flex-control-nav {	z-index: 5; }	}
+
+	#contact {
+  		#contact_department { background: @lightBlueGray; }
+		#contact_phone    { background: @lightBlueGray; } 
+	}
+
+	#main_links {
+		div.wrap>div {
+			h2 {
+				height: 24px;
+				color: white;
+			}
+		}
+	}	
+
+	#main_content {
+
+		p, li {
+			list-style: disc;
+		}
+		.person_toolbar { 
+			width: 60%;			
+		}
+
+		.news {			
+			article {		
+				margin-bottom: 20px;
+			}
+		}
+		.events {
+
+			article {
+				&:hover {
+					cursor: pointer;
+				}
+			}
+			.eventDate {
+				max-width: 50px;
+				text-align: center;
+			}						
+		}
+
+		#sidebar {
+
+			.pageNav {
+
+				>ul>li {
+					>ul.children {
+						display: block; // IE
+					}
+				}
+				aside h3 {
+						color: @offWhite !important;
+					}
+			}
+		}
+	}
+
+	body.home #main_footer {
+		margin-top: 20px !important;
+	}
+
+
+
+	#widgets {
+		font-size: 12px;
+		margin: 0 auto;
+
+		div.widget {
+
+			.edit_footer_widget {
+				position: absolute;
+				visibility: hidden;
+				display: block;
+				height: 30px;
+				top: @widgetsHeight - 30px;
+				background: @lightBlueGray;
+				font-size: 10px;
+				border-top: 1px solid @lightBlueGray;
+				a {
+					top: 0;
+					display: block;
+					line-height: 30px;
+					padding: 0 10px;
+					.drop-shadow(0,1px,8px,0.2);
+					text-shadow: 0 1px 1px rgba(0,0,0,0.5);  
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+				&:hover {
+					background: @lighterBlueGray;
+				}
+			}
+			&:hover .edit_footer_widget {
+				visibility: visible;
+			}
+		}
+	}
+
+	#inner_searchform {
+		input#s {
+			color: @blueGray;
+			background: transparent url('img/search.png') 10px center no-repeat;		
+		}
+	}
+
+	#people_list {
+		ul.personBasics {
+			h3 { // why the does IE add empty h3 tags???
+				display: none;
+			}
+			>li {
+				font-weight: bold;		
+				list-style: disc;	
+				&.person_research {
+					font-weight: normal;
+				}
+				&:before {
+					content: '';
+				}
+					&.person_position:before { content: ''; }
+					&.person_location:before { content: ''; }
+					&.person_phone:before { content: ''; }
+					&.person_email:before { content: ''; }
+			}
+		}
+	}
+	#single_person {		
+
+		figure {	max-width: 220px;		}
+		ul.personBasics {
+			h3 { display: none;	}
+			li {
+				&:before { 
+				}
+				&.person_position:before { content: ''; }
+				&.person_location:before { content: ''; }
+				&.person_phone:before { content: ''; }
+				&.person_email:before { content: ''; }
+				&.person_cv:before { content: ''; }
+			}
+		}		
+	}
+
+	#main_content a.button {
+		display: inline-block;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		color: @offWhite !important;
+		.gradient( #1A1D20 , darken(#1A1D20, 20%) );
+	}
+}
