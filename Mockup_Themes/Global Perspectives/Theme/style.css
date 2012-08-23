@@ -1,0 +1,12 @@
+/*
+Theme Name: COS Global Perspectives
+Theme URI: http://www.cos.ucf.edu
+Description: An updated HTML5 theme for the UCF College of Sciences department websites.
+Version: 2.0
+Author: COS Web Team
+Tags: UCF, College of Sciences, starkers, html5, naked, clean, basic
+*/
+
+@import "css/reset.css";
+@import "css/layout.less"; /* importing layout.less */
+@import "css/elements.less"; /* importing elements.less */
