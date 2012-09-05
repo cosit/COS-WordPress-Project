@@ -57,6 +57,25 @@ function load_custom_style() {
 add_action('wp_print_scripts', 'load_custom_script');
 add_action('wp_print_styles', 'load_custom_style');
 
+add_action('wp_head', 'add_googleanalytics');
+function add_googleanalytics(){
+	$analyticsCode = get_option('COS_Google_Analytics'); 
+	?>
+<!--- Google Analytics -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?php echo $analyticsCode; ?>']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--- End Google Analytics -->
+<?}
+
 // *********************************************
 // COS THEME OPTIONS
 // *********************************************
@@ -107,6 +126,10 @@ function COS_themeoptions_page() {
             <h4>Show extra sidebar widgets?</h4>
             <input type="checkbox" name="show_sidebar" id="show_sidebar" value="show" <?php if($show_sidebar=="show"){echo "checked";}?>/>
             <span style="padding-left: 10px;">Yes, show sidebar</span><br />
+            
+            <h4 style="margin-bottom: 0px;">Google Analytics</h4>
+            Enter your UA code:<br/>
+            <input type="text" name="google_analytics" id="events_items" value="<?php echo $analyticsCode; ?>" >
   
             <p><input type="submit" name="search" value="Update Options" class="button" /></p>  
         </form>  
@@ -123,6 +146,7 @@ function COS_themeoptions_update() {
 	update_option('COS_sidebar_location',   $_POST['sidebar_location']);
 	update_option('COS_pagenav_type', 	$_POST['pagenav_type']);
 	update_option('COS_show_sidebar', 	$_POST['show_sidebar']);
+	update_option('COS_Google_Analytics', $_POST['google_analytics']);
 
 }
 
