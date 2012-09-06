@@ -127,6 +127,7 @@ function COS_themeoptions_page() {
             <input type="checkbox" name="show_sidebar" id="show_sidebar" value="show" <?php if($show_sidebar=="show"){echo "checked";}?>/>
             <span style="padding-left: 10px;">Yes, show sidebar</span><br />
             
+            <?php $analyticsCode = get_option('COS_Google_Analytics'); ?>
             <h4 style="margin-bottom: 0px;">Google Analytics</h4>
             Enter your UA code:<br/>
             <input type="text" name="google_analytics" id="events_items" value="<?php echo $analyticsCode; ?>" >
