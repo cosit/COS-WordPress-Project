@@ -30,6 +30,9 @@
     elseif($brandingPrefix == "UCF")
         $brandingLink = "http://www.ucf.edu";       
 
+    if(!is_home()){ wp_title( '', true, 'left' ); echo " - "; } 
+    echo $brandingPrefix . ' ' . $thisDept;     
+
     wp_title( '', true, 'left' ); 
  
 ?></title>
