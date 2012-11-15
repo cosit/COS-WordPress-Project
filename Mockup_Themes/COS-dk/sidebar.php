@@ -19,7 +19,7 @@
 	 */
 	if ( ! dynamic_sidebar( 'primary-widget-area' ) ) : ?>
 	
-			<li>
+			<!-- <li>
 				<?php get_search_form(); ?>
 			</li>
 
@@ -37,7 +37,7 @@
 					<li><?php wp_loginout(); ?></li>
 					<?php wp_meta(); ?>
 				</ul>
-			</li>
+			</li> -->
 
 		<?php endif; // end primary widget area ?>
 		</ul>

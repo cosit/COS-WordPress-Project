@@ -14,7 +14,13 @@
 .aligncenter	{ display: block; margin: 0 auto; }
 .alignleft		{ float: left; margin: 5px 10px 5px 0; }
 .alignright		{ float: right; margin: 0 0 5px 10px; }
-.wp-caption		{ border: 1px solid #999; text-align: center; background: #eee; padding: 10px; margin: 10px; }
+.wp-caption		{ 
+	border: 1px solid #999; 
+	text-align: center; 
+	background: #eee; 
+	padding: 10px; 
+	margin: 5px; 
+}
 
 /* BASE COLOR PALETTE */
 @darkBlue: #22282D;
@@ -62,7 +68,9 @@ html, body {
 	min-height: 400px /*100%*/;
 	height: auto !important;
 	height: 100%;
-	margin-bottom: @mainFooterHeight + 25px;
+	padding-bottom: 20px;
+	margin-bottom: @mainFooterHeight;
+	background: url('img/bg.png') repeat;
 }
 
 ::selection { /* Safari & Chrome */
@@ -75,7 +83,7 @@ html, body {
 }
 
 body {
-	background: url('img/bg.png') repeat;
+	background: @darkBlue;
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 	h2 {
 		.hSerif;
@@ -268,6 +276,7 @@ section {
 				left: 0;
 			}
 			>ul.children, >ul.sub-menu {
+				
 				left: auto; // reset left alignment
 				right: 100%;
 				>li {
@@ -280,6 +289,35 @@ section {
 				}
 				>li:only-child {
 					.border-radius(0,0,8px,8px);
+				}
+
+				>li{
+					&.parent:before {
+						position: absolute;
+						display: block;
+						padding: 6px;
+						left: 0;
+						right: auto;
+						content: '\00AB';
+						color: @UCFGold;
+					}
+				}
+
+				.sub-menu{					
+					left: auto;
+					right: 100%;
+
+					>li {
+					border-left:  none;
+					border-right: solid 4px darken(@blueGray, 5%);
+					}
+					>li:first-child { 					
+						.border-radius(0, 0, 0, 8px); 
+						border-top: solid 1px @offWhite;
+					}
+					>li:only-child {
+						.border-radius(0,0,8px,8px);
+					}
 				}
 			}
 		}
@@ -699,8 +737,9 @@ section {
 			padding: 0 0 10px 0;
 	}
 	h2 {
+		clear: both;
 		color: @blueGray;
-		padding: 10px 0 ;
+		padding: 5px 0 ;
 		.hSansSerif;
 		font-size: 1.313em /*21px*/;
 		line-height: 21px;
@@ -779,12 +818,14 @@ section {
 			padding: 10px 0;
 		}
 		article {
+			clear: left;
 			border-top: 1px dashed @lightBlueGray;
 			padding: 0;
 			color: @darkBlue;
 			margin-bottom: 10px;
 			
 			h2 {
+				clear: none;
 				font-size: 1.125em /*18px*/;
 			}
 			a:hover {
@@ -806,6 +847,15 @@ section {
 				text-align: right;
 				padding-top: 5px;
 			}
+			img {
+                margin-top: 10px !important;
+                margin-right: 10px !important;
+                border: none !important;
+                box-shadow: 0 2px 5px #666666;
+                z-index: 10;
+                width: 130px !important;
+                height: 130px !important;
+            }  
 		}
 	}
 	.events {
@@ -1033,8 +1083,11 @@ section {
 			line-height: 16px;
 		}
 		>article>p, >article>ul>li, >article>ol>li {
-			font-size: 0.750em /*12px*/;
+			font-size: 0.875em /*12px*/;
 			line-height: 1.5em;
+		}
+		>article>p{
+			margin-bottom: 14px;
 		}
 		>article p>a {
 			border-bottom: 1px dotted @lightBlueGray;
@@ -1060,6 +1113,14 @@ section {
 			&:before {
 				list-style:none !important;
 				content: none !important;
+			}
+		}
+
+		/***Remove >> from Gravity Forms**/
+		.gform_body li {
+			margin-left: 0px;	
+			&:before{
+				content: none !important;				
 			}
 		}
 
@@ -1154,7 +1215,7 @@ section {
 
 		table {
 			width: 100%;
-			font-size: 0.750em /*12px*/;
+			font-size: 0.875em /*12px*/;
 			th {
 				font-size: 1em /*16px*/;
 				.hSansSerif;
@@ -1167,14 +1228,15 @@ section {
 				border-bottom: 1px solid @lightBlueGray;
 				padding: 6px 8px;
 				text-align: center;
-				vertical-align: middle;
-				line-height: 100%;
+				vertical-align: top;
+				line-height: 1.5em;
 			}
 			tr:hover td {
 				color: @blueGray;
 			}
 		}
 		footer {
+			clear: both;
 			margin-top: 30px;
 			.post-edit-link {
 				font-size: 0.750em /*12px*/;
@@ -1232,6 +1294,11 @@ section {
 		.buttonwhite {
 			.button(@offWhite, @UCFGold);
 		}
+
+		.wp-caption-text{
+            font-size: 10px;
+            text-align: left;
+        }
 	}
 	#sidebar {
 		.column(3);
@@ -1530,6 +1597,35 @@ section {
 	}
 }
 
+.button (@color: white, @textcolor: black, @padding: 10px) {
+    text-transform: uppercase;
+    display: inline-block;
+    padding: @padding;
+    .rounded(8px);
+    text-align: center;
+    text-decoration: none !important;
+    .gradient(@color, darken(@color, 10%), lighten(@color, 10%));
+    color: @textcolor !important;
+    border: 1px solid darken(@color, 20%);
+    text-shadow: 0 -1px 0 darken(@color, 25%);
+    font-weight: bold;
+    font-size: 16px;
+ 
+    &:hover {
+        .gradient(@color, darken(@color, 10%), lighten(@color, 15%));
+    }
+    &:active {
+        .gradient(@color, lighten(@color, 10%), darken(@color, 10%));
+        padding-top: @padding + 1;
+        padding-bottom: @padding - 1;
+        .inner-shadow(0, 1px, 3px, 0.4);
+    }
+    width: 92%;
+}
+/*DONTATE BUTTON*/
+.buttongold {
+    .button(@offWhite, darken(@UCFGold, 5%), 10px);
+} 
 
 #the_footer {
 	z-index: 2;
@@ -1544,7 +1640,6 @@ section {
 		display: block;
 	}
 }
-
 
 #backToTop {
 	height: 65px;
@@ -1667,7 +1762,7 @@ section {
 				max-height: 300px;
 			}
 			>a {
-				position: absolute;
+				position: relative;
 				top: 0; left: 0;
 				height: 100%; width: 100%;
 			}
@@ -1685,7 +1780,7 @@ section {
 			border-top: 5px solid @UCFGold;
 
 			h2 {
-				font-size: 1.2em;
+				font-size: 1em;
 				text-align: center;
 				// padding: 10px 5%;
 				padding: 0;
@@ -1700,11 +1795,12 @@ section {
 				margin-left: -10px;
 				margin-top: -20px;
 				margin-bottom: 10px;
-				background: @sideGray;
-				.gradient(@sideGray, darken(@sideGray, 10%), @sideGray);
+				background: @sideGray;				
 				width: 90%;
 				// text-shadow: 0 -1px 0 @lightBlueGray;
 				.drop-shadow(0,0,8px,0.3);
+				border-top: solid #ccc 1px;
+				border-right: solid #ccc 1px;
 
 				&:after {
 					content: "";
@@ -1728,9 +1824,7 @@ section {
 					color: @UCFGold; 
 				}
 
-				&.person_research {
-					display: none;
-				}
+				&.person_research {	display: none;	}
 				&:before { 
 					.icon; 
 					content: '';
@@ -1747,7 +1841,6 @@ section {
 			}
 		}
 	}
-
 }
 #single_person {
 	article.person {
@@ -1762,17 +1855,18 @@ section {
 	}
 	ul.personBasics {
 		float: left;
-		.hSansSerif;
-		width: 60%;
-		margin: 0 !important;
+		width: 65%;
+		margin-left: 0 !important;
+		.hSansSerif;		
 		li {
-			font-size: 1em /*16px*/;
+			font-size: 1em;
+			line-height: 18px;
 			margin: 5px 0;
 			&:before { 
 				.icon; 
 				content: '';
 			}
-			&.person_position:before { content: '\e062'; float:left; padding-bottom:5px; }
+			&.person_position:before { content: '\e062'; } 	
 			&.person_location:before { content: '\e068'; }
 			&.person_phone:before { content: '\e06e'; }
 			&.person_email:before { content: '\2709'; }
@@ -1964,4 +2058,3 @@ section {
 }
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
-
