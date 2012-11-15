@@ -25,15 +25,8 @@ function register_my_menu() {
 
 function load_custom_script() {
 
-    // wp_deregister_script('jquery');
-    // wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
-    // wp_enqueue_script('jquery');
-
     wp_register_script('cos_js', get_bloginfo('template_directory').'/js/cos.js');
     wp_enqueue_script('cos_js');
-
-    wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
-    wp_enqueue_script('jquery.flexslider');
 
     wp_register_script('modernizr', get_bloginfo('template_directory').'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
@@ -49,14 +42,12 @@ function load_custom_script() {
 
 }
 
-function load_custom_style() {
-    // wp_register_style('flexslider', get_bloginfo('template_url').'/flexslider.css', array(), '');
-    // wp_enqueue_style('flexslider');
-}
+function load_custom_style() {	}
 
 add_action('wp_print_scripts', 'load_custom_script');
 add_action('wp_print_styles', 'load_custom_style');
 
+//*********Google Analytics*********/
 add_action('wp_head', 'add_googleanalytics');
 function add_googleanalytics(){
 	$analyticsCode = get_option('COS_Google_Analytics'); 
@@ -75,6 +66,7 @@ function add_googleanalytics(){
 </script>
 <!--- End Google Analytics -->
 <?}
+/***********End Google Analytics************/
 
 // *********************************************
 // COS THEME OPTIONS
@@ -122,11 +114,7 @@ function COS_themeoptions_page() {
             <input type="checkbox" name="pagenav_type" id="pagenav_type" value="custom" <?php if($pagenav_type=="custom"){echo "checked";}?>/>
             <span style="padding-left: 10px;">Yes (only check if this theme uses <em>custom</em> menus)</span><br />
 
-            <?php $show_sidebar = get_option('COS_show_sidebar'); ?>
-            <h4>Show extra sidebar widgets?</h4>
-            <input type="checkbox" name="show_sidebar" id="show_sidebar" value="show" <?php if($show_sidebar=="show"){echo "checked";}?>/>
-            <span style="padding-left: 10px;">Yes, show sidebar</span><br />
-            
+                        
             <?php $analyticsCode = get_option('COS_Google_Analytics'); ?>
             <h4 style="margin-bottom: 0px;">Google Analytics</h4>
             Enter your UA code:<br/>
@@ -146,7 +134,6 @@ function COS_themeoptions_update() {
 	update_option('COS_title_size', 	$_POST['title_size']);
 	update_option('COS_sidebar_location',   $_POST['sidebar_location']);
 	update_option('COS_pagenav_type', 	$_POST['pagenav_type']);
-	update_option('COS_show_sidebar', 	$_POST['show_sidebar']);
 	update_option('COS_Google_Analytics', $_POST['google_analytics']);
 
 }
@@ -243,6 +230,20 @@ function people_nav( $pageID = '' ){
 }
 add_shortcode('people_nav', 'people_nav');
 
+/***
+ * Add PDF, DOC, and EXCEL Filtering to Media Library
+***/ 
+function modify_post_mime_types( $post_mime_types ) {
+	// select the mime type, here: 'application/pdf'
+	// then we define an array with the label values
+	$post_mime_types['application/pdf'] = array( __( 'PDFs' ), __( 'Manage PDFs' ), _n_noop( 'PDF <span class="count">(%s)</span>', 'PDFs <span class="count">(%s)</span>' ) );
+	$post_mime_types['application/msword'] = array( __( 'DOCs' ), __( 'Manage DOCs' ), _n_noop( 'DOC <span class="count">(%s)</span>', 'DOC <span class="count">(%s)</span>' ) );
+    $post_mime_types['application/vnd.ms-excel'] = array( __( 'XLSs' ), __( 'Manage XLSs' ), _n_noop( 'XLS <span class="count">(%s)</span>', 'XLSs <span class="count">(%s)</span>' ) );	
+	// then we return the $post_mime_types variable
+	return $post_mime_types;
+}
+// Add Filter Hook
+add_filter( 'post_mime_types', 'modify_post_mime_types' );
 
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
@@ -750,91 +751,22 @@ PERSON;
 	}
 }
 
-// // Displays list of people based on category (default: all)
-// function show_people( $catID = 0 ) { 
-// 	// Search for Post with Custom Post Type "people"
-// 	// if( $catID == 0){
-// 	// 	$facultyArgs = array( 
-// 	// 		'post_type' => 'people',
-// 	// 	);
-// 	// 	query_posts( $facultyArgs );
-// 	// } else {
-// 	if( $catID ){
-// 		$facultyArgs = array( 
-// 			'post_type' => 'people',
-// 			'people_cat' => $catID,
-// 			'posts_per_page' => -1,
-// 			'orderby' => 'title',
-// 			'order' => 'ASC',
-// 		);
-// 	} else {
-// 		$facultyArgs = array( 
-// 			'post_type' => 'people',
-// 			'posts_per_page' => -1,
-// 			'orderby' => 'title',
-// 			'order' => 'ASC',
-// 		);
-// 	}
-
-// 	query_posts( $facultyArgs );
-
-// 	echo '<div id="people_list">';
-
-
-
-// 	if(have_posts()) : while (have_posts()) : the_post();			
-// 		// Grab the Post ID for the Custom Fields Function			
-// 		$thisID = get_the_ID();
-
-// 		$personPhoto = get_field('headshot');
-// 		$personLink =  get_permalink();
-// 		$personFirstName = get_field('first_name');
-// 		$personLastName = get_field('last_name');
-
-// 		$person = array(
-// 			'position'    => get_field('position'),
-// 			'location'    => get_field('location'),
-// 			'phone'       => get_field('phone'),
-// 			'email'       => get_field('email'),			
-// 		);
-
-// 		// display person if person is in category, or category is 'all'
-// 		echo <<<PEOPLE
-// 		<article class="person clearfix">
-// 			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
-// 			<ul class="personBasics">
-// 				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
-// PEOPLE;
-// 			foreach( $person as $personKey => $personValue){
-// 				if(!empty($personValue))
-// 					if($personKey != "email")
-// 						echo "<li class='person_".$personKey."'>$personValue</li>";
-// 					else
-// 						echo "<li class='person_".$personKey."'><a href='mailto:$personValue'>$personValue</a></li>";
-// 			}
-// 			echo '</ul>
-// 			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
-// 		</article>';
-
-// 	endwhile; endif; wp_reset_query();
-// 	echo '</div>';
-// }
-
 // Displays list of people based on category (default: all)
 // OLD FUNCTION
 function show_people( $catID = 0 ) { 
-	// Search for Post with Custom Post Type "people"
-	// if( $catID == 0){
-	// 	$facultyArgs = array( 
-	// 		'post_type' => 'people',
-	// 	);
-	// 	query_posts( $facultyArgs );
-	// } else {
+
 	if( $catID ){
 		$facultyArgs = array( 
-			'post_type' => 'people',
-			'people_cat' => $catID,
 			'posts_per_page' => -1,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'people_cat',
+					'field' => 'slug',
+					'terms' => $catID,
+					//Only shows current Cat, doesn't show people in its sub cats
+					'include_children' => FALSE, 
+				)
+			),
 			'orderby' => 'title',
 			'order' => 'ASC',
 		);
@@ -852,55 +784,47 @@ function show_people( $catID = 0 ) {
 	echo '<div id="people_list">';
 
 
-
-	if(have_posts()) : while (have_posts()) : the_post();			
-		// Grab the Post ID for the Custom Fields Function			
+	if(have_posts()) : while (have_posts()) : the_post();	
+		// Grab the Post ID for the Custom Fields Function	
 		$thisID = get_the_ID();
 
-		$person = array(
-			'first_name'  => get_field('first_name'),
-			'last_name'   => get_field('last_name'),
-			'photo'       => get_field('headshot'),
+		$personPhoto = get_field('headshot');
+		$personLink =  get_permalink();
+		$personFirstName = get_field('first_name');
+		$personLastName = get_field('last_name');
+
+		$person = array(					
+			'position'    => get_field('position'),
+			'location'    => get_field('location'),
 			'phone'       => get_field('phone'),
 			'email'       => get_field('email'),
-			'location'    => get_field('location'),
-			'position'    => get_field('position'),
-			'biography'   => get_field('biography'),
-			'research_ex' => excerpt(get_field('research_areas'), 140),
-			'cv'          => get_field('curriculum_vitae'),
-			'link'        => get_permalink(),
-
-		// Office Hours
-			'office_hours_mon' => parse_hrs(get_field('office_hours_mon')),
-			'office_hours_tue' => parse_hrs(get_field('office_hours_tue')),
-			'office_hours_wed' => parse_hrs(get_field('office_hours_wed')),
-			'office_hours_thu' => parse_hrs(get_field('office_hours_thu')),
-			'office_hours_fri' => parse_hrs(get_field('office_hours_fri')),
+						
 		);
 
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
-		<article class="person clearfix {$cats}">
-			<figure>
-				<img src="{$person['photo']}" alt="{$person['last_name']}, {$person['first_name']}"/>
-				<a href="{$person['link']}" class="personLink" title="{$person['last_name']}, {$person['first_name']}"></a>
-			</figure>
+		<article class="person clearfix">
+			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
 			<ul class="personBasics">
-				<h2><a href="{$person['link']}" class="personLink">{$person['last_name']}, {$person['first_name']}</a></h2>
-				<li class="person_position">{$person['position']}</li>
-				<li class="person_location">{$person['location']}</li>
-				<li class="person_phone">{$person['phone']}</li>
-				<li class="person_email"><a href="mailto:{$person['email']}">{$person['email']}</a></li>
-				<li class="person_research">{$person['research_ex']}</li>
-			</ul>
-			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
-		</article>
+				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
 PEOPLE;
-
-
+			foreach( $person as $personKey => $personValue){
+				if(!empty($personValue))
+					if($personKey != "email"){
+						if($personKey == "research"){								
+							$personValue = strip_tags($personValue);
+							$personValue = (strlen($personValue) > 230) ? substr($personValue,0,210)."...<a href='$personLink'>Read More</a>" : $personValue;
+							echo "<li class='person_".$personKey."'>".$personValue."</li";
+						} else	
+							echo "<li class='person_".$personKey."'>$personValue</li>";
+					}else
+						echo "<li class='person_".$personKey."'><a href='mailto:$personValue'>$personValue</a></li>";
+			}
+			echo '</ul>
+			<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
+		</article>';
 
 	endwhile; endif; wp_reset_query();
-	echo '<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>';
 	echo '</div>';
 }
 
@@ -1273,8 +1197,8 @@ function breadcrumbs() {
 } 
 
 function show_news( $cat, $items_to_show ) { ?>
-	<div class="news">
-		<?php 
+	<div class="news"> 		
+		<?php 	
 		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
 			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.$cat.'&feed=rss2'); // specify feed url
@@ -1285,10 +1209,19 @@ function show_news( $cat, $items_to_show ) { ?>
 		?>
 
 			<?php if (!empty($items)) : ?>
-			<?php foreach ($items as $item) : ?>
+			<?php foreach ($items as $item) : 
+
+			preg_match("/<img[^>]+\>/i", $item['description'], $myImage);	
+			?>
 			<article>
+				<a href="<?php echo $item['link']; ?>"><?php echo $myImage[0]; ?></a>
 				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
-				<p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
+				<?php 
+				//Strip out any image tag
+				$item['description'] = substr(preg_replace("/<img[^>]+\>/i", "", $item['description']), 0, 210);
+				$item['description'] .= '... <a href="'.$item['link'].'">Read more</a>';
+				?>
+				<p><?php  echo $item['description']; ?></p>
 				<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
 			</article>
 			<?php endforeach; ?>
@@ -1303,28 +1236,32 @@ function show_news_full() { ?>
 	<?php try {
 		include_once(ABSPATH.WPINC.'/rss.php'); // path to include script	
 		$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.get_option('COS_news_cat').'&feed=rss2'); // specify feed url	
-		$items = array_slice($feed->items, 0, 25); // specify first and last items
+		$items = array_slice($feed->items, 0, 20); // specify first and last items
 	} catch(Exception $e) {
 		echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
       }	
     ?>
 
     <?php if (!empty($items)) : ?>
-    <?php foreach ($items as $item) : ?>      
-      <article>
-        <h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
-        <p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
-        <aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
-      </article>
-      <?php endforeach; ?>
-      <?php endif; ?>
- 		
-  </div> <?php		
+    <?php foreach ($items as $item) : 
+		preg_match("/<img[^>]+\>/i", $item['description'], $myImage);	
+	?>	
+
+	    <article>
+			<a href="<?php echo $item['link']; ?>"><?php echo $myImage[0]; ?></a>
+			<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
+			<?php //Strip out any image tag
+			$item['description'] = preg_replace("/<img[^>]+\>/i", "", $item['description']);
+			?>
+			<p><?php echo str_replace('[...]', '... <a href="'.$item['link'].'">Read more</a>', $item['description']); ?></p>
+			<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
+		</article>
+	<?php endforeach; ?>
+	<?php endif; ?>
+</div> <?php
 }
- 		
 add_shortcode('show_news_full', 'show_news_full');
  		
-
 
 function show_events( $calendar_id=1, $num_events=5) {
 	$calendar_link = 'http://events.ucf.edu/?calendar_id='.$calendar_id.'&upcoming=upcoming';
