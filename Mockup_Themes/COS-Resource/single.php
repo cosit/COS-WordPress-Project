@@ -9,9 +9,7 @@
 
 get_header(); ?>
 
-	<?php get_template_part( 'loop', 'newscat' ); ?>
-
-	
+	<?php get_template_part( 'loop', 'fullwidth' ); ?>
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

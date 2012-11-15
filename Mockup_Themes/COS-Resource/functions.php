@@ -1208,7 +1208,7 @@ function show_news( $cat, $items_to_show ) { ?>
 
 		try {
 			include_once(ABSPATH.WPINC.'/rss.php'); // path to include script
-			$feed = fetch_rss('http://news.cos.ucf.edu/?category_name='.$cat.'&feed=rss2'); // specify feed url
+			$feed = fetch_rss('http://communication.cos.ucf.edu/feed/'); // specify feed url
 			$items = array_slice($feed->items, $items, $items_to_show); // specify first and last item
 			} catch(Exception $e) {
 				echo '<span class="error">Unable to retrieve feed. Please try again later.</span>';
@@ -1219,16 +1219,17 @@ function show_news( $cat, $items_to_show ) { ?>
 			<?php foreach ($items as $item) : 
 			preg_match("/<img[^>]+\>/i", $item['description'], $myImage);	
 			?>
-			<article>
+			<article id="widget_news">
 				<a href="<?php echo $item['link']; ?>"><?php echo $myImage[0]; ?></a>
 				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
 				<?php 
 				//Strip out any image tag
-				$item['description'] = substr(preg_replace("/<img[^>]+\>/i", "", $item['description']), 0, 210);
-				$item['description'] .= '... <a href="'.$item['link'].'">Read more</a>';
+				$item['description'] = substr(preg_replace("/<img[^>]+\>/i", "", $item['description']), 0, 200);
+				$item['description'] .= '...'; 
+				//$item['description'] .= '... <a href="'.$item['link'].'">Read more</a>';
 				?>
-				<p><?php  echo $item['description']; ?></p>
-				<aside><?php echo substr($item['pubdate'], 0, 16); ?></aside>
+				<p><a href="<?php echo $item['link']; ?>"><?php  echo $item['description']; ?></a></p>
+				
 			</article>
 			<?php endforeach; ?>
 			<?php endif; ?>
@@ -1453,35 +1454,35 @@ function starkers_widgets_init() {
 		'after_title' => '</h3>',
 	) );
 
+	// register_sidebar( array(
+	// 	'name' => __( 'Front Page Slider Right', 'starkers' ),
+	// 	'id' => 'front-slider-right-widget-area',
+	// 	'description' => __( 'The right side of the slider area on the front page', 'starkers' ),
+	// 	'before_widget' => '',
+	// 	'after_widget' => '',
+	// 	'before_title' => '<h1>',
+	// 	'after_title' => '</h1>',
+	// ) );
+
 	register_sidebar( array(
-		'name' => __( 'Front Page Slider Right', 'starkers' ),
-		'id' => 'front-slider-right-widget-area',
-		'description' => __( 'The right side of the slider area on the front page', 'starkers' ),
-		'before_widget' => '',
-		'after_widget' => '',
+		'name' => __( 'Front Page Left Column', 'starkers' ),
+		'id' => 'front-left-widget-area',
+		'description' => __( 'The left side of the home page', 'starkers' ),
+		'before_widget' => '<div id="left_content">',
+		'after_widget' => '</div>',
 		'before_title' => '<h1>',
 		'after_title' => '</h1>',
 	) );
 
-	// register_sidebar( array(
-	// 	'name' => __( 'Front Page Left Column', 'starkers' ),
-	// 	'id' => 'front-left-widget-area',
-	// 	'description' => __( 'The left side of the home page', 'starkers' ),
-	// 	'before_widget' => '<div id="left_content">',
-	// 	'after_widget' => '</div>',
-	// 	'before_title' => '<h1>',
-	// 	'after_title' => '</h1>',
-	// ) );
-
-	// register_sidebar( array(
-	// 	'name' => __( 'Front Page Right Column', 'starkers' ),
-	// 	'id' => 'front-right-widget-area',
-	// 	'description' => __( 'The right side of the home page', 'starkers' ),
-	// 	'before_widget' => '<div id="right_content">',
-	// 	'after_widget' => '</div>',
-	// 	'before_title' => '<h1>',
-	// 	'after_title' => '</h1>',
-	// ) );
+	register_sidebar( array(
+		'name' => __( 'Front Page Right Column', 'starkers' ),
+		'id' => 'front-right-widget-area',
+		'description' => __( 'The right side of the home page', 'starkers' ),
+		'before_widget' => '<div id="right_content">',
+		'after_widget' => '</div>',
+		'before_title' => '<h1>',
+		'after_title' => '</h1>',
+	) );
 
 	// Area 3, located in the footer. Empty by default.
 	register_sidebar( array(

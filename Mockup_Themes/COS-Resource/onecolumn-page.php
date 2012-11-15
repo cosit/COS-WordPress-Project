@@ -9,6 +9,6 @@
 
 get_header(); ?>
 
-	<?php get_template_part( 'loop', 'page' ); ?>
+	<?php get_template_part( 'loop', 'fullwidth' ); ?>
 
 <?php get_footer(); ?>

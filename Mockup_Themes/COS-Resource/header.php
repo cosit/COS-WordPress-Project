@@ -42,7 +42,7 @@
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
- 
+<link rel='shortcut icon' href='http://communication.cos.ucf.edu/main/wp-content/themes/UCF-Nicholson/static/img/favicon.ico'/> 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
 

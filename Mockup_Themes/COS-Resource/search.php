@@ -13,7 +13,7 @@ get_header(); ?>
 	<div class="wrap clearfix">
 		<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 		<?php //get_search_form(); ?>
-		<div id="search_results" class="innerContent">
+		<div id="search_results" class="innerContent fullwidth">
 <?php if (have_posts()) : ?>
 			<h1><?php printf( __( 'Search Results for: <span>%s</span>', 'starkers' ), '' . get_search_query() . '' ); ?></h1>
 			<?php while (have_posts()) : the_post(); ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * The loop that displays a page.
+ * The loop that displays a single column page.
  *
  * @package WordPress
  * @subpackage Starkers
@@ -14,8 +14,8 @@
 
 	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 	<?php //get_search_form(); ?>
-			
-		<div class="innerContent">
+	
+		<div class="innerContent fullwidth">
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header>
 					<h1><?php the_title(); ?></h1>
@@ -30,7 +30,7 @@
 				</footer>
 			</article>
 		</div>
-		
+
 <?php endwhile; ?>
 	</div> <!-- End Wrap -->
 </section>
