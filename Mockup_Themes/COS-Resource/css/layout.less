@@ -100,20 +100,27 @@ section {
 	height: @headerHeight;
 	width: 100%;
 	
-	h1 {
+	#header_title{
 		.column(4);
-		color: #000000;
 		width: 380px; // added
 		font-family: "League Gothic", sans-serif;
 		text-transform: uppercase;
-		display: inline-block;
-		font-size: @titleHeight; // 1.5 em
-		overflow: hidden;
-		height: @headerLinksHeight;
-		line-height: @headerLinksHeight;
-		.branding_prefix { color: @UCFGold; cursor: pointer; >a{ color: @UCFGold;}}
-		>a{	color: #E8BC1C !important; }
-		
+		color: #000000;		
+		margin-bottom: 10px;
+		h1 {					
+			display: inline-block;
+			font-size: @titleHeight; // 1.5 em
+			overflow: hidden;
+			
+			.branding_prefix { color: @UCFGold; cursor: pointer; >a{ color: @UCFGold;}}
+			>a{	color: #E8BC1C !important; }			
+		}
+		h2 {
+			font-family: "League Gothic", sans-serif;		
+			display: inline-block;
+			font-size: 22px;			
+			>a{ color: #000;}
+		}		
 	}
 
 	.mobile_menu { display: none; }

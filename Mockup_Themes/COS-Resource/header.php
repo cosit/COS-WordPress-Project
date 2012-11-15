@@ -56,10 +56,11 @@
         <div class="wrap clearfix">
             <?php show_social(); ?>
 
-            <hgroup>
+            <hgroup id="header_title">
                 <h1 style="font-size: <?php echo $titleFontSize; ?>px !important;"><a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
                     <span class=" branding_dept"><?php bloginfo( 'name' ); ?></span>
                 </a></h1>
+                <h2><a href="http://communication.cos.ucf.edu"><?php bloginfo('description'); ?></a></h2>
             </hgroup>
 
             <?php wp_nav_menu( array( 'theme_location' => 'primary-menu', 'container' => 'nav', 'fallback_cb' => 'starkers_menu' ) ); ?>
