@@ -1,0 +1,1 @@
+Current repository for the different varitations of the main COS WordPress theme.
