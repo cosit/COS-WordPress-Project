@@ -14,6 +14,7 @@ Template Name: People List
 
 		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
 		<?php people_nav(); ?>
+		<?php get_sidebar(); ?>
 		</div>	
 		
 		<div class="innerContent">
@@ -29,17 +30,45 @@ Template Name: People List
 			  	$wp_query = null; 
 			  	$wp_query = new WP_Query(); 
 
-				if($catID)
-					$wp_query->query('post_type=gp_people&people_cat='.$catID.'&showposts=7'.'&paged='.$paged);
-				else
-					$wp_query->query('post_type=gp_people&people_cat=executives-and-staff&showposts=7'.'&paged='.$paged);
+				if($catID){
+					
+					$facultyArgs = array( 
+						'post_type' => 'gp_people',
+						'posts_per_page' => '7',
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'people_cat',
+								'field' => 'slug',
+								'terms' => $catID,
+								'include_children' => FALSE, 
+							)
+						),
+						'paged' => $paged,						
+					);
+				} else{
+					
+					$facultyArgs = array( 						
+						'post_type' => 'gp_people',
+						'posts_per_page' => '7',
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'people_cat',
+								'field' => 'slug',
+								'terms' => 'executives-and-staff',
+								'include_children' => FALSE, 
+							)
+						),
+						'paged' => $paged,			
+					);
+				}
+				
+				query_posts( $facultyArgs );
 
 				echo '<div id="people_list">';
 
-				while ($wp_query->have_posts()) : $wp_query->the_post(); 
-
+				while (have_posts()) : the_post(); 
 					
-					// Grab the Post ID for the Custom Fields Function			
+					// Grab the Post ID for the Custom Fields Function	
 					$thisID = get_the_ID();
 
 					$person = array(

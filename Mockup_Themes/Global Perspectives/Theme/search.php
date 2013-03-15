@@ -13,6 +13,12 @@ get_header(); ?>
 	<div class="wrap clearfix">
 		<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 		<?php get_search_form(); ?>
+		
+		<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">		
+			<?php if(get_option('COS_show_sidebar')=='show') {
+				get_sidebar();
+			}?>
+		</div>		
 		<div id="search_results" class="innerContent">
 <?php if (have_posts()) : ?>
 			<h1><?php printf( __( 'Search Results for: <span>%s</span>', 'starkers' ), '' . get_search_query() . '' ); ?></h1>
@@ -20,7 +26,20 @@ get_header(); ?>
 				<div <?php post_class() ?> id="post-<?php the_ID(); ?>">
 					<h2><a href="?page_id=<?php the_ID();?>"><?php the_title(); ?></a></h2>			
 					<div class="entry">
-						<?php the_excerpt(); ?>
+						<?php
+							$the_post_type = get_post_type();
+
+							if($the_post_type == "gp_people"){								
+								$text = get_field('biography');
+								$my_excerpt = substr( $text, 0, strpos($text, ' ', '250'));
+								$my_excerpt .= "<a href=\"?page_id=".get_the_ID()."\">[...]</a>";
+
+								echo "<h3>".get_field('position')."</h3>";
+								echo $my_excerpt;
+							} else
+								the_excerpt(); 
+						?>
+						
 					</div>
 				</div>
 			<?php endwhile; ?>

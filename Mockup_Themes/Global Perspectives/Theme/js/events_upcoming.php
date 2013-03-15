@@ -75,7 +75,7 @@ Template Name: Events - Upcoming
 						// Force values as strings, not array remnants
 						$value = is_array($value) ? $value[0] : $value;
 
-						if($key != 'text' && $key != 'info'){
+						if($key != 'text'){
 							$value = strip_tags( $value );
 						}
 					}

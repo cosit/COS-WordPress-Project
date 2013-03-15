@@ -16,7 +16,7 @@ add_filter('widget_text', 'do_shortcode');
 add_action( 'init', 'register_my_menu' );
 function register_my_menu() {
 	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
-	register_nav_menu( 'people-menu', __( 'People Menu'));
+	//register_nav_menu( 'people-menu', __( 'People Menu'));
 }
 
 include_once('functions_gp.php');
@@ -33,9 +33,6 @@ function load_custom_script() {
 
     wp_register_script('cos_js', get_bloginfo('template_directory').'/js/cos.js');
     wp_enqueue_script('cos_js');
-
-    wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
-    wp_enqueue_script('jquery.flexslider');
 
     wp_register_script('modernizr', get_bloginfo('template_directory').'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
@@ -221,6 +218,20 @@ function people_nav( $pageID = '' ){
 }
 add_shortcode('people_nav', 'people_nav');
 
+/***
+ * Add PDF Filtering to Media Library
+***/ 
+function modify_post_mime_types( $post_mime_types ) {
+	// select the mime type, here: 'application/pdf'
+	// then we define an array with the label values
+	$post_mime_types['application/pdf'] = array( __( 'PDFs' ), __( 'Manage PDFs' ), _n_noop( 'PDF <span class="count">(%s)</span>', 'PDFs <span class="count">(%s)</span>' ) );
+	$post_mime_types['application/msword'] = array( __( 'DOCs' ), __( 'Manage DOCs' ), _n_noop( 'DOC <span class="count">(%s)</span>', 'DOC <span class="count">(%s)</span>' ) );
+    $post_mime_types['application/vnd.ms-excel'] = array( __( 'XLSs' ), __( 'Manage XLSs' ), _n_noop( 'XLS <span class="count">(%s)</span>', 'XLSs <span class="count">(%s)</span>' ) );	
+	// then we return the $post_mime_types variable
+	return $post_mime_types;
+}
+// Add Filter Hook
+add_filter( 'post_mime_types', 'modify_post_mime_types' );
 
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
@@ -248,6 +259,7 @@ function slider() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
 		'supports' => array('custom-fields'),
 	);
 
@@ -347,7 +359,7 @@ function custom_titles($title) {
 		$title = $_POST['fields']['field_501ae1d3d031e'];
 	} elseif( $postType == 'videos') {
 		$title = get_field('title', $postID);
-		$title = $_POST['fields']['field_501c0c51ee488'];
+		$title = $_POST['fields']['field_2'];
 	} elseif( $postType == 'monographs') {
 		$title = get_field('title', $postID);
 		$title = $_POST['fields']['field_5014068570f75'];
@@ -383,6 +395,7 @@ function mainLink() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
 		'supports' => array('custom-fields'),
 	);
 
@@ -457,6 +470,7 @@ function social_media() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
 		'supports' => array('custom-fields'),
 	);
 
@@ -621,8 +635,6 @@ function show_people( $catID = 0 ) {
 
 	$theoffset = $ppp * $paged -0;
 
-	
-
 	if( $catID ){
 		$facultyArgs = array( 
 			'post_type' => 'gp_people',
@@ -687,6 +699,34 @@ PEOPLE;
 
 //Shortcode for displaying all people - NOT NECESSARY ANYMORE
 add_shortcode('show_people', 'show_people');
+
+function show_person( $id){
+	$person = array(
+		'first_name'  => get_field('first_name'),
+		'last_name'  => get_field('last_name'),
+		'photo'       => get_field('headshot'),
+		'position'    => get_field('position'),
+		'biography'   => get_field('biography'),
+	);
+					
+	// display person if person is in category, or category is 'all'
+	echo <<<PEOPLE
+	<article class="person clearfix {$cats}">
+		
+			<img src="{$person['photo']}" alt="{$person['last_name']}, {$person['first_name']}" align="left" style="float:left" />
+			<a href="{$person['link']}" class="personLink" title="{$person['last_name']}, {$person['first_name']}"></a>	
+			
+			<h3>{$person['position']}</h3>
+			<div class="personBio">{$person['biography']}</div>
+		
+		
+		<div style="clear:both; height:1px; margin-bottom:-1px;">&nbsp;</div>
+PEOPLE;
+
+	edit_post_link( 'Edit This Person', '', '' );	
+	echo '</article>';		
+
+}
 
 
 function show_contact_area( $args ){
@@ -975,9 +1015,9 @@ function starkers_setup() {
 		require_once( $locale_file );
 
 	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus( array(
+	/*register_nav_menus( array(
 		'primary' => __( 'Primary Navigation', 'starkers' ),
-	) );
+	) );*/
 }
 endif;
 
@@ -1298,4 +1338,21 @@ function my_option_posts_per_page( $value ) {
     } else {
         return $option_posts_per_page;
     }
+}
+
+add_shortcode('youtube-video', 'wp_youtube_vid_handler');
+function wp_youtube_vid_handler($atts){
+	extract(shortcode_atts(array(
+		'id' => '',		
+		'size' => '',
+	), $atts));
+
+	if(empty($id))
+		return "This shortcode requires a YouTube video ID";
+
+	else{
+		if($size == "")
+			return "<center><iframe width=\"640\" height=\"360\" src=\"http://www.youtube.com/embed/$id?rel=0\" frameborder=\"0\" allowfullscreen></iframe></center>";		
+	}
+
 }

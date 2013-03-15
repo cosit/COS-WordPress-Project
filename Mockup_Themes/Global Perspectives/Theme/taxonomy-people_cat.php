@@ -22,7 +22,13 @@ get_header(); ?>
 		<div class="innerContent">
 			<article id="post-<?php the_ID(); ?>" <?php post_class('gp_event'); ?>>
 				<header>
-					<h1>People <span>&raquo;</span> <?php echo ucwords( str_replace("-"," ", $_GET['people_cat']) ); ?> </h1>	
+					<h1>People <span>&raquo;</span> 
+					<?php 
+						$title = sanitize_title($_GET['people_cat']);	
+						$title = preg_replace("/_/", " ", $title); 
+						$title = ucwords( preg_replace("/-/", " ", $title) ); 
+					?>
+					<?php echo $title; ?> </h1>	
 				</header>				
 				<?php 
 
@@ -34,33 +40,44 @@ get_header(); ?>
 
 
 			  	if($catID == 'fellows-and-scholars'){
-			  		$termChildren = get_term_children('29', 'people_cat');
-			  		print_r($myTaxes);
-			  	
+			  		/*Get the terms of the taxonomy 'people_cat', that are children of 'fellows-and-scholars' aka #14 and order by the Taxonomy Terms Plugin
+			  		*/
+			  		$termChildren = get_terms('people_cat', array('child_of' => '14', 'orderby' => 'term_order'));		  					  	
 				  	echo "<h2>List of Current / Past Fellows and Scholars: By Semester</h2><ul class=\"listTaxonomies\">";
-				     foreach ( $termChildren as $child ) {
-				       $term = get_term_by( 'id', $child, 'people_cat');
-				       echo "<li><h2><a href=\"?people_cat=".$term->slug."\">". $term->name . "</a></h2></li>";				        
+				     
+				   	foreach ( $termChildren as $child ) {			echo "<li><h2><a href=\"?people_cat=".$child->slug."\">". $child->name . "</a></h2></li>";
 				     }
 				     echo "</ul>";
 				}elseif($catID == 'past-interns'){
-			  		$termChildren = get_term_children('28', 'people_cat');
-			  		print_r($myTaxes);
-			  	
+			  		/*Get the terms of the taxonomy 'people_cat', that are children of 'past-interns' aka #19 and order by the Taxonomy Terms Plugin
+			  		*/
+			  		$termChildren = get_terms('people_cat', array('child_of' => '19', 'orderby' => 'term_order'));	
+			  					  
 				  	echo "<h2>List of Past Interns: By Semester</h2><ul class=\"listTaxonomies\">";
-				     foreach ( $termChildren as $child ) {
-				       $term = get_term_by( 'id', $child, 'people_cat');
-				       echo "<li><h2><a href=\"?people_cat=".$term->slug."\">". $term->name . "</a></h2></li>";				        
+				    foreach ( $termChildren as $child ) {			echo "<li><h2><a href=\"?people_cat=".$child->slug."\">". $child->name . "</a></h2></li>";
 				     }
 				     echo "</ul>";
 				}else{
-								
-					$wp_query->query('post_type=gp_people&people_cat='.$catID.'&posts_per_page=7'.'&paged='.$paged);
+													
+					$facultyArgs = array( 
+						'post_type' => 'gp_people',
+						'posts_per_page' => '7',
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'people_cat',
+								'field' => 'slug',
+								'terms' => $catID,
+								'include_children' => FALSE, 		
+							)
+						),						
+						'paged' => $paged,
+					);
+
+					query_posts( $facultyArgs );
 					
 					echo '<div id="people_list">';
 
-					while ($wp_query->have_posts()) : $wp_query->the_post(); 
-
+					while (have_posts()) : the_post(); 
 						
 						// Grab the Post ID for the Custom Fields Function			
 						$thisID = get_the_ID();

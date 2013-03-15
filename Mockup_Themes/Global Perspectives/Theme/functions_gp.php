@@ -37,12 +37,31 @@ function gp_events() {
 }
 add_action('init', 'gp_events');
 
+// Support for multiple dates - automatically fills in end_date field
+// function add_gp_event_end_date( $post_id ){
+
+// 	update_post_meta( $post_id, 'location', $_REQUEST['date'] );
+// 	// If it's not an event, skip
+// 	if( 'events' != $_POST['post_type'] ) return;
+
+// 	// If the 'end_date' field is empty, fill it in with the current date
+// 	// This is important. Even if the end_date field isn't filled in, it is required.
+// 	if( !isset($_REQUEST['end_date']) ){
+// 		update_post_meta( $post_id, 'end_date', $_REQUEST['date'] );
+// 	}
+// }
+// add_action( 'save_post', 'add_gp_event_end_date' );
+// add_action( 'publish_post', 'add_gp_event_end_date' );
+
 function show_gp_events_sidebar( ) {
+
+	  	$num_events = (is_home()) ? '2' : '3';
+
 		$temp = $wp_query; 
 	  	$wp_query = null; 
 	  	$wp_query_args = array(
 		  		'post_type' => 'events',
-				'showposts' => 3,
+				'showposts' => $num_events,
 				'meta_key' => 'date',
 				'meta_value' => date("Y/m/d"),
 				'meta_compare' => '>=',
@@ -51,6 +70,7 @@ function show_gp_events_sidebar( ) {
 				'paged' => $paged,
 	  	);
 	  	$wp_query = new WP_Query( $wp_query_args ); 
+
 
 	echo '<ul>';
 
@@ -125,13 +145,13 @@ function show_gp_event() {
 			// Force values as strings, not array remnants
 			$value = is_array($value) ? $value[0] : $value;
 
-			if($key != 'text'){
+			if($key != 'text' && $key != 'info'){
 				$value = strip_tags( $value );
 			}
 		}
 
 // DO NOT EDIT ANY OF THIS OR I WILL BUY YOU MCDONALDS AND EXPOSE YOU TO THE RISK OF OBESITY SO HELP ME GOD
-		$IMG_DIR_PATH = 'http://globalperspectives.cos.ucf.edu/app/webroot/redesign/wp-content/uploads/events/';
+		$IMG_DIR_PATH = 'http://globalperspectives.cos.ucf.edu/main/wp-content/uploads/events/';
 		
 		if( is_array( $event['photo'] ) && strlen($event['photo'][0]) > 0 ){
 			$event['photo'] = $event['photo'][0];
@@ -250,7 +270,8 @@ function show_cats( $displayCats = true, $category ) {
 
 	if( !empty( $cats ) ){
 		
-		sort($cats);
+		/* Commented out to let the Re-Order and Taxonomy Order plugins the ability to order items */
+		//sort($cats);		
 
 		foreach ($cats as $cat){
 			if( $cat->parent != 0 ){

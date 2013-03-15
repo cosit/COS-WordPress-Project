@@ -75,13 +75,13 @@ Template Name: Events - Upcoming
 						// Force values as strings, not array remnants
 						$value = is_array($value) ? $value[0] : $value;
 
-						if($key != 'text'){
+						if($key != 'text' && $key != 'info'){
 							$value = strip_tags( $value );
 						}
 					}
 
 // DO NOT EDIT ANY OF THIS OR I WILL BUY YOU MCDONALDS AND EXPOSE YOU TO THE RISK OF OBESITY SO HELP ME GOD
-		$IMG_DIR_PATH = 'http://globalperspectives.cos.ucf.edu/app/webroot/redesign/wp-content/uploads/events/';
+		$IMG_DIR_PATH = 'http://globalperspectives.cos.ucf.edu/main/wp-content/uploads/events/';
 		
 		if( is_array( $event['photo'] ) && strlen($event['photo'][0]) > 0 ){
 			$event['photo'] = $event['photo'][0];

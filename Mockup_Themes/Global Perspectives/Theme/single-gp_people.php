@@ -13,13 +13,14 @@ get_header(); ?>
 	<div class="wrap clearfix">
 	<?php if (function_exists('breadcrumbs')) breadcrumbs(); ?>
 	<?php get_search_form(); ?>
+		
 	<div id="sidebar" style="float: <?php echo get_option('COS_sidebar_location');?>;">
 		<?php people_nav(); ?>
 		<?php get_sidebar(); ?>
 	</div>
-
-	<div id="single_person" class="innerContent">
-<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
+		
+		<div id="single_person" class="innerContent">
+	<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
 			<h1>People <span>&raquo;</span> <?php $title = preg_split('/,/', $post->post_title); echo $title[1] . ' ' . $title[0]; ?> </h1>
 				<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> >
@@ -30,8 +31,8 @@ get_header(); ?>
 					</footer>
 				</article>
 		</div>
-	
-<?php endwhile; ?>
+
+	<?php endwhile; ?>
 	</div>
 </section>
 

@@ -25,19 +25,58 @@ $(function() {
 	$('.peopleNav').append( $('#people_cats') );
 
 	// Main nav links and dropdown menu
-	(function(){
-		$('#main_header nav>ul>li, #main_header nav>ul>li>ul>li, #main_header nav>ul>li>ul>li>ul>li').hover(
-			function(){
-				$(this).children('ul.children').slideDown('fast').show(); 
-				$(this).children('ul.sub-menu').slideDown('fast').show(); 
-				// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
-			},
-			function(){ 
+	$('#main_header nav>ul>li').hover(
+		function(){
+			$(this).children('ul.children').slideDown('').show(); 
+			$(this).children('ul.sub-menu').slideDown('').show(); 
+			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+		},
+		function(){ 
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
+				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
+			} else {
 				$(this).children('ul.children').hide();
 				$(this).children('ul.sub-menu').hide();
 			}
-		);
-	})();
+		}
+	);
+	$('#main_header nav>ul>li>ul>li').hover(
+		function(){
+			$(this).children('ul.children').slideDown('').show();
+			$(this).children('ul.sub-menu').slideDown('').show();
+			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+		},
+		function(){ 
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
+				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
+			} else {
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
+			}
+		}
+	);
+
+	$('#main_header nav>ul>li>ul>li>ul>li').hover(
+		function(){
+			$(this).children('ul.children').slideDown('').show();
+			$(this).children('ul.sub-menu').slideDown('').show();
+			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+		},
+		function(){ 
+			if( !$(this).hasClass('current_page_item') ){
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
+				// $(this).children('a').animate({ backgroundColor: colorDarkBlue, color: colorOffWhite }, 'fast');
+			} else {
+				$(this).children('ul.children').hide();
+				$(this).children('ul.sub-menu').hide();
+			}
+		}
+	);
 
 	// Submenu links
 	// $('#main_header nav ul.children>li').hover(
@@ -87,20 +126,27 @@ $(function() {
 		}
 	});
 
-	// Custom menu nav shenanigans 
-	(function(){
-		var top_level = $('#custom_menu_nav>div>ul li.current_page_item');
-		//console.log( top_level.children('ul').length );
-		if( top_level.children('ul').length > 0 ){
-			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
-			$('#custom_menu_nav>div').hide();
-		} else {
-			top_level = top_level.parent().parent();
-			// console.log(top_level);
-			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
+	// Custom menu nav shenanigans v2.0
+	$(function() {
+		//Set 'top_level' to the page's parent item
+		var top_level = $('#custom_menu_nav>div>ul li.current-menu-parent');
+		//If the current page doesn't have a parent item
+		if(top_level.length == 0){
+			top_level = $('#custom_menu_nav>div>ul li.current_page_item');
+			//If the page is not associated with any other page
+			if(top_level.length == 0){
+				$('#custom_menu_nav').hide();
+			} else{
+				$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');		
+				$('#custom_menu_nav>h2 .expand').hide();	//Remove any extra expands
+				$('#custom_menu_nav>div').hide();
+			}					
+		} else{
+			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');		
+			$('#custom_menu_nav>h2 .expand').hide();	//Remove any extra expands
 			$('#custom_menu_nav>div').hide();
 		}
-	})();
+	});
 
 	// Parent finding for nav li elements 
 	$('nav li').has('.children, .sub-menu').addClass('parent');

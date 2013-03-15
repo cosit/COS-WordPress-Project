@@ -31,7 +31,7 @@ get_header(); ?>
 				  	$wp_query = null; 
 				  	$wp_query = new WP_Query(); 
 
-					$wp_query->query('post_type=videos&video_cat='.$catID.'&showposts=10&orderby=date&order=DES'.'&paged='.$paged);
+					$wp_query->query('post_type=videos&video_cat='.$catID.'&showposts=10'.'&paged='.$paged);
 
 					echo '<div id="gp_videos">';
 

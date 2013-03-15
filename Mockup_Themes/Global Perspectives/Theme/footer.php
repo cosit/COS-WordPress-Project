@@ -86,20 +86,5 @@
 
 <?php wp_footer(); ?>
 
-<!-- ADD UCF HEADER -->
-<script type="text/javascript" src="http://universityheader.ucf.edu/bar/js/university-header.js"></script>
-<!-- END UCF HEADER -->
-
-<!-- ADD UCF HEADER -->
-<script type="text/javascript">
-// 	$.ajaxSetup({
-// 	cache: true,
-// 	});
-// 	$.getScript( "http://universityheader.ucf.edu/bar/js/university-header.js" );
-</script>
-<!-- END UCF HEADER -->
-
-
-
 </body>
 </html>
