@@ -18,14 +18,21 @@ function register_my_menu() {
 	register_nav_menu( 'primary-menu', __( 'Primary Menu' ) );
 }
 
+function filter_search($query) {    
+    if ($query->is_search) {
+	$query->set('post_type', array('post', 'pages', 'minutes', 'handbook'));
+    };
+    return $query;
+};
+if (!is_admin()){
+	add_filter('pre_get_posts', 'filter_search');
+}
+
 // *********************************************
 // COS JAVASCRIPT FILES
 // *********************************************
 
 function load_custom_script() {
-
-    wp_register_script('jquery.flexslider', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js', array('jquery'));
-    wp_enqueue_script('jquery.flexslider');
 
     wp_register_script('modernizr', get_bloginfo('template_directory').'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
@@ -33,7 +40,7 @@ function load_custom_script() {
     wp_register_script('less', get_bloginfo('template_directory').'/js/less-1.2.2.min.js');
     wp_enqueue_script('less');
 
-    wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
+    //wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
     wp_enqueue_script('jquery.ui');
 
 }
@@ -236,6 +243,32 @@ function modify_post_mime_types( $post_mime_types ) {
 // Add Filter Hook
 add_filter( 'post_mime_types', 'modify_post_mime_types' );
 
+/******************
+ * Custom Icons  *
+******************/
+add_action('admin_head', 'plugin_header');
+function plugin_header() {
+        global $post_type;
+	?>
+	<style>
+	<?php if (($_GET['post_type'] == 'people') || ($post_type == 'people')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/people32.png';?>') no-repeat; }		
+	<?php elseif (($_GET['post_type'] == 'social_media') || ($post_type == 'social_media')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/social32.png';?>') no-repeat;	}
+	<?php elseif (($_GET['post_type'] == 'slider') || ($post_type == 'slider')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/slider32.png';?>') no-repeat;	}		
+	<?php elseif (($_GET['post_type'] == 'minutes') || ($post_type == 'minutes')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/full_page32.png';?>') no-repeat;	}	
+	<?php elseif (($_GET['post_type'] == 'handbook') || ($post_type == 'handbook')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/handbook32.png';?>') no-repeat;	}	
+	<?php elseif (($_GET['post_type'] == 'eupdate') || ($post_type == 'eupdate')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/eUpdate32.png';?>') no-repeat;	}	
+	<?php endif; ?>
+        </style>
+        <?php
+}
+/******************/
+
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
 	$labels = array(
@@ -262,6 +295,8 @@ function slider() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
+		'menu_icon' => get_bloginfo('template_directory') . '/images/slider.png', 		
 		'supports' => array('custom-fields'),
 	);
 
@@ -281,9 +316,9 @@ function show_slider_items() {
 
 	if(have_posts()) : while (have_posts()) : the_post();	
 		$thisID = get_the_ID();
-		$expires = get_field('expires');
-		$isExpired = trim( get_field('expires') ) != '' ? 
-			( strtotime( get_field('expires') ) < time() ? true : false )
+		$expires = trim(get_field('expires'));
+		$isExpired = $expires != '' ? 
+			( $expires < date(Ymd) ? true : false )
 			: false;
 
 		$slide = array(
@@ -298,6 +333,9 @@ function show_slider_items() {
 			'is_expired' => $isExpired, // TRUE if expired
 			'edit' => get_edit_post_link( $thisID ),
 		);
+
+		// Skip the slide if it's disabled or has expired
+		if($slide['is_disabled'] || $slide['is_expired']) continue;		
 
 		 //Link to a file if a File Link is defined in the Custom Post 
 		if(!empty($slide['file_link'])){ $slide['page'] = $slide['file_link'];}		
@@ -348,6 +386,11 @@ function custom_titles($title) {
 	} elseif( $postType == 'social_media') {
 		$title = get_field('label', $postID );
 		$title = $_POST['fields']['field_4f873078a9151'];
+	} elseif( $postType == 'minutes') {
+		$date = $_POST['fields']['field_8'];
+		$date = substr($date, 4, 2)."-".substr($date, 6, 2)."-".substr($date, 2, 2);
+
+		$title = $_POST['fields']['field_11']."-".$date;
 	}
 
 	// Only return title if it has been successfully generated
@@ -380,6 +423,7 @@ function mainLink() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
 		'supports' => array('custom-fields'),
 	);
 
@@ -454,6 +498,8 @@ function social_media() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
+		'menu_icon' => get_bloginfo('template_directory').'/images/social.png',
 		'supports' => array('custom-fields'),
 	);
 
@@ -522,6 +568,7 @@ function people() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'menu_icon' => get_bloginfo('template_directory').'/images/people.png',
 		'supports' => array('custom-fields'),
 		'taxonomies' => array('people_cat'),
 	);
@@ -994,79 +1041,174 @@ function get_hrs( $person ){
 	return $hours;
 }
 
-// Custom Post Type for Contact information
-function contact() {
-	$args = array(
-	'label'           => __('Contact Info'),
-	'singular_label'  => __('Contact Info'),
-	'public'          => true,
-	'show_ui'         => true,
-	'capability_type' => 'post',
-	'hierarchical'    => true,
-	'rewrite'         => true,
-	'supports'        => array('custom-fields')
+//Custom post type for Meeting Minutes
+function minutes() {
+	$labels = array(
+		'name' => _x('Meeting Minutes', 'post type general name'),
+		'singular_name' => _x('Meeting Minutes', 'post type singular name'),
+		'add_new' => _x('Add New', 'slider'),
+		'add_new_item' => __('Add New Meeting Minutes'),
+		'edit_item' => __('Edit Meeting Minutes'),
+		'new_item' => __('New Meeting Minutes'),
+		'all_items' => __('All Meeting Minutes'),
+		'view_item' => __('View Meeting Minutes'),
+		'search_items' => __('Search All Meeting Minutes'),
+		'not_found'  => __('No Meeting Minutes found.'),
+		'not_found_in_trash'  => __('No Meeting Minutes found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('Meeting Minutes'),
 	);
-	register_post_type( 'contact' , $args );
+
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('Meeting Minutes'),
+		'public' => true,
+		'exclude_from_search' => false,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,		
+		'rewrite' => array('slug' => 'minutes'),
+		'menu_icon' => get_bloginfo('template_directory').'/images/full_page.png',
+		'supports' => array('custom-fields'),
+		'taxonomies' => array('minutes_cat'),
+	);
+
+	register_post_type( 'minutes', $args );
 }
-add_action('init', 'contact');
+add_action('init', 'minutes');
 
+//Custom Taxonomy for Meeting Minutes Type
+function minutes_cat() {
+	//Taxonomy for Meeting Types
+	$labels = array(
+		'name'=>'Meeting Types',
+		'singular_name' => 'Meeting Type',
+		'update_item' => 'Update Meeting Type',
+		'edit_item' => 'Update Meeting Type',
+		'all_items' => 'All Meeting Types',
+		'add_new_item' => 'Add New Meeting Type',
+		'search_items' => 'Search Meeting Types',
+		'popular_items' => 'Popular Meeting Types',		
+	);
+	// create a new taxonomy
+	register_taxonomy(
+		'minutes_cat',
+		'minutes',
+		array(
+			'labels' => $labels,
+				
+			'sort' => true,
+			'hierarchical' => true,
+			'args' => array( 'orderby' => 'term_order' ),
+			'query_var' => true,
+			'rewrite' => array('slug' => 'meeting-minutes',  'hierarchical' => true),
+		)	
+	);
 
-function show_contact_area( $args ){		
-
-		// Parse multiple email addresses
-		$emails_array = explode("\n", trim( $args['email'] ));
-		$emails_string = '';
-
-		foreach ($emails_array as &$email) {
-			$email = trim($email);
-			$email = '<a href="mailto:'.$email.'">'.$email.'</a>';
-		}
-
-		$emails_array = implode("\n", $emails_array);
-
-		$contact = array(
-			'title' => $args['title'],
-			'dept' => $args['dept'],
-			'address'    => $args['address'],
-			'email'      => $emails_array,
-			'fax'        => 'F: ' . $args['fax'],
-			'phone'      => 'P: ' . $args['phone'],
-		);
-
-		// Break each category into list items
-		foreach($contact as $key => &$value){
-			if( $key != 'title' ){
-				$value = '<li>' . str_replace("\n", "</li><li>", $value) . '</li>';
-			}
-		};
-
-		// Display the list items in this format:
-		echo <<<CONTACT
-			<h2><span class="contact_title">{$contact['title']}</span></h2>
-
-			<ul id="contact_department">
-				<span class="contactIcon"></span>
-				{$contact['dept']}
-			</ul>
-
-			<ul id="contact_address">
-				<span class="contactIcon"></span>
-				{$contact['address']}
-			</ul>
-			<ul id="contact_phone">
-				<span class="contactIcon"></span>
-				{$contact['phone']}
-				{$contact['fax']}
-			</ul>
-			<ul id="contact_email">
-				<span class="contactIcon"></span>
-				{$contact['email']}
-			</ul>
-CONTACT;
-
-	return true;
 }
-add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
+add_action( 'init', 'minutes_cat' ); 
+
+
+//Custom post type for the Handbook
+function handbook() {
+	$labels = array(
+		'name' => _x('Handbooks', 'post type general name'),
+		'singular_name' => _x('Handbook', 'post type singular name'),
+		'add_new' => _x('Add New Entry', 'slider'),
+		'add_new_item' => __('Add New Handbook Entry'),
+		'edit_item' => __('Edit Handbook Entry'),
+		'new_item' => __('New Handbook Entry'),
+		'all_items' => __('All Handbooks Entries'),
+		'view_item' => __('View Handbook Entry'),
+		'search_items' => __('Search All Handbook Entries'),
+		'not_found'  => __('No Handbook Entries found.'),
+		'not_found_in_trash'  => __('No Handbook Entries found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('Handbooks'),
+	);
+
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('Handbook'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'menu_icon' => get_bloginfo('template_directory').'/images/handbook.png',
+		'supports' => array('title','editor','custom-fields'),
+		'taxonomies' => array('handbook_cat'),
+	);
+
+	register_post_type( 'handbook', $args );
+}
+add_action('init', 'handbook');
+
+// Custom Taxonomy for Handbook Type
+function handbook_cat() {
+	//Taxonomy for Meeting Types
+	$labels = array(
+		'name'=>'Handbook Categories',
+		'singular_name' => 'Handbook Category',
+		'update_item' => 'Update Handbook Category',
+		'edit_item' => 'Update Handbook Category',
+		'all_items' => 'All Handbook Categories',
+		'add_new_item' => 'Add New Handbook Category',
+		'search_items' => 'Search Handbook Categories',
+		'popular_items' => 'Popular Handbook Categories',		
+	);
+	// create a new taxonomy
+	register_taxonomy(
+		'handbook_cat',
+		'handbook',
+		array(
+			'labels' => $labels,
+				
+			'sort' => true,
+			'hierarchical' => true,
+			'args' => array( 'orderby' => 'term_order' ),
+			'query_var' => true,
+			'rewrite' => array( 'slug' => 'handbooks' )
+		)	
+	);
+
+}
+add_action( 'init', 'handbook_cat' ); 
+
+
+//Custom post type for the eUpdates
+function eUpdate() {
+	$labels = array(
+		'name' => _x('eUpdates', 'post type general name'),
+		'singular_name' => _x('eUpdate', 'post type singular name'),
+		'add_new' => _x('Add New eUpdate', 'slider'),
+		'add_new_item' => __('Add New eUpdate'),
+		'edit_item' => __('Edit eUpdate'),
+		'new_item' => __('New eUpdate'),
+		'all_items' => __('All eUpdates'),
+		'view_item' => __('View eUpdate'),
+		'search_items' => __('Search All eUpdates'),
+		'not_found'  => __('No eUpdates found.'),
+		'not_found_in_trash'  => __('No eUpdates found in Trash.'),
+		'parent_item_colon' => '',
+		'menu_name'  => __('eUpdates'),
+	);
+
+	$args = array(
+		'labels' => $labels,
+		'singular_label' => __('eUpdate'),
+		'public' => true,
+		'show_ui' => true,
+		'capability_type' => 'post',
+		'hierarchical' => true,
+		'rewrite' => true,
+		'menu_icon' => get_bloginfo('template_directory').'/images/eUpdate.png',
+		'supports' => array('title','custom-fields'),		
+	);
+
+	register_post_type( 'eupdate', $args );
+}
+add_action('init', 'eUpdate');
 
 
 function show_dyk_area( $args ) {
@@ -1496,7 +1638,7 @@ function starkers_widgets_init() {
 	) );
 
 	// Area 4, located in the footer. Empty by default.
-	register_sidebar( array(
+	/*register_sidebar( array(
 		'name' => __( 'Center Footer Widget Area', 'starkers' ),
 		'id' => 'second-footer-widget-area',
 		'description' => __( 'The second footer widget area', 'starkers' ),
@@ -1504,7 +1646,7 @@ function starkers_widgets_init() {
 		'after_widget' => '',
 		'before_title' => '<h1 class="title">',
 		'after_title' => '</h1>',
-	) );
+	) );*/
 
 	// Area 5, located in the footer. Empty by default.
 	register_sidebar( array(
@@ -1674,6 +1816,45 @@ function wpc_dashboard_widgets() {
 		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
 		//Other WordPress News
 		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
+}
+
+//Custom Pagination from Kriesi.at
+//http://www.kriesi.at/archives/how-to-build-a-wordpress-post-pagination-without-plugin
+function kriesi_pagination($pages = '', $range = 2)
+{  
+     $showitems = ($range * 2)+1;  
+
+     global $paged;
+     if(empty($paged)) $paged = 1;
+
+     if($pages == '')
+     {
+         global $wp_query;
+         $pages = $wp_query->max_num_pages;
+         if(!$pages)
+         {
+             $pages = 1;
+         }
+     }   
+
+     if(1 != $pages)
+     {
+         echo "<div class='pagination'>";
+         if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo "<a href='".get_pagenum_link(1)."'>&laquo;</a>";
+         if($paged > 1 && $showitems < $pages) echo "<a href='".get_pagenum_link($paged - 1)."'>&lsaquo;</a>";
+
+         for ($i=1; $i <= $pages; $i++)
+         {
+             if (1 != $pages &&( !($i >= $paged+$range+1 || $i <= $paged-$range-1) || $pages <= $showitems ))
+             {
+                 echo ($paged == $i)? "<span class='current'>".$i."</span>":"<a href='".get_pagenum_link($i)."' class='inactive' >".$i."</a>";
+             }
+         }
+
+         if ($paged < $pages && $showitems < $pages) echo "<a href='".get_pagenum_link($paged + 1)."'>&rsaquo;</a>";  
+         if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo "<a href='".get_pagenum_link($pages)."'>&raquo;</a>";
+         echo "</div>\n";
+     }
 }
 
 endif;
