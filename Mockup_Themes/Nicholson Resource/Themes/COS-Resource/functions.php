@@ -359,7 +359,7 @@ function show_slider_items() {
 		echo <<<SLIDE
 			<li class="slide slide{$slide['position']}">
 				<h2><a href="{$slide['page']}">{$slide['title']}</a></h2>
-				<img src="{$slide['image']}" />
+				<img src="{$slide['image']}" alt="{$slide['title']}" />
 				<p>{$slide['content']}{$slide['is_disabled']}
 SLIDE;
 		edit_post_link( 'Edit This Slide', '', '' );
@@ -541,7 +541,7 @@ function show_social() {
 
 		echo <<<SOCIAL
 			<li>
-				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}" target="_new"></a>
+				<a href="{$social['link']}" title="{$social['label']}" class="{$social['type']}" target="_blank"></a>
 			</li>
 SOCIAL;
 	endwhile; endif; wp_reset_query();
@@ -1368,7 +1368,7 @@ function show_news( $cat, $items_to_show ) { ?>
 			<?php foreach ($items as $item) : 
 			preg_match("/<img[^>]+\>/i", $item['description'], $myImage);	
 			?>
-			<article id="widget_news">
+			<article class="widget_news">
 				<a href="<?php echo $item['link']; ?>"><?php echo $myImage[0]; ?></a>
 				<h2><a href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h2>
 				<?php 

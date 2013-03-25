@@ -60,7 +60,7 @@ class eupdate_widget extends WP_Widget {
 
 		if ( have_posts() ){
 
-			echo "<ul id='menu-forms-footer-menu'>";
+			echo "<ul class='menu-forms-footer-menu'>";
 			while ( have_posts() ) : the_post(); 
 
 			echo '<li><a href="'. get_field("url").'" target="_blank">'. get_the_title().'</a></li>';
@@ -101,5 +101,4 @@ class eupdate_widget extends WP_Widget {
  		</p>
  		<?php 
  	}
-
 }

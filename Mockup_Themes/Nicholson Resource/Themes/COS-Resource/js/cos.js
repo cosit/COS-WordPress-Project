@@ -175,7 +175,7 @@ jQuery(document).ready(function ($) {
 	$('a[href$=\\.doc], a[href$=\\.DOC], a[href$=\\.docx], a[href$=\\.DOCX]').parent('li').removeClass('www').addClass('doc');
 	$('a[href$=\\.ppt], a[href$=\\.PPT], a[href$=\\.pptx], a[href$=\\.PPTX]').parent('li').removeClass('www').addClass('ppt');
 	$('a[href$=\\.xls], a[href$=\\.XLS], a[href$=\\.xlsx], a[href$=\\.XLSX]' ).parent('li').removeClass('www').addClass('excel');
-	$('.personBasics li, .tabNavigation li, .ai1ec-calendar-toolbar li,').removeClass('link www pdf doc');
+	$('.personBasics li, .tabNavigation li, .ai1ec-calendar-toolbar li').removeClass('link www pdf doc');
 
 	// Disable same-page clicking
 	$('.current_page_item>a').contents().unwrap().wrap('<span class="unclickable"></span>');
