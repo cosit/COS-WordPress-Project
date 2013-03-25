@@ -41,7 +41,14 @@ function load_custom_script() {
     wp_enqueue_script('less');
 
     //wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
+
     wp_enqueue_script('jquery.ui');
+    wp_enqueue_script('jquery');
+
+    if(is_home()){
+    	wp_register_script('flexslider-min', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js');
+    	wp_enqueue_script('flexslider-min');
+    }
 
 }
 

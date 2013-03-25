@@ -1,4 +1,4 @@
-$(function() {
+jQuery(document).ready(function ($) {
 
 	var colorDarkBlue = "#22282D";
 	var colorOffWhite = "#F2F2F2";
