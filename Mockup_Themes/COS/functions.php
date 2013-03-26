@@ -34,11 +34,14 @@ function load_custom_script() {
     wp_register_script('less', get_bloginfo('template_directory').'/js/less-1.2.2.min.js');
     wp_enqueue_script('less');
 
-    wp_register_script('jquery.ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', false, '1.8.18');
     wp_enqueue_script('jquery.ui');
 
-    // wp_register_script('sticky', get_bloginfo('template_directory').'/js/sticky.jquery.min.js');
-    // wp_enqueue_script('sticky');
+    wp_enqueue_script('jquery');
+
+    if(is_home()){
+    	wp_register_script('flexslider-min', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js');
+    	wp_enqueue_script('flexslider-min');
+    }
 
 }
 
@@ -322,7 +325,7 @@ function show_slider_items() {
 		echo <<<SLIDE
 			<li class="slide slide{$slide['position']}">
 				<h2><a href="{$slide['page']}">{$slide['title']}</a></h2>
-				<img src="{$slide['image']}" />
+				<a href="{$slide['page']}"><img src="{$slide['image']}" alt="{$slide['title']}" /></a>
 				<p>{$slide['content']}{$slide['is_disabled']}
 SLIDE;
 		edit_post_link( 'Edit This Slide', '', '' );
@@ -353,9 +356,6 @@ function custom_titles($title) {
 	} elseif( $postType == 'slider' ){
 		// $title = get_field('title', $postID );
 		$title = $_POST['fields']['field_4f7b0930604a6'];
-	} elseif( $postType == 'contact' ) {
-		// $title = get_field('dept', $postID );
-		$title = $_POST['fields']['field_4f7b5041b8cc7'];
 	} elseif( $postType == 'mainlink') {
 		$title = get_field('title', $postID );
 		$title = $_POST['fields']['field_4f7b4058c25a0'];
@@ -394,6 +394,7 @@ function mainLink() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
 		'supports' => array('custom-fields'),
 	);
 
@@ -468,6 +469,8 @@ function social_media() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
+		'menu_icon' => get_bloginfo('template_directory') . '/images/social.png', 	
 		'supports' => array('custom-fields'),
 	);
 
@@ -536,6 +539,7 @@ function people() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'menu_icon' => get_bloginfo('template_directory') . '/images/people.png', 			
 		'supports' => array('custom-fields'),
 		'taxonomies' => array('people_cat'),
 	);
@@ -720,21 +724,8 @@ function show_person( $id, $is_ie = false ) {
 	$contentTabs .= '</ul>';
 	
 	echo <<<PERSON
-	<script type="text/javascript" charset="utf-8">
-		$(function () {
-			var tabContainers = $('div.tabs > div');
-			tabContainers.hide().filter(':first').show();			
-			$('div.tabs ul.tabNavigation a').click(function () {
-				tabContainers.hide();
-				tabContainers.filter(this.hash).show();
-				$('div.tabs ul.tabNavigation a').removeClass('selected');
-				$(this).addClass('selected');
-				return false;
-			}).filter(':first').click();
-		});
-	</script>
 	<article class="person clearfix">
-		<figure><img src="{$person['p_photo']}"/></figure>
+		<figure><img src="{$person['p_photo']}" alt="{$person['p_last_name']}"/></figure>
 		<ul class="personBasics">
         	{$personBasicsContent}
         </ul>
@@ -804,7 +795,7 @@ function show_people( $catID = 0 ) {
 		// display person if person is in category, or category is 'all'
 		echo <<<PEOPLE
 		<article class="person clearfix">
-			<figure><a href="{$personLink}"><img src="{$personPhoto}" /></a></figure>
+			<figure><a href="{$personLink}"><img src="{$personPhoto}" alt="{$personLastName}"/></a></figure>
 			<ul class="personBasics">
 				<h2><a href="{$personLink}" class="personLink">{$personLastName}, {$personFirstName}</a></h2>
 PEOPLE;

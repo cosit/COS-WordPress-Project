@@ -1,4 +1,5 @@
-$(function() {
+jQuery(document).ready(function ($) {
+
 	var colorDarkBlue = "#22282D";
 	var colorOffWhite = "#F2F2F2";
 	var colorBlueGray = "#475159";
@@ -113,6 +114,19 @@ $(function() {
 			$('#custom_menu_nav>h2 .expand').hide();	//Remove any extra expands
 			$('#custom_menu_nav>div').hide();
 		}
+	});
+
+	//Function for Tabs on Person Page
+	$(function () {
+		var tabContainers = $('div.tabs > div');
+		tabContainers.hide().filter(':first').show();			
+		$('div.tabs ul.tabNavigation a').click(function () {
+			tabContainers.hide();
+			tabContainers.filter(this.hash).show();
+			$('div.tabs ul.tabNavigation a').removeClass('selected');
+			$(this).addClass('selected');
+			return false;
+		}).filter(':first').click();
 	});
 
 	// Parent finding for nav li elements 

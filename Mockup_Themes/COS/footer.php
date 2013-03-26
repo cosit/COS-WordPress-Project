@@ -14,7 +14,15 @@
 
 <footer id="main_footer">
 	<!-- Bottom widgets -->
-
+	<?php  
+	//If there is nothing in any of the footer widgets show nothing
+	if (   ! is_active_sidebar( 'first-footer-widget-area'  )
+	    && ! is_active_sidebar( 'second-footer-widget-area' )
+		&& ! is_active_sidebar( 'third-footer-widget-area'  )		
+	        ){}
+	else{ 
+	//Display the widget content
+	?>
 	<section id="widgets">
 		<div id="widget_container">
 			<div id="first-footer-widget-area" class="widget">
@@ -36,6 +44,7 @@
 			</div>
 		</div>
 	</section>
+	<?php } ?>
 
 	<section id="the_footer">
 		<div class="wrap">

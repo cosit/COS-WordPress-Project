@@ -34,19 +34,16 @@
     wp_title( '', true, 'left' ); 
  
 ?></title>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="icon" href="http://www.ucf.edu/img/pegasus-icon.png" type="image/png" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/layout.less" media="all">
-
-<!-- Stylesheet for printing -->
-<link rel="stylesheet/less" type="text/css" media="print" href="<?php bloginfo('template_directory'); ?>/css/print.less" media="all">
-<!-- <link rel="stylesheet/less" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/responsive.less" media="all"> -->
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-<link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
+<link rel="stylesheet/less" type="text/css" media="print" href="<?php bloginfo('template_directory'); ?>/css/print.less" media="all">
 
-<link rel="icon" href="http://www.ucf.edu/img/pegasus-icon.png" type="image/png" />
-<script src="<?php bloginfo('template_directory'); ?>/js/jquery.flexslider-min.js"></script>
+<?php if(is_home()){ ?>
+    <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_directory'); ?>/css/flexslider.css" media="all">
+<?php } ?>
 
 <?php wp_head(); ?>
 
