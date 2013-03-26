@@ -248,6 +248,26 @@ function modify_post_mime_types( $post_mime_types ) {
 // Add Filter Hook
 add_filter( 'post_mime_types', 'modify_post_mime_types' );
 
+/******************
+ * Custom Icons  *
+******************/
+add_action('admin_head', 'plugin_header');
+function plugin_header() {
+        global $post_type;
+	?>
+	<style>
+	<?php if (($_GET['post_type'] == 'people') || ($post_type == 'people')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/people32.png';?>') no-repeat; }		
+	<?php elseif (($_GET['post_type'] == 'social_media') || ($post_type == 'social_media')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/social32.png';?>') no-repeat;	}
+	<?php elseif (($_GET['post_type'] == 'slider') || ($post_type == 'slider')) : ?>
+		#icon-edit { background:transparent url('<?php echo get_bloginfo('template_directory') . '/images/slider32.png';?>') no-repeat;	}			
+	<?php endif; ?>
+        </style>
+        <?php
+}
+/******************/
+
 // Custom Post Type for Slider (for use in FlexSlider)
 function slider() {
 	$labels = array(
@@ -274,6 +294,8 @@ function slider() {
 		'capability_type' => 'post',
 		'hierarchical' => true,
 		'rewrite' => true,
+		'exclude_from_search' => true,
+		'menu_icon' => get_bloginfo('template_directory') . '/images/slider.png', 	
 		'supports' => array('custom-fields'),
 	);
 
@@ -293,9 +315,9 @@ function show_slider_items() {
 
 	if(have_posts()) : while (have_posts()) : the_post();	
 		$thisID = get_the_ID();
-		$expires = get_field('expires');
-		$isExpired = trim( get_field('expires') ) != '' ? 
-			( strtotime( get_field('expires') ) < time() ? true : false )
+		$expires = trim(get_field('expires'));
+		$isExpired = $expires != '' ? 
+			( $expires < date(Ymd) ? true : false )
 			: false;
 
 		$slide = array(
@@ -343,15 +365,9 @@ add_filter('title_save_pre','custom_titles');
 function custom_titles($title) {
 	$postID = get_the_ID();
 	$postType = $_POST['post_type'];
-	//$title = $_POST['post_title'];
-
-	// Update post first, but prevent infinite loop (happens when post type = revision)
-	// if( $postType != 'revision' ){
-	//	wp_update_post( $postID );
-	// }
-
-	if( $postType == 'people' ){
-		// $title = get_field('last_name', $postID ) . ', ' . get_field('first_name', $postID );
+	
+	/* Note that the second field in the $_POST['fields'][***] item will vary from installation to installation */
+	if( $postType == 'people' ){		
 		$title = $_POST['fields']['field_4f68940783612'].', '.$_POST['fields']['field_4f6893f51db13'];
 	} elseif( $postType == 'slider' ){
 		// $title = get_field('title', $postID );
