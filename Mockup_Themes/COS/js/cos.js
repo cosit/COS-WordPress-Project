@@ -88,27 +88,21 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
-	// // Custom menu nav shenanigans 
-	// (function(){
-	// 	var top_level = $('#custom_menu_nav>div>ul li.current_page_item');
-	// 	console.log( top_level.children('ul').length );
-	// 	if( top_level.children('ul').length > 0 ){
-	// 		$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
-	// 		$('#custom_menu_nav>div').hide();
-	// 	} else {
-	// 		top_level = top_level.parent().parent();
-	// 		console.log(top_level);
-	// 		$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');
-	// 		$('#custom_menu_nav>div').hide();
-	// 	}
-	// })();
-
 	// Custom menu nav shenanigans v2.0
 	$(function() {
-		var top_level = $('#custom_menu_nav>div>ul li.current_page_item');
+		var top_level = $('#custom_menu_nav>div>ul li.current-menu-ancestor');
 		//If the current page is not part of the custom menu		
 		if(top_level.length == 0){
-			$('#custom_menu_nav').hide();	//Hide the Sidebar Navigation
+			top_level = $('#custom_menu_nav>div>ul li.current_page_item');
+			if(top_level.length == 0){
+				$('#custom_menu_nav').hide();
+			}
+			else{
+				$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');	
+				$('#custom_menu_nav>h2 .expand').hide();	//Remove any extra expands
+				$('#custom_menu_nav>div').hide();
+			}
+			
 		} else{
 			$('#custom_menu_nav').prepend( top_level.children('ul').show() ).prepend('<h2>'+top_level.html()+'</h2>');		
 			$('#custom_menu_nav>h2 .expand').hide();	//Remove any extra expands
