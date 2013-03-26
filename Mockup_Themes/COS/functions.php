@@ -25,18 +25,18 @@ function register_my_menu() {
 
 function load_custom_script() {
 
-    wp_register_script('cos_js', get_bloginfo('template_directory').'/js/cos.js');
-    wp_enqueue_script('cos_js');
-
     wp_register_script('modernizr', get_bloginfo('template_directory').'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
 
     wp_register_script('less', get_bloginfo('template_directory').'/js/less-1.2.2.min.js');
     wp_enqueue_script('less');
 
+    //This sets jQuery into no conflict mode
     wp_enqueue_script('jquery.ui');
+    wp_enqueue_script('jquery');	
 
-    wp_enqueue_script('jquery');
+	wp_register_script('cos_js', get_bloginfo('template_directory').'/js/cos.js');
+    wp_enqueue_script('cos_js');
 
     if(is_home()){
     	wp_register_script('flexslider-min', get_bloginfo('template_directory').'/js/jquery.flexslider-min.js');
