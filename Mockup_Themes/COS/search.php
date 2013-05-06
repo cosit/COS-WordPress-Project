@@ -16,7 +16,14 @@ get_header(); ?>
 		<div id="search_results" class="innerContent">
 <?php if (have_posts()) : ?>
 			<h1><?php printf( __( 'Search Results for: <span>%s</span>', 'starkers' ), '' . get_search_query() . '' ); ?></h1>
-			<?php while (have_posts()) : the_post(); ?>
+			
+			<?php while (have_posts()) : the_post(); 
+
+					$the_post_type = get_post_type();
+					$post_title = the_title('','',false);
+
+			?>			
+
 				<div <?php post_class() ?> id="post-<?php the_ID(); ?>">
 					<h2><a href="?page_id=<?php the_ID();?>"><?php the_title(); ?></a></h2>			
 					<div class="entry">
@@ -26,6 +33,8 @@ get_header(); ?>
 			<?php endwhile; ?>
 	
 			<?php
+				//Custom pagination 
+				kriesi_pagination('','2');
 				get_template_part( 'loop', 'search' );
 			?>
 <?php else : ?>
