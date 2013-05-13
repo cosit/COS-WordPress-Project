@@ -9,36 +9,36 @@ jQuery(document).ready(function ($) {
 	// Slider
 	try{
 		$('.sliderItems').flexslider({
-			animation: "fade",
+			animation: "slide",
 			slideshow: "true",
 			slideshowSpeed: 7000,
-			directionNav: true,
-			controlNav: true
+			directionNav: false,
+			controlNav: false
 		});
 	} catch(err) {
 		//console.log('flexslider.js not loaded.');
 	}
 
 	// Indicate people nav link
-	$('#main_header nav>ul>li>a:contains("People")').attr("id", "peopleLink").parent().addClass('peopleNav');
+	$('#main_header nav>ul>li>a:contains("Speakers")').attr("id", "peopleLink").parent().addClass('peopleNav');
 
     // Display people categories in nav menu
 	$('.peopleNav').append( $('#people_cats') );
 
 	// Main nav links and dropdown menu
-	(function(){
-		$('#main_header nav>ul>li, #main_header nav>ul>li>ul>li, #main_header nav>ul>li>ul>li>ul>li').hover(
-			function(){
-				$(this).children('ul.children').slideDown('fast').show(); 
-				$(this).children('ul.sub-menu').slideDown('fast').show(); 
-				// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
-			},
-			function(){ 
-				$(this).children('ul.children').hide();
-				$(this).children('ul.sub-menu').hide();
-			}
-		);
-	})();
+	// (function(){
+	// 	$('#main_header nav>ul>li, #main_header nav>ul>li>ul>li, #main_header nav>ul>li>ul>li>ul>li').hover(
+	// 		function(){
+	// 			$(this).children('ul.children').slideDown('fast').show(); 
+	// 			$(this).children('ul.sub-menu').slideDown('fast').show(); 
+	// 			// $(this).children('a').animate({ backgroundColor: colorOffWhite, color: colorDarkBlue }, 'fast').addClass('navLinkHover');
+	// 		},
+	// 		function(){ 
+	// 			$(this).children('ul.children').hide();
+	// 			$(this).children('ul.sub-menu').hide();
+	// 		}
+	// 	);
+	// })();
 
 	// Submenu links
 	// $('#main_header nav ul.children>li').hover(
@@ -113,12 +113,15 @@ jQuery(document).ready(function ($) {
 	//Function for Tabs on Person Page
 	$(function () {
 		var tabContainers = $('div.tabs > div');
-		tabContainers.hide().filter(':first').show();			
-		$('div.tabs ul.tabNavigation a').click(function () {
+		//tabContainers.hide().filter(':first').show();			
+		$('div.tabs ul.tabNavigation a').click(function () {			
 			tabContainers.hide();
 			tabContainers.filter(this.hash).show();
 			$('div.tabs ul.tabNavigation a').removeClass('selected');
+			$('div.tabs ul.tabNavigation li').removeClass('selected');
 			$(this).addClass('selected');
+			$(this).parent().addClass('selected');
+			
 			return false;
 		}).filter(':first').click();
 	});
@@ -171,4 +174,55 @@ jQuery(document).ready(function ($) {
 
 	// Make sidebar sticky
 	//$('#sidebar').stickySidebar({speed: 0, padding: 0, constrain: true});
+
+	
+	/******************/
+	/* Jquery Rearrange divs for mobile */
+	/******************/
+	var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+	        clearTimeout (timer);
+	        timer = setTimeout(callback, ms);
+	    };
+	})();
+
+	$(function() {
+	    var pause = 10; // will only process code within delay(function() { ... }) every 100ms.
+	    $(window).resize(function() {
+	        delay(function() {	        
+	            var width = $(window).width();	    	            
+	            if( width > 540 ) {
+	            	$('.footerWidgetDiv').show();
+	            	$(".innerContent").insertAfter("#sidebar");
+	            }else if( width < 540 ) {
+	                // code for mobile portrait
+	                $('.footerWidgetDiv').hide();
+	                $("#sidebar").insertAfter(".innerContent");	                
+	            }
+	        }, pause );	    
+	    });	    
+	    $(window).resize();
+	});
+	/******************/
+
+	/*****************/
+	/* Functions to show/hide the widget information when it's in the phone view < 540px */	
+	$('#first-footer-widget-area h1.title').click(function(){		
+		$('#first-footer-widget-area i').toggleClass('icon-double-angle-down icon-double-angle-up');
+		$(this).next('.footerWidgetDiv').toggle();		
+		return false;
+	});
+	$('#second-footer-widget-area h1.title').click(function(){		
+		$('#second-footer-widget-area i').toggleClass('icon-double-angle-down icon-double-angle-up');
+		$(this).next('.footerWidgetDiv').toggle();		
+		return false;
+	});
+	$('#third-footer-widget-area h1.title').click(function(){		
+		$('#third-footer-widget-area i').toggleClass('icon-double-angle-down icon-double-angle-up');
+		$(this).next('.footerWidgetDiv').toggle();		
+		return false;
+	});
+	/******************/
+
 });
