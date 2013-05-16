@@ -1074,13 +1074,14 @@ function show_dyk_area( $args ) {
 	if( get_cat_ID( $args['cat'] ) ){
 		$dykArgs = array( 
 			'category_name' => $args['cat'],
-			'posts_per_page' => -1 
+			'posts_per_page' => 1 ,
+			'orderby' => 'rand'
 		);
 	} else {
 		echo "<em>There is nothing to know at this time.</em>";
 		return false;
 	}
-	shuffle( query_posts( $dykArgs ) );
+	query_posts( $dykArgs );
 
 	if(have_posts()) : while (have_posts()) : the_post();			
 
